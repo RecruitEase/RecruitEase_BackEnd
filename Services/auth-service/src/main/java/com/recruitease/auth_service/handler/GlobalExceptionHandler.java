@@ -2,6 +2,7 @@ package com.recruitease.auth_service.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +33,22 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(errors));
+    }
+
+    //for authentication exceptions
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handle(AuthenticationException exp){
+
+//        var errors=new HashMap<String,String >();
+//        exp.getMessage().getAllErrors()
+//                .forEach(error->{
+//                    var fieldName=((FieldError) error).getField();
+//                    var errorMsg=error.getDefaultMessage();
+//                    errors.put(fieldName,errorMsg);
+//                });
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exp.getMessage());
     }
 
 }

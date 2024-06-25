@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,9 +48,15 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/token")
+    @PostMapping("/token")
     public ResponseEntity<String> getToken(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.generateToken(request.email()));
+        Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+        System.out.println(request.email());
+        if(authenticate.isAuthenticated()){
+            return ResponseEntity.ok(authService.generateToken(request.email()));
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials!");
+        }
     }
 
 
