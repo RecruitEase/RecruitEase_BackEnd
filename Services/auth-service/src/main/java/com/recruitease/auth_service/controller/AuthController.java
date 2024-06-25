@@ -1,6 +1,7 @@
 package com.recruitease.auth_service.controller;
 
 import com.recruitease.auth_service.DTO.AuthRequest;
+import com.recruitease.auth_service.config.CustomUserDetails;
 import com.recruitease.auth_service.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,20 +41,25 @@ public class AuthController {
 //    }
 
     @GetMapping("/validate")
-    public ResponseEntity<String> validateToken(@RequestParam("token") String token,@RequestParam String userID) {
-        if(authService.validateToken(token,userID)){
-            return ResponseEntity.ok().build();
+    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
+        if(authService.validateToken(token)){
+            return ResponseEntity.ok().body("Token is valid");
         }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
     }
 
+
+    //login?
     @PostMapping("/token")
     public ResponseEntity<String> getToken(@RequestBody AuthRequest request) {
         Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-        System.out.println(request.email());
+//        System.out.println(request.email());
         if(authenticate.isAuthenticated()){
-            return ResponseEntity.ok(authService.generateToken(request.email()));
+            CustomUserDetails obj= (CustomUserDetails) authenticate.getPrincipal();
+            System.out.println(obj.getId());
+
+            return ResponseEntity.ok(authService.generateToken(obj.getId()));
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials!");
         }

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -37,9 +38,20 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, String userId){
-        final String tokenUserId=extractUserId(token);
-        return (Objects.equals(tokenUserId, userId) && !isTokenExpired(token));
+    public Boolean validateToken(String token){
+        try {
+            Claims claims= Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload();
+
+
+            System.out.println("Subject: " + claims.getSubject());
+            System.out.println("Expiration: " + claims.getExpiration());
+            return true;
+        } catch (SignatureException e) {
+            System.out.println("Invalid JWT signature: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error parsing JWT: " + e.getMessage());
+        }
+        return false;
     }
 
     public String generateToken(String userId){
@@ -48,8 +60,8 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String userId) {
-        System.out.println("feddew");
-        System.out.println(userId);
+//        System.out.println("feddew");
+//        System.out.println(userId);
         return Jwts.builder()
                 .claims(claims)
                 .subject(userId)

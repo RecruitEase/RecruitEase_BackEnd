@@ -33,8 +33,8 @@ public class AuthService {
         return jwtService.generateToken(userId);
     }
 
-    public Boolean validateToken(String token,String userID){
+    public Boolean validateToken(String token){
         System.out.println(token);
-        return jwtService.validateToken(token,userID);
+        return jwtService.validateToken(token);
     }
 }
