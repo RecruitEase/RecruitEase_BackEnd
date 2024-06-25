@@ -17,6 +17,7 @@ public class UserCredential {
     private String id;
     private String email;
     private String password;
+    @Column(columnDefinition = "varchar(255) default 'ROLE_CANDIDATE'")
     private String role;
 
 }

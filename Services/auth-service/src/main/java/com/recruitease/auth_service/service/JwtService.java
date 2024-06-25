@@ -48,6 +48,8 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String userId) {
+        System.out.println("feddew");
+        System.out.println(userId);
         return Jwts.builder()
                 .claims(claims)
                 .subject(userId)

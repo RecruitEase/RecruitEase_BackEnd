@@ -47,6 +47,10 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/token")
+    public ResponseEntity<String> getToken(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(authService.generateToken(request.email()));
+    }
 
 
 

@@ -19,11 +19,9 @@ public class AuthService {
     private final JwtService jwtService;
 
     public String saveUser(AuthRequest request) {
-        System.out.println(modelMapper.map(request,UserCredential.class));
 
         //mapping
         UserCredential userCredential= modelMapper.map(request,UserCredential.class);
-        System.out.println(userCredential);
         //encrypting password
         userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
         //saving to db
@@ -36,6 +34,7 @@ public class AuthService {
     }
 
     public Boolean validateToken(String token,String userID){
+        System.out.println(token);
         return jwtService.validateToken(token,userID);
     }
 }
