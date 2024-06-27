@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -15,6 +16,10 @@ import java.util.Objects;
 
 @Service
 public class JwtService {
+
+    @Value("${recruitease.expiration.time.minutes}")
+    private int EXPIRATION_TIME_MINUTES=5;
+
     private static final String SECRET="2332e8b1cd2d5486b9454bdf3548b3dc2f4f917f07c5fe3f8abf9915221fecf2";
 
     public String extractUserId(String token){
@@ -66,7 +71,7 @@ public class JwtService {
                 .claims(claims)
                 .subject(userId)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+1000*60*30))
+                .expiration(new Date(System.currentTimeMillis()+1000*60*EXPIRATION_TIME_MINUTES))
                 .signWith(getSignKey())
                 .compact();
     }
