@@ -1,3 +1,4 @@
+#//cross origin configurations
 spring:
   cloud:
     gateway:
