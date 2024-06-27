@@ -54,14 +54,14 @@ public class AuthController {
 
 
         //TODO: refresh token
-        @GetMapping("/refresh")
-        public ResponseEntity<String> validateToken(@RequestHeader
-                                                            Map<String, String> headers) {
-            headers.forEach((key, value) -> {
-                System.out.println(String.format("Header '%s' = %s", key, value));
-            });
-                return ResponseEntity.status(HttpStatus.OK).body("refresh");
-        }
+//        @GetMapping("/refresh")
+//        public ResponseEntity<String> validateToken(@RequestHeader
+//                                                            Map<String, String> headers) {
+//            headers.forEach((key, value) -> {
+//                System.out.println(String.format("Header '%s' = %s", key, value));
+//            });
+//                return ResponseEntity.status(HttpStatus.OK).body("refresh");
+//        }
 
     //login?
     @PostMapping("/token")
