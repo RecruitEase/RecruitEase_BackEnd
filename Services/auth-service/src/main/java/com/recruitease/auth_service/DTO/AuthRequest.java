@@ -8,7 +8,7 @@ import jakarta.ws.rs.DefaultValue;
 public record AuthRequest(
         String id,
         @NotNull(message = "Email is required")
-        @NotEmpty(message = "Password cannot be empty")
+        @NotEmpty(message = "Email cannot be empty")
         @Email(message = "Email is not a valid email address")
         String email,
         @NotNull(message = "Password is required")

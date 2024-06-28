@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,10 +27,12 @@ public class Candidate {
     private String firstName;
     private String lastName;
     private String address;
+    @Column(unique = true)
     private String mobileNumber;
     private String profilePic;
-    private String profileStatus;
+    private String profileStatus="Looking for Jobs";
+    @Column(unique = true)
     private String nic;
-    private Date dob;
+    private LocalDate dob;
 
 }

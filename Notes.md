@@ -1,0 +1,22 @@
+## Candidate Profile status:
+- "Currently Working"
+- "Looking for Jobs"
+- "On a Career Break"
+
+//response codes
+public class CodeList {
+public static final String RSP_SUCCESS = "00";
+public static final String RSP_NO_DATA_FOUND = "01";
+public static final String RSP_NOT_AUTHORISED = "02";
+public static final String RSP_TOKEN_EXPIRED = "03";
+public static final String RSP_TOKEN_INVALID = "04";
+public static final String RSP_ERROR = "05";
+public static final String RSP_DUPLICATED = "06";
+public static final String RSP_FAIL = "10";
+}
+
+## user roles
+- ROLE_CANDIDATE
+- ROLE_RECRUITER
+- ROLE_ADMIN
+- ROLE_MODERATOR
