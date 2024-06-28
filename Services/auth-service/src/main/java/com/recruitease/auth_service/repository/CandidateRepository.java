@@ -9,4 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, String> {
+    boolean existsByMobileNumber(String number);
+    boolean existsByNic(String number);
+
+    Optional<Candidate> findByUserId(String userId);
 }

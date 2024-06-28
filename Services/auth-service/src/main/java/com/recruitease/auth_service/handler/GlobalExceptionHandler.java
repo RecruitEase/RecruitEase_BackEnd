@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         var responseDto=new ResponseDTO();
         responseDto.setCode(CodeList.RSP_ERROR);
         responseDto.setMessage("Invalid Data");
-        responseDto.setContent(new ErrorResponse(errors));
+        responseDto.setErrors(errors);
 
 
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 
     //for authentication exceptions
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> handle(AuthenticationException exp){
+    public ResponseEntity<ResponseDTO> handle(AuthenticationException exp){
 
 //        var errors=new HashMap<String,String >();
 //        exp.getMessage().getAllErrors()
@@ -54,9 +54,12 @@ public class GlobalExceptionHandler {
 //                    var errorMsg=error.getDefaultMessage();
 //                    errors.put(fieldName,errorMsg);
 //                });
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(exp.getMessage());
+        var responseDto=new ResponseDTO();
+        responseDto.setCode(CodeList.RSP_NOT_AUTHORISED);
+        responseDto.setMessage("Invalid Credentials!");
+        responseDto.setErrors(new HashMap<String,String>().put("email","Incorrect email or password"));
+        return new ResponseEntity<>(responseDto,HttpStatus.UNAUTHORIZED);
+
     }
 
 
@@ -71,6 +74,7 @@ public class GlobalExceptionHandler {
 //                    var errorMsg=error.getDefaultMessage();
 //                    errors.put(fieldName,errorMsg);
 //                });
+
         var responseDto=new ResponseDTO();
         responseDto.setCode(CodeList.RSP_FAIL);
         responseDto.setMessage("Error occurred while writing to db");
