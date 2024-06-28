@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 
     //for authentication exceptions
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ResponseDTO> handle(AuthenticationException exp){
+    public ResponseEntity handle(AuthenticationException exp){
 
 //        var errors=new HashMap<String,String >();
 //        exp.getMessage().getAllErrors()
@@ -54,11 +54,7 @@ public class GlobalExceptionHandler {
 //                    var errorMsg=error.getDefaultMessage();
 //                    errors.put(fieldName,errorMsg);
 //                });
-        var responseDto=new ResponseDTO();
-        responseDto.setCode(CodeList.RSP_NOT_AUTHORISED);
-        responseDto.setMessage("Invalid Credentials!");
-        responseDto.setErrors(new HashMap<String,String>().put("email","Incorrect email or password"));
-        return new ResponseEntity<>(responseDto,HttpStatus.UNAUTHORIZED);
+       return ResponseEntity.badRequest().body("Invalid Credentials");
 
     }
 
