@@ -17,6 +17,7 @@ public class Recruiter {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String recruiterId;
     private String companyName;
+    @Column(unique = true)
     private String businessRegistrationNumber;
     private String website;
     @OneToOne
@@ -25,6 +26,7 @@ public class Recruiter {
     private String firstName;//contact person name
     private String lastName;
     private String address;
+    @Column(unique = true)
     private String mobileNumber;
     private String profilePic;
 

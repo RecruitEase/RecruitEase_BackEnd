@@ -98,7 +98,12 @@ public class AuthService {
     }
 
     @Transactional //to make it save both as one transaction
-    public String registerRecruiter(RecruiterRequest request) {
+    public ResponseDTO registerRecruiter(RecruiterRequest request) {
+        var responseDTO=new ResponseDTO();
+
+        var errors=new HashMap<String,String >();
+
+
         //mapping
         UserCredential userCredential= modelMapper.map(request,UserCredential.class);
         Recruiter recruiter= modelMapper.map(request,Recruiter.class);
@@ -108,18 +113,45 @@ public class AuthService {
         userCredential.setRole(RoleList.ROLE_RECRUITER);
 
 
-        //saving to db
-        var user=repository.save(userCredential);
-        recruiter.setUser(user);
-        var recruiterObj=recruiterRepository.save(recruiter);
+        //validations
+        if(repository.existsByEmail(userCredential.getEmail())){
+            errors.put("email","Email address already exists!");
+        }
+        if(recruiterRepository.existsByMobileNumber(recruiter.getMobileNumber())){
+            errors.put("mobileNumber","Mobile Number already exists!");
+        }
+        if(recruiterRepository.existsByBusinessRegistrationNumber(recruiter.getBusinessRegistrationNumber())){
+            errors.put("businessRegistrationNumber","BR Number already exists!");
+        }
+
+        if(errors.isEmpty()){
+            //saving to db
+            var user=repository.save(userCredential);
+            recruiter.setUser(user);
+            var recruiterObj=recruiterRepository.save(recruiter);
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Recruiter registered successfully");
+            responseDTO.setContent(user.getId());
+
+        }else {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+
+        }
+        return responseDTO;
 
 
-        return user.getId();
     }
 
 
+
     @Transactional
-    public String registerAdmin(AdminModeratorRequest request) {
+    public ResponseDTO registerAdmin(AdminModeratorRequest request) {
+        var responseDTO=new ResponseDTO();
+
+        var errors=new HashMap<String,String >();
         //mapping
         UserCredential userCredential= modelMapper.map(request,UserCredential.class);
         Admin admin= modelMapper.map(request,Admin.class);
@@ -128,18 +160,43 @@ public class AuthService {
         //set role
         userCredential.setRole(RoleList.ROLE_ADMIN);
 
+//validations
+        if(repository.existsByEmail(userCredential.getEmail())){
+            errors.put("email","Email address already exists!");
+        }
+        if(adminRepository.existsByMobileNumber(admin.getMobileNumber())){
+            errors.put("mobileNumber","Mobile Number already exists!");
+        }
 
-        //saving to db
-        var user=repository.save(userCredential);
-        admin.setUser(user);
-        var adminObj=adminRepository.save(admin);
+        if(errors.isEmpty()){
+            //saving to db
+            var user=repository.save(userCredential);
+            admin.setUser(user);
+            var adminObj=adminRepository.save(admin);
 
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Admin registered successfully");
+            responseDTO.setContent(user.getId());
 
-        return user.getId();
+        }else {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+
+        }
+
+        return responseDTO;
+
     }
 
+
+
     @Transactional
-    public String registerModerator(AdminModeratorRequest request) {
+    public ResponseDTO registerModerator(AdminModeratorRequest request) {
+        var responseDTO=new ResponseDTO();
+
+        var errors=new HashMap<String,String >();
+
         //mapping
         UserCredential userCredential= modelMapper.map(request,UserCredential.class);
         Moderator moderator= modelMapper.map(request, Moderator.class);
@@ -149,13 +206,31 @@ public class AuthService {
         userCredential.setRole(RoleList.ROLE_MODERATOR);
 
 
-        //saving to db
-        var user=repository.save(userCredential);
-        moderator.setUser(user);
-        var moderatorObj=moderatorRepository.save(moderator);
+//validations
+        if(repository.existsByEmail(userCredential.getEmail())){
+            errors.put("email","Email address already exists!");
+        }
+        if(moderatorRepository.existsByMobileNumber(moderator.getMobileNumber())){
+            errors.put("mobileNumber","Mobile Number already exists!");
+        }
 
+        if(errors.isEmpty()){
+            //saving to db
+            var user=repository.save(userCredential);
+            moderator.setUser(user);
+            var moderatorObj=moderatorRepository.save(moderator);
 
-        return user.getId();
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Moderator registered successfully");
+            responseDTO.setContent(user.getId());
+
+        }else {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+
+        }
+        return responseDTO;
     }
 
 

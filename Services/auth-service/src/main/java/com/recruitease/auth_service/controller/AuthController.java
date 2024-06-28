@@ -54,29 +54,45 @@ public class AuthController {
 
     @PostMapping("/register-recruiter")
     public ResponseEntity<ResponseDTO> registerRecruiter(@RequestBody @Valid RecruiterRequest request) {
-        authService.registerRecruiter(request);
+        ResponseDTO res= authService.registerRecruiter(request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-        responseDTO.setCode(CodeList.RSP_SUCCESS);
-        responseDTO.setMessage("Recruiter registered successfully");
-        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
     }
+
+
 
     @PostMapping("/register-admin")
     public ResponseEntity<ResponseDTO> registerAdmin(@RequestBody @Valid AdminModeratorRequest request) {
-        authService.registerAdmin(request);
+        ResponseDTO res= authService.registerAdmin(request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-        responseDTO.setCode(CodeList.RSP_SUCCESS);
-        responseDTO.setMessage("Admin registered successfully");
-        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/register-moderator")
     public ResponseEntity<ResponseDTO> registerModerator(@RequestBody @Valid AdminModeratorRequest request) {
-        authService.registerModerator(request);
 
-        responseDTO.setCode(CodeList.RSP_SUCCESS);
-        responseDTO.setMessage("Moderator registered successfully");
-        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+        ResponseDTO res= authService.registerModerator(request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
     }
 
 

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ModeratorRepository extends JpaRepository<Moderator, String> {
+    boolean existsByMobileNumber(String mobileNumber);
 }

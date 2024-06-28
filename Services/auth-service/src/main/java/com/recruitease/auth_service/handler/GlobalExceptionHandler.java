@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         var responseDto=new ResponseDTO();
         responseDto.setCode(CodeList.RSP_ERROR);
         responseDto.setMessage("Invalid Data");
-        responseDto.setContent(new ErrorResponse(errors));
+        responseDto.setErrors(errors);
 
 
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
