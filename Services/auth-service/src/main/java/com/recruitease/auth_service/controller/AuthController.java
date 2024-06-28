@@ -1,12 +1,19 @@
 package com.recruitease.auth_service.controller;
 
+import ch.qos.logback.classic.encoder.JsonEncoder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.recruitease.auth_service.DTO.*;
 import com.recruitease.auth_service.config.CustomUserDetails;
 import com.recruitease.auth_service.service.AuthService;
 import com.recruitease.auth_service.util.CodeList;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +40,16 @@ public class AuthController {
 
     @PostMapping("/register-candidate")
     public ResponseEntity<ResponseDTO> registerCandidate(@RequestBody @Valid CandidateRequest request) {
-        authService.registerCandidate(request);
+        ResponseDTO res= authService.registerCandidate(request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-        responseDTO.setCode(CodeList.RSP_SUCCESS);
-        responseDTO.setMessage("Candidate registered successfully");
-        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/register-recruiter")

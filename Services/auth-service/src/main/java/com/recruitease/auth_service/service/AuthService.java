@@ -1,19 +1,21 @@
 package com.recruitease.auth_service.service;
 
-import com.recruitease.auth_service.DTO.AdminModeratorRequest;
-import com.recruitease.auth_service.DTO.AuthRequest;
-import com.recruitease.auth_service.DTO.CandidateRequest;
-import com.recruitease.auth_service.DTO.RecruiterRequest;
+import com.recruitease.auth_service.DTO.*;
 import com.recruitease.auth_service.entity.*;
 import com.recruitease.auth_service.repository.*;
+import com.recruitease.auth_service.util.CodeList;
 import com.recruitease.auth_service.util.RoleList;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.FieldError;
+
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,12 @@ public class AuthService {
     }
 
     @Transactional //to make it save both as one transaction
-    public String registerCandidate(CandidateRequest request) {
+    public ResponseDTO registerCandidate(CandidateRequest request) {
+        var responseDTO=new ResponseDTO();
+
+        var errors=new HashMap<String,String >();
+
+
         //mapping
         UserCredential userCredential= modelMapper.map(request,UserCredential.class);
         Candidate candidate= modelMapper.map(request,Candidate.class);
@@ -57,13 +64,37 @@ public class AuthService {
         //set role
         userCredential.setRole(RoleList.ROLE_CANDIDATE);
 
-        //saving to db
-        var user=repository.save(userCredential);
-        candidate.setUser(user);
-        var candidateObj=candidateRepository.save(candidate);
+
+        //validations
+        if(repository.existsByEmail(userCredential.getEmail())){
+            errors.put("email","Email address already exists!");
+        }
+        if(candidateRepository.existsByMobileNumber(candidate.getMobileNumber())){
+            errors.put("mobileNumber","Mobile Number already exists!");
+        }
+        if(candidateRepository.existsByNic(candidate.getNic())){
+            errors.put("nic","NIC Number already exists!");
+        }
+
+        if(errors.isEmpty()){
+            //saving to db
+            var user=repository.save(userCredential);
+            candidate.setUser(user);
+            var candidateObj=candidateRepository.save(candidate);
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Candidate registered successfully");
+            responseDTO.setContent(user.getId());
+
+        }else {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+
+        }
+        return responseDTO;
 
 
-        return user.getId();
     }
 
     @Transactional //to make it save both as one transaction
