@@ -96,27 +96,6 @@ public class AuthController {
     }
 
 
-    @GetMapping("/validate")
-    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
-        if(authService.validateToken(token)){
-            return ResponseEntity.ok().body("Token is valid");
-        }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        }
-    }
-
-
-
-        //TODO: refresh token
-//        @GetMapping("/refresh")
-//        public ResponseEntity<String> validateToken(@RequestHeader
-//                                                            Map<String, String> headers) {
-//            headers.forEach((key, value) -> {
-//                System.out.println(String.format("Header '%s' = %s", key, value));
-//            });
-//                return ResponseEntity.status(HttpStatus.OK).body("refresh");
-//        }
-
     //login?
     @PostMapping("/token")
     public ResponseEntity getToken(@RequestBody AuthRequest request) throws AuthenticationException {
@@ -143,5 +122,23 @@ public class AuthController {
     }
 
 
+    //todo: token validation refine for springboot gateway
+    @GetMapping("/validate")
+    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
+        if(authService.validateToken(token)){
+            return ResponseEntity.ok().body("Token is valid");
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+        }
+    }
 
+    //TODO: refresh token
+//        @GetMapping("/refresh")
+//        public ResponseEntity<String> validateToken(@RequestHeader
+//                                                            Map<String, String> headers) {
+//            headers.forEach((key, value) -> {
+//                System.out.println(String.format("Header '%s' = %s", key, value));
+//            });
+//                return ResponseEntity.status(HttpStatus.OK).body("refresh");
+//        }
 }
