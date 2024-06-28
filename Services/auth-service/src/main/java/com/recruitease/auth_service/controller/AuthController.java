@@ -113,7 +113,9 @@ public class AuthController {
 
             return new ResponseEntity<>(tokenRes,HttpStatus.OK);
         }else{
-            return ResponseEntity.badRequest().body("Invalid Credentials");
+            var responseDto=new ResponseDTO();
+            responseDto.setErrors("Incorrect email or password");
+            return new ResponseEntity<>(responseDto,HttpStatus.UNAUTHORIZED);
         }
     }
 
