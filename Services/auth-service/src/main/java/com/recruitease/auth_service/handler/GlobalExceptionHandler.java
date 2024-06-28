@@ -1,5 +1,7 @@
 package com.recruitease.auth_service.handler;
 
+import com.recruitease.auth_service.DTO.ResponseDTO;
+import com.recruitease.auth_service.util.CodeList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -22,7 +24,7 @@ public class GlobalExceptionHandler {
 //    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException exp){
+    public ResponseEntity<ResponseDTO> handle(MethodArgumentNotValidException exp){
 
         var errors=new HashMap<String,String >();
         exp.getBindingResult().getAllErrors()
@@ -31,9 +33,14 @@ public class GlobalExceptionHandler {
                     var errorMsg=error.getDefaultMessage();
                     errors.put(fieldName,errorMsg);
                 });
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(errors));
+
+        var responseDto=new ResponseDTO();
+        responseDto.setCode(CodeList.RSP_ERROR);
+        responseDto.setMessage("Invalid Data");
+        responseDto.setContent(new ErrorResponse(errors));
+
+
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
 
     //for authentication exceptions
@@ -55,7 +62,7 @@ public class GlobalExceptionHandler {
 
     //for sql exceptions
     @ExceptionHandler(SQLException.class)
-    public ResponseEntity<String> handle(SQLException exp){
+    public ResponseEntity<ResponseDTO> handle(SQLException exp){
 
 //        var errors=new HashMap<String,String >();
 //        exp.getMessage().getAllErrors()
@@ -64,8 +71,10 @@ public class GlobalExceptionHandler {
 //                    var errorMsg=error.getDefaultMessage();
 //                    errors.put(fieldName,errorMsg);
 //                });
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(exp.getMessage());
+        var responseDto=new ResponseDTO();
+        responseDto.setCode(CodeList.RSP_FAIL);
+        responseDto.setMessage("Error occurred while writing to db");
+        responseDto.setContent(exp.getMessage());
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
 }

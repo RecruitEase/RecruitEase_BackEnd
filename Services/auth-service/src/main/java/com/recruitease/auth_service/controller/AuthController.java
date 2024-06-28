@@ -1,10 +1,12 @@
 package com.recruitease.auth_service.controller;
 
-import com.recruitease.auth_service.DTO.AuthRequest;
+import com.recruitease.auth_service.DTO.*;
 import com.recruitease.auth_service.config.CustomUserDetails;
 import com.recruitease.auth_service.service.AuthService;
+import com.recruitease.auth_service.util.CodeList;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +27,44 @@ public class AuthController {
     private final AuthService authService;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> addNewUser(@RequestBody @Valid AuthRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.saveUser(request));
+    //to send response
+    private final ResponseDTO responseDTO;
+
+
+    @PostMapping("/register-candidate")
+    public ResponseEntity<ResponseDTO> registerCandidate(@RequestBody @Valid CandidateRequest request) {
+        authService.registerCandidate(request);
+
+        responseDTO.setCode(CodeList.RSP_SUCCESS);
+        responseDTO.setMessage("Candidate registered successfully");
+        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register-recruiter")
+    public ResponseEntity<ResponseDTO> registerRecruiter(@RequestBody @Valid RecruiterRequest request) {
+        authService.registerRecruiter(request);
+
+        responseDTO.setCode(CodeList.RSP_SUCCESS);
+        responseDTO.setMessage("Recruiter registered successfully");
+        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register-admin")
+    public ResponseEntity<ResponseDTO> registerAdmin(@RequestBody @Valid AdminModeratorRequest request) {
+        authService.registerAdmin(request);
+
+        responseDTO.setCode(CodeList.RSP_SUCCESS);
+        responseDTO.setMessage("Admin registered successfully");
+        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register-moderator")
+    public ResponseEntity<ResponseDTO> registerModerator(@RequestBody @Valid AdminModeratorRequest request) {
+        authService.registerModerator(request);
+
+        responseDTO.setCode(CodeList.RSP_SUCCESS);
+        responseDTO.setMessage("Moderator registered successfully");
+        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
     }
 
 
