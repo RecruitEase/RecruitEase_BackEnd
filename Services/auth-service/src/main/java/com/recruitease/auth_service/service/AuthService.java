@@ -1,6 +1,11 @@
 package com.recruitease.auth_service.service;
 
 import com.recruitease.auth_service.DTO.*;
+import com.recruitease.auth_service.DTO.roleDetails.AdminRoleDetail;
+import com.recruitease.auth_service.DTO.roleDetails.CandidateRoleDetail;
+import com.recruitease.auth_service.DTO.roleDetails.ModeratorRoleDetail;
+import com.recruitease.auth_service.DTO.roleDetails.RecruiterRoleDetail;
+import com.recruitease.auth_service.config.CustomUserDetails;
 import com.recruitease.auth_service.entity.*;
 import com.recruitease.auth_service.repository.*;
 import com.recruitease.auth_service.util.CodeList;
@@ -14,8 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
+import org.springframework.web.ErrorResponseException;
 
+import javax.naming.AuthenticationException;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -234,4 +242,36 @@ public class AuthService {
     }
 
 
+    public SessionObjectResponse generateSessionObj(String userId) throws AuthenticationException {
+            //not checking whether its present since we already authenticated
+        try{
+            UserCredential user=repository.findById(userId).get();
+
+            SessionObjectResponse res=modelMapper.map(user,SessionObjectResponse.class);
+            //get  obj relevant to role
+            if(user.getRole().equals(RoleList.ROLE_CANDIDATE)){
+                Candidate candidate=candidateRepository.findByUserId(userId).get();
+                CandidateRoleDetail roleDetail=modelMapper.map(candidate,CandidateRoleDetail.class);
+                res.setRoleDetails(roleDetail);
+            } else if (user.getRole().equals(RoleList.ROLE_RECRUITER)) {
+                Recruiter recruiter=recruiterRepository.findByUserId(userId).get();
+                RecruiterRoleDetail roleDetail=modelMapper.map(recruiter,RecruiterRoleDetail.class);
+                res.setRoleDetails(roleDetail);
+            } else if (user.getRole().equals(RoleList.ROLE_ADMIN)) {
+                Admin admin=adminRepository.findByUserId(userId).get();
+                AdminRoleDetail roleDetail=modelMapper.map(admin,AdminRoleDetail.class);
+                res.setRoleDetails(roleDetail);
+            }else{
+                Moderator moderator=moderatorRepository.findByUserId(userId).get();
+                ModeratorRoleDetail roleDetail=modelMapper.map(moderator,ModeratorRoleDetail.class);
+                res.setRoleDetails(roleDetail);
+            }
+            res.setAccessToken(this.generateToken(userId));
+            return res;
+        }catch (Exception e){
+            throw new AuthenticationException("Error while authenticating!");
+        }
+
+
+    }
 }
