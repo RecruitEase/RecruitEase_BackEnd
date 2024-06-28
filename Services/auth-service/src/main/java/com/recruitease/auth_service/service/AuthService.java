@@ -1,14 +1,11 @@
 package com.recruitease.auth_service.service;
 
+import com.recruitease.auth_service.DTO.AdminModeratorRequest;
 import com.recruitease.auth_service.DTO.AuthRequest;
 import com.recruitease.auth_service.DTO.CandidateRequest;
 import com.recruitease.auth_service.DTO.RecruiterRequest;
-import com.recruitease.auth_service.entity.Candidate;
-import com.recruitease.auth_service.entity.Recruiter;
-import com.recruitease.auth_service.entity.UserCredential;
-import com.recruitease.auth_service.repository.CandidateRepository;
-import com.recruitease.auth_service.repository.RecruiterRepository;
-import com.recruitease.auth_service.repository.UserCredentialRepository;
+import com.recruitease.auth_service.entity.*;
+import com.recruitease.auth_service.repository.*;
 import com.recruitease.auth_service.util.RoleList;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +24,8 @@ public class AuthService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final AdminRepository adminRepository;
+    private final ModeratorRepository moderatorRepository;
 
     public String saveUser(AuthRequest request) {
 
@@ -86,4 +85,47 @@ public class AuthService {
 
         return user.getId();
     }
+
+
+    @Transactional
+    public String registerAdmin(AdminModeratorRequest request) {
+        //mapping
+        UserCredential userCredential= modelMapper.map(request,UserCredential.class);
+        Admin admin= modelMapper.map(request,Admin.class);
+        //encrypting password
+        userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
+        //set role
+        userCredential.setRole(RoleList.ROLE_ADMIN);
+
+
+        //saving to db
+        var user=repository.save(userCredential);
+        admin.setUser(user);
+        var adminObj=adminRepository.save(admin);
+
+
+        return user.getId();
+    }
+
+    @Transactional
+    public String registerModerator(AdminModeratorRequest request) {
+        //mapping
+        UserCredential userCredential= modelMapper.map(request,UserCredential.class);
+        Moderator moderator= modelMapper.map(request, Moderator.class);
+        //encrypting password
+        userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
+        //set role
+        userCredential.setRole(RoleList.ROLE_MODERATOR);
+
+
+        //saving to db
+        var user=repository.save(userCredential);
+        moderator.setUser(user);
+        var moderatorObj=moderatorRepository.save(moderator);
+
+
+        return user.getId();
+    }
+
+
 }
