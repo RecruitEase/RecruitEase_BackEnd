@@ -250,18 +250,22 @@ public class AuthService {
             SessionObjectResponse res=modelMapper.map(user,SessionObjectResponse.class);
             //get  obj relevant to role
             if(user.getRole().equals(RoleList.ROLE_CANDIDATE)){
+                res.setRole("candidate");
                 Candidate candidate=candidateRepository.findByUserId(userId).get();
                 CandidateRoleDetail roleDetail=modelMapper.map(candidate,CandidateRoleDetail.class);
                 res.setRoleDetails(roleDetail);
             } else if (user.getRole().equals(RoleList.ROLE_RECRUITER)) {
+                res.setRole("recruiter");
                 Recruiter recruiter=recruiterRepository.findByUserId(userId).get();
                 RecruiterRoleDetail roleDetail=modelMapper.map(recruiter,RecruiterRoleDetail.class);
                 res.setRoleDetails(roleDetail);
             } else if (user.getRole().equals(RoleList.ROLE_ADMIN)) {
+                res.setRole("admin");
                 Admin admin=adminRepository.findByUserId(userId).get();
                 AdminRoleDetail roleDetail=modelMapper.map(admin,AdminRoleDetail.class);
                 res.setRoleDetails(roleDetail);
             }else{
+                res.setRole("moderator");
                 Moderator moderator=moderatorRepository.findByUserId(userId).get();
                 ModeratorRoleDetail roleDetail=modelMapper.map(moderator,ModeratorRoleDetail.class);
                 res.setRoleDetails(roleDetail);
