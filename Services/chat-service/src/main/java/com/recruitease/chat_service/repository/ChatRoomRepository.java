@@ -1,7 +1,6 @@
 package com.recruitease.chat_service.repository;
 
 import com.recruitease.chat_service.entity.ChatRoom;
-import jdk.incubator.vector.ByteVector;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

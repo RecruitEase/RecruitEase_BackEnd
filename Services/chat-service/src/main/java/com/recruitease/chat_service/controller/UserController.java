@@ -20,7 +20,7 @@ public class UserController {
 
     //to save a user
     @MessageMapping("/user.addUser")
-    @SendTo("/user/topic")//queue for users status
+    @SendTo("/user/public")//queue for users status
     public User addUser(
             @Payload User user
     ){
@@ -30,7 +30,7 @@ public class UserController {
 
     //to disconnect user
     @MessageMapping("/user.disconnectUser")
-    @SendTo("/user/topic")//queue for users status
+    @SendTo("/user/public")//queue for users status
     public User disconnect(
             @Payload User user
     ){
