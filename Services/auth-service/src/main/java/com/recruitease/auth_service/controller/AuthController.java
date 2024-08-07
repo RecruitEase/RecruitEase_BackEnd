@@ -130,6 +130,11 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+            return ResponseEntity.status(HttpStatus.OK).body("nice");
+    }
+
     //TODO: refresh token
 //        @GetMapping("/refresh")
 //        public ResponseEntity<String> validateToken(@RequestHeader
