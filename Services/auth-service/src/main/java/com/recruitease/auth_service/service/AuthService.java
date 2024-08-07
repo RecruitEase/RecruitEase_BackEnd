@@ -297,7 +297,7 @@ public class AuthService {
                 roleDetails.put("firstName",admin.getFirstName());
                 roleDetails.put("lastName",admin.getLastName());
                 roleDetails.put("profilePic",admin.getProfilePic());
-                roleDetails.put("recruiterId",admin.getAdminId());
+                roleDetails.put("adminId",admin.getAdminId());
 
             }else{
                 res.setRole("moderator");
@@ -309,7 +309,7 @@ public class AuthService {
                 roleDetails.put("firstName",moderator.getFirstName());
                 roleDetails.put("lastName",moderator.getLastName());
                 roleDetails.put("profilePic",moderator.getProfilePic());
-                roleDetails.put("recruiterId",moderator.getModeratorId());
+                roleDetails.put("moderatorId",moderator.getModeratorId());
             }
 
             //claims to add to jwt without sensitive data

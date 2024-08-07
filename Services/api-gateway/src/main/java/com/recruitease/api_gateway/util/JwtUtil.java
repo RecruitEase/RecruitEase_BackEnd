@@ -1,5 +1,7 @@
 package com.recruitease.api_gateway.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -15,7 +17,7 @@ public class JwtUtil {
 
 
     private static final String SECRET="2332e8b1cd2d5486b9454bdf3548b3dc2f4f917f07c5fe3f8abf9915221fecf2";
-
+    private static final ObjectMapper objectMapper=new ObjectMapper();;
 
     public Boolean validateToken(String token){
         try {
@@ -40,5 +42,22 @@ public class JwtUtil {
         byte[] secretBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(secretBytes);
 
+    }
+
+    public String extractUserId(String token){
+        return extractClaim(token,Claims::getSubject);
+    }
+
+    public <T> T extractClaim(String token, java.util.function.Function<Claims, T> claimsResolver){
+        final Claims claims=extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload();
+    }
+
+    public String extractUser(String authHeaders) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(extractAllClaims(authHeaders));
     }
 }

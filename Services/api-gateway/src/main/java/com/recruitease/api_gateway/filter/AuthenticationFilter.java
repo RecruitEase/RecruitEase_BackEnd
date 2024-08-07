@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
@@ -54,6 +55,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return (((exchange, chain) -> {
+
+            ServerHttpRequest request = null;
+
             // check for the  correct headers
             if(routeValidator.isSecured.test(exchange.getRequest())){
                 // check for the correct headers
@@ -96,9 +100,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 //                        throw new RuntimeException("Invalid Token");
                     }
 
-//                    exchange.getRequest()
-//                            .mutate()
-//                            .header("loggedInUser",)
+                    request= exchange.getRequest()
+                            .mutate()
+                            .header("loggedInUser", jwtUtil.extractUser(authHeaders))
+                            .build();
 
                 }catch (Exception e){
                     System.out.println("Error while validating token");
@@ -111,8 +116,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
             }
 
-            System.out.println("csmhbcsdcndskcs");
-            return chain.filter(exchange);
+            return chain.filter(exchange.mutate().request(request).build());
 
         }));
     }
