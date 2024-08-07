@@ -23,6 +23,7 @@ import org.springframework.web.ErrorResponseException;
 
 import javax.naming.AuthenticationException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -48,8 +49,8 @@ public class AuthService {
         return user.getId();
     }
 
-    public String generateToken(String userId){
-        return jwtService.generateToken(userId);
+    public String generateToken(String userId,Map<String, Object> claims){
+        return jwtService.generateToken(userId,claims);
     }
 
     public Boolean validateToken(String token){
@@ -248,29 +249,80 @@ public class AuthService {
             UserCredential user=repository.findById(userId).get();
 
             SessionObjectResponse res=modelMapper.map(user,SessionObjectResponse.class);
+
+
+
+            //roleDetails object to add to jwt without sensitive data
+            Map<String, Object> roleDetails=new HashMap<>();
+
+
+
             //get  obj relevant to role
             if(user.getRole().equals(RoleList.ROLE_CANDIDATE)){
                 res.setRole("candidate");
                 Candidate candidate=candidateRepository.findByUserId(userId).get();
                 CandidateRoleDetail roleDetail=modelMapper.map(candidate,CandidateRoleDetail.class);
                 res.setRoleDetails(roleDetail);
+
+                //details for jwt claims
+                roleDetails.put("firstName",candidate.getFirstName());
+                roleDetails.put("lastName",candidate.getLastName());
+                roleDetails.put("profilePic",candidate.getProfilePic());
+                roleDetails.put("profileStatus",candidate.getProfileStatus());
+                roleDetails.put("candidateId",candidate.getCandidateId());
+
             } else if (user.getRole().equals(RoleList.ROLE_RECRUITER)) {
                 res.setRole("recruiter");
                 Recruiter recruiter=recruiterRepository.findByUserId(userId).get();
                 RecruiterRoleDetail roleDetail=modelMapper.map(recruiter,RecruiterRoleDetail.class);
                 res.setRoleDetails(roleDetail);
+
+                //details for jwt claims
+                roleDetails.put("firstName",recruiter.getFirstName());
+                roleDetails.put("lastName",recruiter.getLastName());
+                roleDetails.put("profilePic",recruiter.getProfilePic());
+                roleDetails.put("recruiterId",recruiter.getRecruiterId());
+                roleDetails.put("companyName",recruiter.getCompanyName());
+                roleDetails.put("businessRegistrationNumber",recruiter.getBusinessRegistrationNumber());
+                roleDetails.put("website",recruiter.getWebsite());
+
             } else if (user.getRole().equals(RoleList.ROLE_ADMIN)) {
                 res.setRole("admin");
                 Admin admin=adminRepository.findByUserId(userId).get();
                 AdminRoleDetail roleDetail=modelMapper.map(admin,AdminRoleDetail.class);
                 res.setRoleDetails(roleDetail);
+
+
+                //details for jwt claims
+                roleDetails.put("firstName",admin.getFirstName());
+                roleDetails.put("lastName",admin.getLastName());
+                roleDetails.put("profilePic",admin.getProfilePic());
+                roleDetails.put("recruiterId",admin.getAdminId());
+
             }else{
                 res.setRole("moderator");
                 Moderator moderator=moderatorRepository.findByUserId(userId).get();
                 ModeratorRoleDetail roleDetail=modelMapper.map(moderator,ModeratorRoleDetail.class);
                 res.setRoleDetails(roleDetail);
+
+                //details for jwt claims
+                roleDetails.put("firstName",moderator.getFirstName());
+                roleDetails.put("lastName",moderator.getLastName());
+                roleDetails.put("profilePic",moderator.getProfilePic());
+                roleDetails.put("recruiterId",moderator.getModeratorId());
             }
-            res.setAccessToken(this.generateToken(userId));
+
+            //claims to add to jwt without sensitive data
+            Map<String, Object> claims=new HashMap<>();
+            claims.put("id",userId);
+            claims.put("email",res.getEmail());
+            claims.put("role",res.getRole());
+            claims.put("createdAt",res.getCreatedAt());
+            claims.put("isActive",res.getIsActive());
+            claims.put("roleDetails",roleDetails);
+
+
+            res.setAccessToken(this.generateToken(userId,claims));
             return res;
         }catch (Exception e){
             throw new AuthenticationException("Error while authenticating!");

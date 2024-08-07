@@ -96,6 +96,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 //                        throw new RuntimeException("Invalid Token");
                     }
 
+//                    exchange.getRequest()
+//                            .mutate()
+//                            .header("loggedInUser",)
+
                 }catch (Exception e){
                     System.out.println("Error while validating token");
                     try {
