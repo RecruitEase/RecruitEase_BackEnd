@@ -1,4 +1,4 @@
-package com.recruitease.application_service.DTO.LoggedUser;
+package com.recruitease.application_service.config;
 
 public record LoggedUserHeader(
         String id,
