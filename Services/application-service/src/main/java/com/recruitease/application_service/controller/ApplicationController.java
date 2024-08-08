@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,31 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
 
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public  String adminDetails(){
+        return "admin";
+    }
+
+    @GetMapping("/moderator")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    public  String moderatorDetails(){
+        return "moderator";
+    }
+
+    @GetMapping("/candidate")
+    @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+    public  String candidateDetails(){
+        return "candidate";
+    }
+
+    @GetMapping("/recruiter")
+    @PreAuthorize("hasRole('ROLE_RECRUITER')")
+    public  String recruiterDetails(){
+        return "recruiter";
+    }
+
+    //example of use=ing security context to get user details
     @GetMapping("/user")
     public String getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -28,7 +54,17 @@ public class ApplicationController {
 
         String userId = userDetails.getUsername();
         String roles = userDetails.getAuthorities().toString();
-        String additionalInfo = userDetails.getCreatedAt();
+
+        String additionalInfo;
+        if(userDetails.getRole().equals("candidate")){
+            additionalInfo= userDetails.getCandidateDetails().getCandidateId();
+        }else if(userDetails.getRole().equals("recruiter")) {
+            additionalInfo = userDetails.getRecruiterDetails().getRecruiterId();
+        }else if(userDetails.getRole().equals("admin")) {
+            additionalInfo = userDetails.getAdminDetails().getAdminId();
+        } else{
+            additionalInfo = userDetails.getModeratorDetails().getModeratorId();
+        }
 
         return "User ID: " + userId + ", Roles: " + roles + ", Additional Info: " + (additionalInfo != null ? additionalInfo : "N/A");
     }
