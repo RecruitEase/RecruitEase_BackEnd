@@ -22,6 +22,44 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
 
+    //create new application
+    @PostMapping("/create")
+    public ResponseEntity<ResponseDTO> createApplication(@RequestBody @Valid ApplicationRequest request){
+        ResponseDTO res= applicationService.createApplication(request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //get application for the given application id
+
+
+    //get applciations for a given candidate id
+
+    //get applications for a given job id
+
+
+
+    //update application for  given id or list of ids
+
+
+    //withdraw application
+
+
+
+
+
+
+
+
+    //authorization examples.............................................
+
+
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public  String adminDetails(){
@@ -52,6 +90,7 @@ public class ApplicationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
+
         String userId = userDetails.getUsername();
         String roles = userDetails.getAuthorities().toString();
 
@@ -68,34 +107,5 @@ public class ApplicationController {
 
         return "User ID: " + userId + ", Roles: " + roles + ", Additional Info: " + (additionalInfo != null ? additionalInfo : "N/A");
     }
-
-    //create new application
-    @PostMapping("/create")
-    public ResponseEntity<ResponseDTO> createApplication(@RequestBody @Valid ApplicationRequest request){
-        ResponseDTO res= applicationService.createApplication(request);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
-
-            return new ResponseEntity<>(res, HttpStatus.CREATED);
-
-        }else{//some error
-
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    //get application for the given application id
-
-
-    //get applciations for a given candidate id
-
-    //get applications for a given job id
-
-
-
-    //update application for  given id or list of ids
-
-
-    //withdraw application
-
 
 }
