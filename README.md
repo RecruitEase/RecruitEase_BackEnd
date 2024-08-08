@@ -2,7 +2,8 @@
 
 group-id: com.recruitease
 description: Authentication Service for RecruitEase
-
+Application-service:
+- port 8200
 
 Auth-service:
 - port 9898
