@@ -20,6 +20,8 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
 
     private final ModelMapper modelMapper;
+
+
     private final String id;
     private final String email;
     private final String role;
