@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, String> {
-
+    //to find whether theres a entry with given candidate id and job id
+    boolean existsByCandidateIdAndJobId(String candidateId, String jobId);
 }
