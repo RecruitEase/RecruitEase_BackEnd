@@ -1,6 +1,7 @@
 package com.recruitease.application_service.controller;
 
 import com.recruitease.application_service.DTO.ApplicationRequest;
+import com.recruitease.application_service.DTO.ApplicationUpdateRequestDTO;
 import com.recruitease.application_service.DTO.ResponseDTO;
 import com.recruitease.application_service.config.CustomUserDetails;
 import com.recruitease.application_service.service.ApplicationService;
@@ -62,18 +63,95 @@ public class ApplicationController {
     }
 
     //get applciations for a given candidate id
+    @GetMapping("/candidate/{candidateId}")
+    public ResponseEntity<ResponseDTO> getApplicationsPerCandidate(@PathVariable String candidateId){
+        ResponseDTO res= applicationService.getApplicationPerCandidate(candidateId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //get applications for a given job id
+    @GetMapping("/job/{jobId}")
+    public ResponseEntity<ResponseDTO> getApplicationsPerJob(@PathVariable String jobId){
+        ResponseDTO res= applicationService.getApplicationPerJob(jobId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //update application for  given applicationid
+    @PutMapping("/update/{applicationId}")
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
+    public ResponseEntity<ResponseDTO> updateApplication(@PathVariable String applicationId,@RequestBody ApplicationUpdateRequestDTO request){
+        ResponseDTO res= applicationService.updateApplicationStatus(applicationId,request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 
-    //update application for  given id or list of ids
+    //update application for  list of ids
+    @PutMapping("/updateBatch")
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
+    public ResponseEntity<ResponseDTO> updateApplicationsBatch(@RequestBody ApplicationUpdateRequestDTO request){
+        ResponseDTO res= applicationService.updateApplicationStatusBatch(request);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     //withdraw application
+    @PutMapping("/withdraw/{applicationId}")
+    @PreAuthorize("hasAnyRole('ROLE_CANDIDATE')")
+    public ResponseEntity<ResponseDTO> withdrawApplication(@PathVariable String applicationId){
+        //get canidate id of logged user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        String candidateId=userDetails.getCandidateDetails().getCandidateId();
+
+
+        ResponseDTO res= applicationService.withdrawApplication(candidateId,applicationId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 
+
+
+
+//    example controller functions for uploads, user management context etc......................................................................................
 
     //file upload download
     //piublic url is https://<bucket-name>.s3.amazonaws.com/<folder-path>/<image-name>
