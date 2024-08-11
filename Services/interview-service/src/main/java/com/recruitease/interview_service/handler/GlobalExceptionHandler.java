@@ -1,7 +1,7 @@
-package com.recruitease.application_service.handler;
+package com.recruitease.interview_service.handler;
 
-import com.recruitease.application_service.DTO.ResponseDTO;
-import com.recruitease.application_service.util.CodeList;
+import com.recruitease.interview_service.DTO.ResponseDTO;
+import com.recruitease.interview_service.util.CodeList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
