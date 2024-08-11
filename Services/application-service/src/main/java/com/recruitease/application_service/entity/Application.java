@@ -25,7 +25,7 @@ public class Application {
     private String candidateId;
     private String jobId;
     private String cvId;
-    private String status= ApplicationStatusList.Under_Review;
+    private String status;
     private String coverLetter;
     private Integer score;
     private String answers;
