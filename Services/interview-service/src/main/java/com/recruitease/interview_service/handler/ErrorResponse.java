@@ -1,4 +1,4 @@
-package com.recruitease.application_service.handler;
+package com.recruitease.interview_service.handler;
 
 import java.util.Map;
 

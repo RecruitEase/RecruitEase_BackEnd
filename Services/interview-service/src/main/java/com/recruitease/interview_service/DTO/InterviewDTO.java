@@ -11,11 +11,18 @@ import lombok.NoArgsConstructor;
 @Data
 public class InterviewDTO {
 
-    private Integer interviewId;
-
+    private String id;
     @NotNull(message = "Application ID is required")
     @NotEmpty(message = "Application ID cannot be empty")
-    private Integer applicationId;
+    private String applicationId;
+
+    @NotNull(message = "Recruiter ID is required")
+    @NotEmpty(message = "Recruiter ID cannot be empty")
+    private String recruiterID;
+
+    @NotNull(message = "Candidate ID is required")
+    @NotEmpty(message = "Candidate ID cannot be empty")
+    private String candidateID;
 
     @NotNull(message = "Type is required")
     @NotEmpty(message = "Type cannot be empty")
@@ -28,6 +35,7 @@ public class InterviewDTO {
     @NotNull(message = "Time is required")
     @NotEmpty(message = "Time cannot be empty")
     private String time;
+
     private String location;
     private String link;
     private String dressCode;
@@ -40,4 +48,5 @@ public class InterviewDTO {
     @NotNull(message = "Cutoff time is required")
     @NotEmpty(message = "Cutoff time cannot be empty")
     private String cutoffTime;
+
 }
