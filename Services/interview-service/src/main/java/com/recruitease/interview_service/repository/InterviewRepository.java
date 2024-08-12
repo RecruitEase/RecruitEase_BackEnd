@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface InterviewRepository extends MongoRepository<Interview, Integer> {
     List<Interview> findByRecruiterID(String recruiterId);
+    List<Interview> findByCandidateID(String recruiterId);
 //    InterviewDTO findByInterviewID(String interviewID);
         Optional<Interview> findById(String id);
 }

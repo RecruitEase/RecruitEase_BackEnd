@@ -4,49 +4,45 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-public class InterviewDTO {
-
-    private String id;
+public record InterviewDTO (
+        @NotNull(message = "Application ID is required")
+        @NotEmpty(message = "Application ID cannot be empty")
+     String id,
     @NotNull(message = "Application ID is required")
     @NotEmpty(message = "Application ID cannot be empty")
-    private String applicationId;
+     String applicationId,
 
-    @NotNull(message = "Recruiter ID is required")
-    @NotEmpty(message = "Recruiter ID cannot be empty")
-    private String recruiterID;
 
     @NotNull(message = "Candidate ID is required")
     @NotEmpty(message = "Candidate ID cannot be empty")
-    private String candidateID;
+     String candidateID,
 
     @NotNull(message = "Type is required")
     @NotEmpty(message = "Type cannot be empty")
-    private String type;
+     String type,
 
     @NotNull(message = "Date is required")
     @NotEmpty(message = "Date cannot be empty")
-    private String date;
+     String date,
 
     @NotNull(message = "Time is required")
     @NotEmpty(message = "Time cannot be empty")
-    private String time;
+     String time,
 
-    private String location;
-    private String link;
-    private String dressCode;
-    private String description;
+     String location,
+     String link,
+     String dressCode,
+     String description,
 
     @NotNull(message = "Cutoff date is required")
     @NotEmpty(message = "Cutoff date cannot be empty")
-    private String cutoffDate;
+     String cutoffDate,
 
     @NotNull(message = "Cutoff time is required")
     @NotEmpty(message = "Cutoff time cannot be empty")
-    private String cutoffTime;
+     String cutoffTime
 
-}
+){}

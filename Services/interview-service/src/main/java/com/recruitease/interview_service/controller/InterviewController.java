@@ -9,9 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.server.MethodNotAllowedException;
 
 @RestController
 @RequestMapping("/api/v1/interviews")
@@ -45,49 +46,55 @@ public class InterviewController {
         }
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_RECRUITER') or hasRole('ROLE_CANDIDATE')")
-    public ResponseEntity getAllInterviewByID(@PathVariable String id) {
-        try {
-            ResponseDTO responseDTO = interviewService.getInterviewByID(id);
-
-            if(responseDTO.getCode().equals(CodeList.RSP_NOT_AUTHORISED)){
-                return new ResponseEntity(responseDTO, HttpStatus.UNAUTHORIZED);
-
-            }else if(responseDTO.getCode().equals(CodeList.RSP_NO_DATA_FOUND)){
-                return new ResponseEntity(responseDTO, HttpStatus.NOT_FOUND);
-            }else{
-                return new ResponseEntity(responseDTO, HttpStatus.OK);
-            }
-
-        } catch (Exception e) {
-            responseDTO.setCode(CodeList.RSP_ERROR);
-            responseDTO.setMessage("Error while retrieving interviews");
-            responseDTO.setContent(null);
-            responseDTO.setErrors(e.getMessage());
-            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/{id}")
+//    @PreAuthorize("hasRole('ROLE_RECRUITER') or hasRole('ROLE_CANDIDATE')")
+//    public ResponseEntity getAllInterviewByID(@PathVariable String id) {
+//        try {
+//            ResponseDTO responseDTO = interviewService.getInterviewByID(id);
+//
+//            if(responseDTO.getCode().equals(CodeList.RSP_NOT_AUTHORISED)){
+//                return new ResponseEntity(responseDTO, HttpStatus.UNAUTHORIZED);
+//
+//            }else if(responseDTO.getCode().equals(CodeList.RSP_NO_DATA_FOUND)){
+//                return new ResponseEntity(responseDTO, HttpStatus.NOT_FOUND);
+//            }else{
+//                return new ResponseEntity(responseDTO, HttpStatus.OK);
+//            }
+//
+//        } catch (Exception e) {
+//            responseDTO.setCode(CodeList.RSP_ERROR);
+//            responseDTO.setMessage("Error while retrieving interviews");
+//            responseDTO.setContent(null);
+//            responseDTO.setErrors(e.getMessage());
+//            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_RECRUITER')")
     public ResponseEntity<ResponseDTO> scheduleInterview(@RequestBody @Valid InterviewDTO interviewDTO){
-        try {
-            ResponseDTO responseDTO = interviewService.createInterview(interviewDTO);
-
-            if(responseDTO.getCode().equals(CodeList.RSP_SUCCESS)){
-                return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
-            }
-
-        } catch(Exception e) {
-            responseDTO.setCode(CodeList.RSP_ERROR);
-            responseDTO.setMessage("Error while creating interview");
-            responseDTO.setContent(null);
-            responseDTO.setErrors(e.getMessage());
-            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        throw new AuthenticationException("Authentication failed") {};
+//        try {
+//            System.out.println(interviewDTO);
+//            ResponseDTO responseDTO = interviewService.createInterview(interviewDTO);
+//
+//            if(responseDTO.getCode().equals(CodeList.RSP_SUCCESS)){
+//                return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+//            } else {
+//                return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+//            }
+//
+//        } catch(Exception e) {
+//            responseDTO.setCode(CodeList.RSP_ERROR);
+//            responseDTO.setMessage("Error while creating interview");
+//            responseDTO.setContent(null);
+//            responseDTO.setErrors(e.getMessage());
+//            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//                    responseDTO.setCode(CodeList.RSP_ERROR);
+//            responseDTO.setMessage("cdewjdnwekd");
+//            responseDTO.setContent(null);
+//            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 }

@@ -1,24 +1,14 @@
-package com.recruitease.interview_service.model;
+package com.recruitease.interview_service.DTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(value = "interviews")
-@Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Interview {
-
-    @Id
-    private String id;
-    private String applicationId;
-    private String recruiterID;
+@Data
+public class InterviewForRecruiterDTO {
+    private Integer applicationId;
     private String candidateID;
     private String type;
     private String date;
@@ -29,5 +19,4 @@ public class Interview {
     private String description;
     private String cutoffDate;
     private String cutoffTime;
-
 }

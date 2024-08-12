@@ -20,11 +20,7 @@ public class SecurityConfig  {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.addFilterBefore(userContextFilter(), UsernamePasswordAuthenticationFilter.class)
-<<<<<<< HEAD
-                .csrf(AbstractHttpConfigurer::disable)//todo :?
-=======
                 .csrf(AbstractHttpConfigurer::disable)
->>>>>>> 99412baf255bfcc754c3b78777f6abc99e37a474
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated());
         return http.build();
