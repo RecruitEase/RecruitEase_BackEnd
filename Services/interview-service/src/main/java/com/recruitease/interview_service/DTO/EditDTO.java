@@ -9,17 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class InterviewDTO{
-    private String id;
-
-    @NotNull(message = "Application Id is required")
-    @NotEmpty(message = "Application Id cannot be empty")
-    private String applicationId;
-
-
-    @NotNull(message = "Candidate Id is required")
-    @NotEmpty(message = "Candidate Id cannot be empty")
-    private String candidateId;
+public class EditDTO {
 
     @NotNull(message = "Type is required")
     @NotEmpty(message = "Type cannot be empty")

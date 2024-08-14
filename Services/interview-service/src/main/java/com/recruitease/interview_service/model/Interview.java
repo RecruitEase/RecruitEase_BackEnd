@@ -18,8 +18,8 @@ public class Interview {
     @Id
     private String id;
     private String applicationId;
-    private String recruiterID;
-    private String candidateID;
+    private String recruiterId;
+    private String candidateId;
     private String type;
     private String date;
     private String time;

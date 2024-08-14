@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InterviewForCandidateDTO {
-    private Integer applicationId;
+    private String applicationId;
     private String type;
     private String date;
     private String time;
@@ -18,4 +18,5 @@ public class InterviewForCandidateDTO {
     private String description;
     private String cutoffDate;
     private String cutoffTime;
+    private String remainingDays;
 }
