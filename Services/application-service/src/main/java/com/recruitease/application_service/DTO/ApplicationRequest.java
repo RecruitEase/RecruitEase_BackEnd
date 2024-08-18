@@ -14,6 +14,9 @@ public record ApplicationRequest(
         @NotNull(message = "CvId is required")
         @NotEmpty(message = "CvId cannot be empty")
         String cvId,
+        @NotNull(message = "RecruiterId is required")
+        @NotEmpty(message = "RecruiterId cannot be empty")
+        String recruiterId,
         String status,
         @NotNull(message = "CoverLetter is required")
         @NotEmpty(message = "CoverLetter cannot be empty")

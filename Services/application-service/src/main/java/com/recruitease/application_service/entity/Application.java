@@ -24,6 +24,7 @@ public class Application {
     private String applicationId;
     private String candidateId;
     private String jobId;
+    private String recruiterId;
     private String cvId;
     private String status;
     private String coverLetter;

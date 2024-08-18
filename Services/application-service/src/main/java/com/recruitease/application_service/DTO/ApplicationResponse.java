@@ -21,6 +21,7 @@ public class ApplicationResponse {
     private String candidateId;
     private String jobId;
     private String cvId;
+    private String recruiterId;
     private String status;
     private String coverLetter;
     private Integer score;
