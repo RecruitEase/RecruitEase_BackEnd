@@ -122,48 +122,48 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test(@RequestHeader("loggedInUser") String loggedInUser) throws JsonProcessingException {
-
-        //example of mapping user object in header to a DTO
-        ObjectMapper objectMapper = new ObjectMapper();
-        LoggedUserHeader user= objectMapper.readValue(loggedInUser, LoggedUserHeader.class);
-        if(user.role().equals("candidate")){
-            LoggedCandidate candidate=modelMapper.map(user.roleDetails(), LoggedCandidate.class);
-            candidate.setId(user.id());
-            candidate.setEmail(user.email());
-            candidate.setRole(user.role());
-            candidate.setIsActive(user.isActive());
-            candidate.setCreatedAt(user.createdAt());
-            return ResponseEntity.status(HttpStatus.OK).body(candidate.toString());
-        } else if (user.role().equals("recruiter")) {
-            LoggedRecruiter recruiter=modelMapper.map(user.roleDetails(), LoggedRecruiter.class);
-            recruiter.setId(user.id());
-            recruiter.setEmail(user.email());
-            recruiter.setRole(user.role());
-            recruiter.setIsActive(user.isActive());
-            recruiter.setCreatedAt(user.createdAt());
-            return ResponseEntity.status(HttpStatus.OK).body(recruiter.toString());
-        }else if (user.role().equals("admin")) {
-            LoggedAdmin admin=modelMapper.map(user.roleDetails(), LoggedAdmin.class);
-            admin.setId(user.id());
-            admin.setEmail(user.email());
-            admin.setRole(user.role());
-            admin.setIsActive(user.isActive());
-            admin.setCreatedAt(user.createdAt());
-            return ResponseEntity.status(HttpStatus.OK).body(admin.toString());
-        }else if (user.role().equals("moderator")){
-            LoggedModerator moderator=modelMapper.map(user.roleDetails(), LoggedModerator.class);
-            moderator.setId(user.id());
-            moderator.setEmail(user.email());
-            moderator.setRole(user.role());
-            moderator.setIsActive(user.isActive());
-            moderator.setCreatedAt(user.createdAt());
-            return ResponseEntity.status(HttpStatus.OK).body(moderator.toString());
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body("failed");
-    }
+//    @GetMapping("/test")
+//    public ResponseEntity<String> test(@RequestHeader("loggedInUser") String loggedInUser) throws JsonProcessingException {
+//
+//        //example of mapping user object in header to a DTO
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        LoggedUserHeader user= objectMapper.readValue(loggedInUser, LoggedUserHeader.class);
+//        if(user.role().equals("candidate")){
+//            LoggedCandidate candidate=modelMapper.map(user.roleDetails(), LoggedCandidate.class);
+//            candidate.setId(user.id());
+//            candidate.setEmail(user.email());
+//            candidate.setRole(user.role());
+//            candidate.setIsActive(user.isActive());
+//            candidate.setCreatedAt(user.createdAt());
+//            return ResponseEntity.status(HttpStatus.OK).body(candidate.toString());
+//        } else if (user.role().equals("recruiter")) {
+//            LoggedRecruiter recruiter=modelMapper.map(user.roleDetails(), LoggedRecruiter.class);
+//            recruiter.setId(user.id());
+//            recruiter.setEmail(user.email());
+//            recruiter.setRole(user.role());
+//            recruiter.setIsActive(user.isActive());
+//            recruiter.setCreatedAt(user.createdAt());
+//            return ResponseEntity.status(HttpStatus.OK).body(recruiter.toString());
+//        }else if (user.role().equals("admin")) {
+//            LoggedAdmin admin=modelMapper.map(user.roleDetails(), LoggedAdmin.class);
+//            admin.setId(user.id());
+//            admin.setEmail(user.email());
+//            admin.setRole(user.role());
+//            admin.setIsActive(user.isActive());
+//            admin.setCreatedAt(user.createdAt());
+//            return ResponseEntity.status(HttpStatus.OK).body(admin.toString());
+//        }else if (user.role().equals("moderator")){
+//            LoggedModerator moderator=modelMapper.map(user.roleDetails(), LoggedModerator.class);
+//            moderator.setId(user.id());
+//            moderator.setEmail(user.email());
+//            moderator.setRole(user.role());
+//            moderator.setIsActive(user.isActive());
+//            moderator.setCreatedAt(user.createdAt());
+//            return ResponseEntity.status(HttpStatus.OK).body(moderator.toString());
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body("failed");
+//    }
 
     //TODO: refresh token
 //        @GetMapping("/refresh")

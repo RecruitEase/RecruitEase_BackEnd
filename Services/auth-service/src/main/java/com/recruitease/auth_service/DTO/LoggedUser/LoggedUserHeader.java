@@ -5,7 +5,7 @@ public record LoggedUserHeader(
         String email,
         String role,
         Object roleDetails,
-        String isActive,
+        Boolean isActive,
         String createdAt,
         String sub,
         String iat,

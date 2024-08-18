@@ -13,7 +13,7 @@ public class LoggedRecruiter {
     private String email;
     private String role;
     private String isActive;
-    private String createdAt;
+    private Boolean createdAt;
     private String firstName;
     private String lastName;
     private String profilePic;
