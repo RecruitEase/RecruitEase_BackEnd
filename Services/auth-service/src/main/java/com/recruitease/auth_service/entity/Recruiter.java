@@ -26,6 +26,8 @@ public class Recruiter {
     private String firstName;//contact person name
     private String lastName;
     private String address;
+    private String city;
+    private String gender;
     @Column(unique = true)
     private String mobileNumber;
     private String profilePic;

@@ -19,6 +19,9 @@ public class LoggedRecruiter {
     private String profilePic;
     private String recruiterId;
     private String companyName;
+    private String city;
+    private String gender;
+    private String address;
     private String businessRegistrationNumber;
     private String website;
 }

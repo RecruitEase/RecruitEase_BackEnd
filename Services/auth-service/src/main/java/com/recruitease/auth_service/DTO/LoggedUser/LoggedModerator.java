@@ -16,6 +16,8 @@ public class LoggedModerator {
     private String createdAt;
     private String firstName;
     private String lastName;
+    private String city;
+    private String gender;
     private String profilePic;
     private String moderatorId;
 }

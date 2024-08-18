@@ -13,6 +13,8 @@ public class RecruiterDetails {
     private String lastName;
     private String profilePic;
     private String recruiterId;
+    private String city;
+    private String gender;
     private String companyName;
     private String businessRegistrationNumber;
     private String website;

@@ -22,6 +22,8 @@ public class Moderator {
     private String firstName;
     private String lastName;
     private String address;
+    private String city;
+    private String gender;
     @Column(unique = true)
     private String mobileNumber;
     private String profilePic;

@@ -11,6 +11,8 @@ import lombok.*;
 public class AdminDetails {
     private String firstName;
     private String lastName;
+    private String city;
+    private String gender;
     private String profilePic;
     private String adminId;
 }
