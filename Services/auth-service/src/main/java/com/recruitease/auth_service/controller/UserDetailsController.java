@@ -31,7 +31,7 @@ public class UserDetailsController {
 
 
     @PostMapping("/detail-list")
-    public ResponseEntity<ResponseDTO> registerCandidate(@RequestBody UserDetailsRequestDTO request) {
+    public ResponseEntity<ResponseDTO> userDetailList(@RequestBody UserDetailsRequestDTO request) {
         ResponseDTO res= userService.getUserDetailsLists(request);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
@@ -45,9 +45,51 @@ public class UserDetailsController {
     }
 
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<ResponseDTO> registerCandidate(@PathVariable  String id) {
-        ResponseDTO res= userService.getUserDetail(id);
+    @GetMapping("/candidate/{candidateId}")
+    public ResponseEntity<ResponseDTO> candidateDetails(@PathVariable  String candidateId) {
+        ResponseDTO res= userService.getCandidateDetails(candidateId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/recruiter/{recruiterId}")
+    public ResponseEntity<ResponseDTO> recruiterDetails(@PathVariable  String recruiterId) {
+        ResponseDTO res= userService.getRecruiterDetails(recruiterId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/moderator/{moderatorId}")
+    public ResponseEntity<ResponseDTO> moderatorDetails(@PathVariable  String moderatorId) {
+        ResponseDTO res= userService.getModeratorDetails(moderatorId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.CREATED);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/admin/{adminId}")
+    public ResponseEntity<ResponseDTO> adminDetails(@PathVariable  String adminId) {
+        ResponseDTO res= userService.getAdminDetails(adminId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
             return new ResponseEntity<>(res,HttpStatus.CREATED);

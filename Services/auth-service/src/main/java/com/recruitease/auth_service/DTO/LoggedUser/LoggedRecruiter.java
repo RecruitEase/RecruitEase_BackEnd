@@ -12,8 +12,8 @@ public class LoggedRecruiter {
     private String id;
     private String email;
     private String role;
-    private String isActive;
-    private Boolean createdAt;
+    private Boolean isActive;
+    private String createdAt;
     private String firstName;
     private String lastName;
     private String profilePic;
