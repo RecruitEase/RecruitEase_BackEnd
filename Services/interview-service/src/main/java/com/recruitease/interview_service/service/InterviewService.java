@@ -139,6 +139,7 @@ public class InterviewService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
         Interview interview=modelMapper.map(interviewDTO, Interview.class);
         interview.setRecruiterId(userDetails.getRecruiterDetails().getRecruiterId());
         Interview savedInterview = interviewRepository.save(interview);
