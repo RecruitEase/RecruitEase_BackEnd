@@ -268,6 +268,8 @@ public class AuthService {
                 roleDetails.put("firstName",candidate.getFirstName());
                 roleDetails.put("lastName",candidate.getLastName());
                 roleDetails.put("profilePic",candidate.getProfilePic());
+                roleDetails.put("gender",candidate.getGender());
+                roleDetails.put("city",candidate.getCity());
                 roleDetails.put("profileStatus",candidate.getProfileStatus());
                 roleDetails.put("candidateId",candidate.getCandidateId());
 
@@ -281,6 +283,8 @@ public class AuthService {
                 roleDetails.put("firstName",recruiter.getFirstName());
                 roleDetails.put("lastName",recruiter.getLastName());
                 roleDetails.put("profilePic",recruiter.getProfilePic());
+                roleDetails.put("gender",recruiter.getGender());
+                roleDetails.put("city",recruiter.getCity());
                 roleDetails.put("recruiterId",recruiter.getRecruiterId());
                 roleDetails.put("companyName",recruiter.getCompanyName());
                 roleDetails.put("businessRegistrationNumber",recruiter.getBusinessRegistrationNumber());
@@ -297,6 +301,8 @@ public class AuthService {
                 roleDetails.put("firstName",admin.getFirstName());
                 roleDetails.put("lastName",admin.getLastName());
                 roleDetails.put("profilePic",admin.getProfilePic());
+                roleDetails.put("gender",admin.getGender());
+                roleDetails.put("city",admin.getCity());
                 roleDetails.put("adminId",admin.getAdminId());
 
             }else{
@@ -309,6 +315,8 @@ public class AuthService {
                 roleDetails.put("firstName",moderator.getFirstName());
                 roleDetails.put("lastName",moderator.getLastName());
                 roleDetails.put("profilePic",moderator.getProfilePic());
+                roleDetails.put("gender",moderator.getGender());
+                roleDetails.put("city",moderator.getCity());
                 roleDetails.put("moderatorId",moderator.getModeratorId());
             }
 

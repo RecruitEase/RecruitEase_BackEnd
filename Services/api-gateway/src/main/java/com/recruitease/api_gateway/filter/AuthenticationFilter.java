@@ -56,6 +56,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public GatewayFilter apply(Config config) {
         return (((exchange, chain) -> {
 
+            // Get the original URL
+            String originalUrl = exchange.getRequest().getURI().toString();
+
             ServerHttpRequest request = null;
 
             // check for the  correct headers
@@ -116,6 +119,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
             }
 
+            System.out.println("Original URL: " + originalUrl);
             return chain.filter(exchange.mutate().request(request).build());
 
         }));

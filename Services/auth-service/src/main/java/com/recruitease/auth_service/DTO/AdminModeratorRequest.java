@@ -23,6 +23,12 @@ public record AdminModeratorRequest(
         @NotNull(message = "Address is required")
         @NotEmpty(message = "Address cannot be empty")
         String address,
+        @NotNull(message = "City is required")
+        @NotEmpty(message = "City cannot be empty")
+        String city,
+        @NotNull(message = "Gender is required")
+        @NotEmpty(message = "Gender cannot be empty")
+        String gender,
         @NotNull(message = "Mobile Number is required")
         @NotEmpty(message = "Mobile Number cannot be empty")
         String mobileNumber,
