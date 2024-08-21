@@ -97,11 +97,8 @@ public class ApplicationController {
     public ResponseEntity<ResponseDTO> updateApplication(@PathVariable String applicationId,@RequestBody ApplicationUpdateRequestDTO request){
         ResponseDTO res= applicationService.updateApplicationStatus(applicationId,request);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
-
             return new ResponseEntity<>(res, HttpStatus.OK);
-
         }else{//some error
-
             return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
         }
     }
