@@ -30,7 +30,7 @@ public class UserDetailsController {
 
 
 
-    @PostMapping("/detail-list")
+    @PostMapping({"/detail-list", "/recruiter-list","/admin-list","/moderator-list","/candidate-list"})
     public ResponseEntity<ResponseDTO> userDetailList(@RequestBody UserDetailsRequestDTO request) {
         ResponseDTO res= userService.getUserDetailsLists(request);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
@@ -43,6 +43,9 @@ public class UserDetailsController {
         }
 
     }
+
+
+
 
 
     @GetMapping("/candidate/{candidateId}")
