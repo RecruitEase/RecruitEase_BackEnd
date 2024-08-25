@@ -1,7 +1,15 @@
 package com.recruitease.joblisting.repository;
 
-import com.recruitease.joblisting.model.Job;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface JobRepository extends MongoRepository<Job, String> {
+import org.springframework.stereotype.Repository;
+import com.recruitease.joblisting.model.Job;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+@Repository
+public interface JobRepository extends JpaRepository<Job, String> {
+
+
+
+
 }
