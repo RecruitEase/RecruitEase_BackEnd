@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class EditDTO {
-
-    @NotNull(message = "Type is required")
     @NotEmpty(message = "Type cannot be empty")
     private String type;
 

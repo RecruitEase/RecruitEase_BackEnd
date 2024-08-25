@@ -94,14 +94,13 @@ public class InterviewController {
     @PutMapping("/{interviewID}")
     @PreAuthorize("hasRole('ROLE_RECRUITER')")
     public ResponseEntity<ResponseDTO> updateInterview(@RequestBody @Valid EditDTO editDTO,@PathVariable String interviewID){
-        System.out.println("01");
         try {
             ResponseDTO responseDTO = interviewService.editInterview(interviewID,editDTO);
 
             if(responseDTO.getCode().equals(CodeList.RSP_SUCCESS)){
-                return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+                return new ResponseEntity<>(responseDTO, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(responseDTO, HttpStatus.NOT_MODIFIED);
             }
 
         }catch (Exception e){
