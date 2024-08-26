@@ -20,14 +20,17 @@ public class JobService {
     public void createJob(JobRequest jobRequest) {
         Job job = Job.builder()
                 .title(jobRequest.getTitle())
+                .type(jobRequest.getType())
+                .location(jobRequest.getLocation())
+                .field(jobRequest.getField())
+                .experienceLevel(jobRequest.getExperienceLevel())
+                .educationalLevel(jobRequest.getEducationalLevel())
                 .description(jobRequest.getDescription())
+                .overview(jobRequest.getOverview())
                 .deadline(jobRequest.getDeadline())
                 .status(jobRequest.getStatus())
                 .recruiterId(jobRequest.getRecruiterId())
-                .location(jobRequest.getLocation())
-                .industry(jobRequest.getIndustry())
-                .type(jobRequest.getType())
-                .level(jobRequest.getLevel())
+                .imageUrl(jobRequest.getImageUrl())
                 .build();
 
         jobRepository.save(job);
@@ -43,17 +46,19 @@ public class JobService {
 
     private JobResponse mapToJobResponse(Job job) {
         return JobResponse.builder()
-                .id(job.getId())
-                .title(job.getTitle())
-                .description(job.getDescription())
-                .deadline(job.getDeadline())
-                .status(job.getStatus())
-                .recruiterId(job.getRecruiterId())
-                .location(job.getLocation())
-                .industry(job.getIndustry())
-                .type(job.getType())
-                .level(job.getLevel())
-                .build();
+                   .title(job.getTitle())
+                    .type(job.getType())
+                    .location(job.getLocation())
+                    .field(job.getField())
+                    .experienceLevel(job.getExperienceLevel())
+                    .educationalLevel(job.getEducationalLevel())
+                    .description(job.getDescription())
+                    .overview(job.getOverview())
+                    .deadline(job.getDeadline())
+                    .status(job.getStatus())
+                    .recruiterId(job.getRecruiterId())
+                    .imageUrl(job.getImageUrl())
+                    .build();
     }
 
 
