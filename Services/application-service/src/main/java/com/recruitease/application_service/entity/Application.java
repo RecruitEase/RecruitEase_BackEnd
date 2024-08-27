@@ -27,8 +27,10 @@ public class Application {
     private String recruiterId;
     private String cvId;
     private String status;
+    @Column(columnDefinition="TEXT")
     private String coverLetter;
     private Integer score;
+    @Column(columnDefinition="TEXT")
     private String answers;
     @CreatedDate
     @Column(updatable = false, nullable = false)
