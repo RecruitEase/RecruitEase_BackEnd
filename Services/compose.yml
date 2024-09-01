@@ -1,0 +1,81 @@
+services:
+  config-service:
+    image: recruitease/new-config-server:latest
+    networks:
+      - my-network
+
+  discovery-service:
+    image: recruitease/new-discovery:latest
+    depends_on:
+      - config-service
+    ports:
+      - "8761:8761"
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8888
+
+#  api-gateway-service:
+#    image: recruitease/new-api-gateway:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    ports:
+#      - "8222:8222"
+#    networks:
+#      - my-network
+#
+#  application-service:
+#    image: recruitease/new-application-service:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    networks:
+#      - my-network
+#
+#  auth-service:
+#    image: recruitease/new-auth-service:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    networks:
+#      - my-network
+#
+#  file-service:
+#    image: recruitease/new-file-service:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    networks:
+#      - my-network
+#
+#  interview-service:
+#    image: recruitease/new-interview-service:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    networks:
+#      - my-network
+
+#  job-service:
+#    image: recruitease/new-job-service:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    networks:
+#      - my-network
+#
+#  chat-service:
+#    image: recruitease/new-chat-service:latest
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#    networks:
+#      - my-network
+
+
+
+networks:
+  my-network:
+    driver: bridge
