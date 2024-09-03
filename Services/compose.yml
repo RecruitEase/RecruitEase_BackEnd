@@ -6,7 +6,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   discovery-service:
@@ -18,7 +18,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   api-gateway-service:
@@ -33,7 +33,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   application-service:
@@ -46,7 +46,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   auth-service:
@@ -59,7 +59,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   file-service:
@@ -72,7 +72,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   interview-service:
@@ -85,7 +85,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
   job-service:
@@ -98,7 +98,7 @@ services:
       - my-network
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
-      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
 
