@@ -1,4 +1,4 @@
-package com.recruitease.application_service.config;
+package com.recruitease.interview_service.config;
 
 public record LoggedUserHeader(
         String id,
