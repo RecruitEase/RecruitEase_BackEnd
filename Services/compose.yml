@@ -4,6 +4,10 @@ services:
     container_name: config-service
     networks:
       - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
   discovery-service:
     image: recruitease/new-discovery:latest
@@ -30,6 +34,7 @@ services:
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
   application-service:
     image: recruitease/new-application-service:latest
@@ -42,6 +47,7 @@ services:
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
   auth-service:
     image: recruitease/new-auth-service:latest
@@ -54,6 +60,7 @@ services:
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
   file-service:
     image: recruitease/new-file-service:latest
@@ -66,6 +73,7 @@ services:
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
   interview-service:
     image: recruitease/new-interview-service:latest
@@ -78,6 +86,7 @@ services:
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
   job-service:
     image: recruitease/new-job-service:latest
@@ -90,6 +99,7 @@ services:
     environment:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761
+      - EUREKA_HOST_NAME=discovery-service
 
 
 
