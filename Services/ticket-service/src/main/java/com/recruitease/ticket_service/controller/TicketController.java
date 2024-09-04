@@ -6,6 +6,8 @@ import com.recruitease.ticket_service.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/ticket")
 @CrossOrigin
@@ -28,13 +30,23 @@ public class TicketController {
         return ("updated");
     }
 
-//    @GetMapping (
-//            path = "/get-by-id",
-//            params = "id"
-//    )
-//    public TicketDTO getTicketById(@RequestParam(value = "id") int ticketid){
-//        TicketDTO ticketDTO = ticketService.getTicketId(ticketid);
-//        return ticketDTO;
-//
-//    }
+    @GetMapping (
+            path = "/get-by-id",
+            params = "id"
+    )
+    public TicketDTO getTicketById(@RequestParam(value = "id") int ticketid){
+        TicketDTO ticketDTOS = ticketService.getTicketById(ticketid);
+        return ticketDTOS;
+
+    }
+
+    @GetMapping(
+            path = "/get-all-tickets"
+    )
+    public List<TicketDTO> getAllTickets() {
+        List<TicketDTO> allTickets = ticketService.getAllTickets();
+        return allTickets;
+    }
 }
+
+

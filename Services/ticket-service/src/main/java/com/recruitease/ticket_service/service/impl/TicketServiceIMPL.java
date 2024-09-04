@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class TicketServiceIMPL implements TicketService {
     @Autowired
@@ -23,7 +26,6 @@ public class TicketServiceIMPL implements TicketService {
         Ticket ticket =modelMapper.map(ticketDTO,Ticket.class);
         if(!ticketRepo.existsById(ticket.getTicketId())){
             ticketRepo.save(ticket);
-//            return ticket.getTicketId()+"Save succesfully";
             return ("Save succesfully");
         }else{
             throw new DuplicateKeyException("Already added");
@@ -32,21 +34,39 @@ public class TicketServiceIMPL implements TicketService {
 
     @Override
     public String updateTicket(TicketUpdateDTO ticketUpdateDTO) {
-        if(ticketRepo.existsById(ticketUpdateDTO.getTicketId())){
+        if (ticketRepo.existsById(ticketUpdateDTO.getTicketId())) {
             Ticket ticket = ticketRepo.getReferenceById(ticketUpdateDTO.getTicketId());
-            ticket.setDelay(ticketUpdateDTO.getDelay());
-            ticket.setSubject(ticketUpdateDTO.getSubject());
-            ticket.setType(ticketUpdateDTO.getType());
-            ticket.setJobTitle(ticketUpdateDTO.getJobTitle());
-            ticket.setDate(ticketUpdateDTO.getDate());
-            ticket.setStatus(ticketUpdateDTO.getStatus());
-            ticket.setDescription(ticketUpdateDTO.getDescription());
-
+            modelMapper.map(ticketUpdateDTO, ticket);
             ticketRepo.save(ticket);
-            return ("Updated Success");
-        }else {
+            return "Updated Success";
+        } else {
             throw new RuntimeException("No data found");
         }
     }
 
+    @Override
+    public TicketDTO getTicketById(int ticketid) {
+        if (ticketRepo.existsById(ticketid)) {
+            Ticket ticket = ticketRepo.getReferenceById(ticketid);
+            TicketDTO ticketDTO = modelMapper.map(ticket, TicketDTO.class);
+
+            return ticketDTO;
+        } else {
+            throw new RuntimeException("No Ticket");
+        }
+    }
+
+    @Override
+    public List<TicketDTO> getAllTickets() {
+        List<Ticket> getAllItems = ticketRepo.findAll();
+
+        // Corrected to use the variable name getAllItems
+        List<TicketDTO> ticketDTOList = getAllItems.stream()
+                .map(ticket -> modelMapper.map(ticket, TicketDTO.class))
+                .collect(Collectors.toList());
+
+        return ticketDTOList;
+    }
+
 }
+
