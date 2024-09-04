@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class TicketDTO {
 
+    private int ticketId;
     private String delay;
     private String subject;
     private String type;
