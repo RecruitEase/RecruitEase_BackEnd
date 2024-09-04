@@ -28,52 +28,73 @@ public class S3Service {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public ResponseDTO uploadFile(String folderName,String fileName,MultipartFile file) {
-        var responseDTO=new ResponseDTO();
-        var content=new HashMap<String,String >();
+    public ResponseDTO uploadFile(String folderName, String fileName, MultipartFile file) {
+        var responseDTO = new ResponseDTO();
+        var content = new HashMap<String, String>();
 
+        System.out.println("Starting uploadFile method");
 
-        try{
+        try {
+            System.out.println("Converting MultipartFile to File");
             File fileObj = convertMultiPartFileToFile(file);
-            String key = folderName  + fileName; // Path to the object in S3
-            if(folderName.isEmpty()){
-                key=fileName;
+            System.out.println("File conversion successful");
+
+            String key = folderName + fileName; // Path to the object in S3
+            System.out.println("Generated key: " + key);
+
+            if (folderName.isEmpty()) {
+                key = fileName;
+                System.out.println("Folder name is empty, using fileName as key");
             }
+
+            System.out.println("Putting object in S3");
             s3Client.putObject(new PutObjectRequest(bucketName, key, fileObj));
-            fileObj.delete();
+            System.out.println("Object put in S3 successfully");
 
-            //if folder is public, give public link, else give saved file folder and file name
-            if(folderName.startsWith("public")){
-                //use link only if the file is public
-                String link="https://"+bucketName+".s3.amazonaws.com/"+key;
-                content.put("publicLink",link);
-            }else{
-                content.put("publicLink",null);
+            fileObj.delete();
+            System.out.println("Temporary file deleted");
+
+            // if folder is public, give public link, else give saved file folder and file name
+            if (folderName.startsWith("public")) {
+                // use link only if the file is public
+                String link = "https://" + bucketName + ".s3.amazonaws.com/" + key;
+                content.put("publicLink", link);
+                System.out.println("Public link created: " + link);
+            } else {
+                content.put("publicLink", null);
+                System.out.println("File is not public, no public link created");
             }
 
-
-            content.put("path",key);
-            content.put("fileName",fileName);
+            content.put("path", key);
+            content.put("fileName", fileName);
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("File Uploaded Successfully!");
             responseDTO.setContent(content);
+            System.out.println("File uploaded successfully");
+
             return responseDTO;
-        }catch (Exception e){
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(null);
+
             return responseDTO;
         }
-
     }
 
+
     private File convertMultiPartFileToFile(MultipartFile file) {
+        System.out.print("lllll");
         File convertedFile = new File(file.getOriginalFilename());
+        System.out.print("abc");
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(file.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        System.out.print("xzy");
         return convertedFile;
     }
 
