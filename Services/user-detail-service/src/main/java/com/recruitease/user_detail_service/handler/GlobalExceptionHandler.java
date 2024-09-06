@@ -1,7 +1,7 @@
 package com.recruitease.user_detail_service.handler;
 
-import com.recruitease.application_service.DTO.ResponseDTO;
-import com.recruitease.application_service.util.CodeList;
+import com.recruitease.user_detail_service.DTO.ResponseDTO;
+import com.recruitease.user_detail_service.util.CodeList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

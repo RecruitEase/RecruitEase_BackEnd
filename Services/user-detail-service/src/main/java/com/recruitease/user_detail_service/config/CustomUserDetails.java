@@ -1,8 +1,8 @@
 package com.recruitease.user_detail_service.config;
 
-import com.recruitease.application_service.config.CandidateDetails;
-import com.recruitease.application_service.config.ModeratorDetails;
-import com.recruitease.application_service.config.RecruiterDetails;
+import com.recruitease.user_detail_service.config.CandidateDetails;
+import com.recruitease.user_detail_service.config.ModeratorDetails;
+import com.recruitease.user_detail_service.config.RecruiterDetails;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;

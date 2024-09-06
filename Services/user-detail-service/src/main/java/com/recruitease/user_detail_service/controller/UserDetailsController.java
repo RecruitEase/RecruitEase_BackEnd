@@ -27,7 +27,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getUserDetailsLists(request);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -45,7 +45,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getCandidateDetails(candidateId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -59,7 +59,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getRecruiterDetails(recruiterId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -73,7 +73,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getModeratorDetails(moderatorId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -87,7 +87,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getAdminDetails(adminId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -102,7 +102,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.updateCandidate(candidatePutReq);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 

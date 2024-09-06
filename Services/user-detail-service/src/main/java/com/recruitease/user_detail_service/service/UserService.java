@@ -250,12 +250,34 @@ public class UserService {
 
 
     public ResponseDTO updateCandidate(Candidate candidatePutReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
         //get canidate id of logged user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String candidateId=userDetails.getId();
+        String candidateId=userDetails.getCandidateDetails().getCandidateId();
         System.out.printf("candiateId: %s",candidateId);
-        return null;
+
+
+        try{
+
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(candidateId);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            errors.put("error","Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+
+        return responseDTO;
     }
 }

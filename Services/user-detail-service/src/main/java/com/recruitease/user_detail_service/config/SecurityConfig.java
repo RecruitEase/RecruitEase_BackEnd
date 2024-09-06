@@ -1,6 +1,6 @@
 package com.recruitease.user_detail_service.config;
 
-import com.recruitease.application_service.config.UserContextFilter;
+import com.recruitease.user_detail_service.config.UserContextFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +21,15 @@ public class SecurityConfig  {
         http.addFilterBefore(userContextFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/user/candidate/**",
+                                "/user/admin/**",
+                                "/user/recruiter/**",
+                                "/user/moderator/**",
+                                "/user/admin-list",
+                                "/user/candidate-list",
+                                "/user/moderator-list",
+                                "/user/recruiter-list",
+                                "/user/detail-list").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

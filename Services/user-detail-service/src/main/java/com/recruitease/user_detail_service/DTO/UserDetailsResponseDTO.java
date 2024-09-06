@@ -1,9 +1,10 @@
 package com.recruitease.user_detail_service.DTO;
 
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedAdmin;
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedCandidate;
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedModerator;
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedRecruiter;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedAdmin;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedCandidate;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedModerator;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedRecruiter;
+import lombok.*;
 
 import java.util.List;
 

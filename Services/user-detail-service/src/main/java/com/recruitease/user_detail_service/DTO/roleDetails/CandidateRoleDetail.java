@@ -1,6 +1,6 @@
 package com.recruitease.user_detail_service.DTO.roleDetails;
 
-import com.recruitease.auth_service.DTO.roleDetails.RoleDetailObject;
+import com.recruitease.user_detail_service.DTO.roleDetails.RoleDetailObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

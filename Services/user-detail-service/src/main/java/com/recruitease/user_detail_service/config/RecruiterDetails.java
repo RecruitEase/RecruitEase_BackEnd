@@ -1,4 +1,5 @@
 package com.recruitease.user_detail_service.config;
+import lombok.*;
 
 @Getter
 @Setter

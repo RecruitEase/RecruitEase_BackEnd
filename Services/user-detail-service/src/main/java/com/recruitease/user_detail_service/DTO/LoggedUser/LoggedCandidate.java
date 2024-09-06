@@ -1,5 +1,5 @@
 package com.recruitease.user_detail_service.DTO.LoggedUser;
-
+import lombok.*;
 @Getter
 @Setter
 @Builder
