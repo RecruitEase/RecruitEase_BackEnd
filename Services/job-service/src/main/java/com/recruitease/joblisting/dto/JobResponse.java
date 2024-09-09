@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class JobResponse {
 
+    private String id;
     private String title;
     private Job.JobType type;
     private Job.Location location;
