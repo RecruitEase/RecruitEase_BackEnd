@@ -1,24 +1,16 @@
-package com.recruitease.auth_service.controller;
+package com.recruitease.user_detail_service.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.recruitease.auth_service.DTO.*;
-import com.recruitease.auth_service.DTO.LoggedUser.*;
-import com.recruitease.auth_service.config.CustomUserDetails;
-import com.recruitease.auth_service.service.AuthService;
-import com.recruitease.auth_service.service.UserService;
-import com.recruitease.auth_service.util.CodeList;
-import jakarta.validation.Valid;
+import com.recruitease.user_detail_service.DTO.ResponseDTO;
+import com.recruitease.user_detail_service.DTO.UserDetailsRequestDTO;
+import com.recruitease.user_detail_service.entity.Candidate;
+import com.recruitease.user_detail_service.service.UserService;
+import com.recruitease.user_detail_service.util.CodeList;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.AuthenticationException;
 
 @RestController
 @RequestMapping("/user")
@@ -35,7 +27,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getUserDetailsLists(request);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -53,7 +45,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getCandidateDetails(candidateId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -67,7 +59,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getRecruiterDetails(recruiterId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -81,7 +73,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getModeratorDetails(moderatorId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -95,7 +87,7 @@ public class UserDetailsController {
         ResponseDTO res= userService.getAdminDetails(adminId);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
-            return new ResponseEntity<>(res,HttpStatus.CREATED);
+            return new ResponseEntity<>(res,HttpStatus.OK);
 
         }else{//some error
 
@@ -104,4 +96,18 @@ public class UserDetailsController {
 
     }
 
+    @PutMapping("/update-candidate")
+    @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+    public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Candidate candidatePutReq) {
+        ResponseDTO res= userService.updateCandidate(candidatePutReq);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

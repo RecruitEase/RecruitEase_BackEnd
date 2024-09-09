@@ -65,6 +65,7 @@ services:
   file-service:
     image: recruitease/new-file-service:latest
     container_name: file-service
+    user: "0:0" #to run as root for file handling
     depends_on:
       - config-service
       - discovery-service

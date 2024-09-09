@@ -1,22 +1,26 @@
-package com.recruitease.auth_service.service;
+package com.recruitease.user_detail_service.service;
 
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedAdmin;
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedCandidate;
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedModerator;
-import com.recruitease.auth_service.DTO.LoggedUser.LoggedRecruiter;
-import com.recruitease.auth_service.DTO.ResponseDTO;
-import com.recruitease.auth_service.DTO.UserDetailsRequestDTO;
-import com.recruitease.auth_service.DTO.UserDetailsResponseDTO;
-import com.recruitease.auth_service.DTO.roleDetails.CandidateRoleDetail;
-import com.recruitease.auth_service.entity.Admin;
-import com.recruitease.auth_service.entity.Candidate;
-import com.recruitease.auth_service.entity.Moderator;
-import com.recruitease.auth_service.entity.Recruiter;
-import com.recruitease.auth_service.repository.*;
-import com.recruitease.auth_service.util.CodeList;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedAdmin;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedCandidate;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedModerator;
+import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedRecruiter;
+import com.recruitease.user_detail_service.DTO.ResponseDTO;
+import com.recruitease.user_detail_service.DTO.UserDetailsRequestDTO;
+import com.recruitease.user_detail_service.DTO.UserDetailsResponseDTO;
+import com.recruitease.user_detail_service.config.CustomUserDetails;
+import com.recruitease.user_detail_service.entity.Admin;
+import com.recruitease.user_detail_service.entity.Candidate;
+import com.recruitease.user_detail_service.entity.Moderator;
+import com.recruitease.user_detail_service.entity.Recruiter;
+import com.recruitease.user_detail_service.repository.AdminRepository;
+import com.recruitease.user_detail_service.repository.CandidateRepository;
+import com.recruitease.user_detail_service.repository.ModeratorRepository;
+import com.recruitease.user_detail_service.repository.RecruiterRepository;
+import com.recruitease.user_detail_service.util.CodeList;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -245,4 +249,35 @@ public class UserService {
     }
 
 
+    public ResponseDTO updateCandidate(Candidate candidatePutReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        //get canidate id of logged user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        String candidateId=userDetails.getCandidateDetails().getCandidateId();
+        System.out.printf("candiateId: %s",candidateId);
+
+
+        try{
+
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(candidateId);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            errors.put("error","Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+
+        return responseDTO;
+    }
 }
