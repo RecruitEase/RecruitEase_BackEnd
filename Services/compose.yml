@@ -62,6 +62,19 @@ services:
       - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
+  user-detail-service:
+    image: recruitease/new-user-detail-service:latest
+    container_name: user-detail-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
   file-service:
     image: recruitease/new-file-service:latest
     container_name: file-service
