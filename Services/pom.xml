@@ -19,6 +19,7 @@
         <module>application-service</module>
         <module>auth-service</module>
         <module>user-detail-service</module>
+        <module>cv-service</module>
         <module>config-server</module>
         <module>discovery</module>
         <module>file-service</module>
