@@ -156,6 +156,7 @@ public class S3Service {
                 ImageIO.write(bufferedImage, "PNG", outputFile);
                 s3Client.putObject(new PutObjectRequest(bucketName, "public/cvthumbnails/"+fileName+".png", outputFile));
                 System.out.println("Image put in S3 successfully");
+                outputFile.delete();
             }
 
 
