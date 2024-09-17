@@ -1,7 +1,7 @@
 package com.recruitease.interview_service.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.recruitease.application_service.config.LoggedUserHeader;
+import com.recruitease.interview_service.config.LoggedUserHeader;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

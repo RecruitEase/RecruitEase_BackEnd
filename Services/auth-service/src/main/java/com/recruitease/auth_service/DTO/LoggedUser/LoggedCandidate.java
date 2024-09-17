@@ -21,4 +21,7 @@ public class LoggedCandidate {
     private String profilePic;
     private String profileStatus;
     private String candidateId;
+    private String skills;
+    private String experience;
+    private String education;
 }

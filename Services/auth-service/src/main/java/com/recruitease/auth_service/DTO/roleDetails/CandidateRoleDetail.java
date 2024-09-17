@@ -12,5 +12,8 @@ public class CandidateRoleDetail extends RoleDetailObject {
     private String profileStatus;
     private String nic;
     private LocalDate dob;
+    private String skills;
+    private String experience;
+    private String education;
 }
 

@@ -1,0 +1,123 @@
+services:
+  config-service:
+    image: recruitease/new-config-server:latest
+    container_name: config-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  discovery-service:
+    image: recruitease/new-discovery:latest
+    ports:
+      - "8761:8761"
+    container_name: discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  api-gateway-service:
+    image: recruitease/new-api-gateway:latest
+    container_name: api-gateway-service
+    depends_on:
+      - config-service
+      - discovery-service
+    ports:
+      - "8222:8222"
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  application-service:
+    image: recruitease/new-application-service:latest
+    container_name: application-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  auth-service:
+    image: recruitease/new-auth-service:latest
+    container_name: auth-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  user-detail-service:
+    image: recruitease/new-user-detail-service:latest
+    container_name: user-detail-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  file-service:
+    image: recruitease/new-file-service:latest
+    container_name: file-service
+    user: "0:0" #to run as root for file handling
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  interview-service:
+    image: recruitease/new-interview-service:latest
+    container_name: interview-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  job-service:
+    image: recruitease/new-job-service:latest
+    container_name: job-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+
+
+
+networks:
+  my-network:
+    driver: bridge
