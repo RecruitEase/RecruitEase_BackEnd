@@ -14,6 +14,9 @@ public class CvDTO {
     @NotNull(message = "File can not be null.")
     @NotEmpty(message = "File can not be empty.")
     private String file;
+    @NotNull(message = "File can not be null.")
+    @NotEmpty(message = "File can not be empty.")
+    private String cvImage;
     private  String cvData;
     @NotNull(message = "File can not be null.")
     @NotEmpty(message = "File can not be empty.")
