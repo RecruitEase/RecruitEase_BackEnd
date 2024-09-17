@@ -3,6 +3,7 @@ package com.cv_service.cv_service.service;
 import com.cv_service.cv_service.DTO.CvDTO;
 import com.cv_service.cv_service.DTO.CvSetResponseDTO;
 import com.cv_service.cv_service.DTO.ResponseDTO;
+import com.cv_service.cv_service.config.CustomUserDetails;
 import com.cv_service.cv_service.entity.Cv;
 import com.cv_service.cv_service.repository.CvRepo;
 import com.cv_service.cv_service.util.CodeList;
@@ -10,6 +11,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,9 +29,11 @@ public class CvService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
+        //get canidate id of logged user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        //todo:get candidateid from logged user
-        String candidateId = "3b0334d9-4464-4e7d-9d05-a2859a5a583a";
+        String candidateId=userDetails.getCandidateDetails().getCandidateId();
 
 
         if (cvRepo.existsByCvNameAndCandidateId(req.getCvName(), candidateId)) {
