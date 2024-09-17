@@ -21,6 +21,7 @@ public class Cv {
     private String cvId;
     private String candidateId;
     private String file;
+    private String cvImage;
     private  String cvData;
     private  String cvName;
     @CreatedDate
