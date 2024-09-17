@@ -167,6 +167,7 @@ public class S3Service {
             content.put("cvImage", link);
 
             link="https://" + bucketName + ".s3.amazonaws.com/" +key;
+            content.put("path", key);
             content.put("file", link);
 
 
