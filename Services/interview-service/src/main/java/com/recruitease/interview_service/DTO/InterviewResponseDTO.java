@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class InterviewForRecruiterDTO {
+public class InterviewResponseDTO {
     private String id;
     private String applicationId;
     private String candidateId;

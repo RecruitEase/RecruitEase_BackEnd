@@ -45,10 +45,10 @@ public class InterviewService {
                 responseDTO.setCode(CodeList.RSP_NO_DATA_FOUND);
                 responseDTO.setContent(null);
             } else {
-                List<InterviewForRecruiterDTO> recruiterDTOs = interviews.stream()
+                List<InterviewResponseDTO> recruiterDTOs = interviews.stream()
                         .map(interview -> {
                             try {
-                                InterviewForRecruiterDTO dto = modelMapper.map(interview, InterviewForRecruiterDTO.class);
+                                InterviewResponseDTO dto = modelMapper.map(interview, InterviewResponseDTO.class);
                                 String remainingDays = getRemaingDays(interview.getDate());
                                 dto.setRemainingDays(remainingDays);
                                 return dto;
@@ -70,10 +70,10 @@ public class InterviewService {
                 responseDTO.setCode(CodeList.RSP_NO_DATA_FOUND);
                 responseDTO.setContent(null);
             } else {
-                List<InterviewForCandidateDTO> candidateDTOS = interviews.stream()
+                List<InterviewResponseDTO> candidateDTOS = interviews.stream()
                         .map(interview -> {
                             try {
-                                InterviewForCandidateDTO dto = modelMapper.map(interview, InterviewForCandidateDTO.class);
+                                InterviewResponseDTO dto = modelMapper.map(interview, InterviewResponseDTO.class);
                                 String remainingDays = getRemaingDays(interview.getDate());
                                 dto.setRemainingDays(remainingDays);
                                 return dto;
@@ -114,11 +114,11 @@ public class InterviewService {
         Interview interview = interviewOptional.get();
 
         if(userDetails.getRole().equals("recruiter") && userDetails.getRecruiterDetails().getRecruiterId().equals(interview.getRecruiterId())){
-            InterviewForRecruiterDTO interviewDTO = modelMapper.map(interview, InterviewForRecruiterDTO.class);
+            InterviewResponseDTO interviewDTO = modelMapper.map(interview, InterviewResponseDTO.class);
             responseDTO.setContent(interviewDTO);
 
         }else if(userDetails.getRole().equals("candidate") && userDetails.getCandidateDetails().getCandidateId().equals(interview.getCandidateId())){
-            InterviewForCandidateDTO interviewDTO = modelMapper.map(interview, InterviewForCandidateDTO.class);
+            InterviewResponseDTO interviewDTO = modelMapper.map(interview, InterviewResponseDTO.class);
             responseDTO.setContent(interviewDTO);
 
         }else {
@@ -178,7 +178,7 @@ public class InterviewService {
         if (userDetails.getRecruiterDetails().getRecruiterId().equals(interview.getRecruiterId())) {
             modelMapper.map(editDTO, interview);
             Interview updatedInterview = interviewRepository.save(interview);
-            InterviewForRecruiterDTO result = modelMapper.map(updatedInterview, InterviewForRecruiterDTO.class);
+            InterviewResponseDTO result = modelMapper.map(updatedInterview, InterviewResponseDTO.class);
 
             responseDTO.setContent(result);
             responseDTO.setMessage("Interview updated successfully.");
