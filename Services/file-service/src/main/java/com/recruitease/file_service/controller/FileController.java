@@ -81,10 +81,17 @@ public class FileController {
 
         var s3Object = s3Service.getFile(path);
         var content = s3Object.getObjectContent();
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG) // This content type can change by your file :)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+path+"\"")
-                .body(new InputStreamResource(content));
+        if (path.endsWith(".pdf")) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF) // This content type can change by your file :)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+path+"\"")
+                    .body(new InputStreamResource(content));
+        }else {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG) // This content type can change by your file :)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + path + "\"")
+                    .body(new InputStreamResource(content));
+        }
     }
 
 
