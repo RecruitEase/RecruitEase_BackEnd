@@ -27,4 +27,6 @@ public class Cv {
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
+    @Column(nullable = false,columnDefinition = "boolean default false")
+    private  Boolean isDeleted;
 }

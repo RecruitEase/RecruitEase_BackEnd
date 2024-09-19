@@ -62,4 +62,14 @@ public class CvController {
             return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/delete/{cvId}")
+    public ResponseEntity<ResponseDTO> deleteCv(@PathVariable String cvId) {
+        ResponseDTO res = cvService.deleteCv(cvId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
 }

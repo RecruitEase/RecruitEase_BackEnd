@@ -23,4 +23,5 @@ public class CvDTO {
     private  String cvName;
     private  String createdAt;
     private  String candidateId;
+    private  Boolean isDeleted;
 }

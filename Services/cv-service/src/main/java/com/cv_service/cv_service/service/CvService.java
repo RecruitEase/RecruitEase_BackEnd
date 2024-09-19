@@ -44,6 +44,7 @@ public class CvService {
         } else {
             Cv cv = modelMapper.map(req, Cv.class);
             cv.setCandidateId(candidateId);
+            cv.setIsDeleted(false);
             cvRepo.save(cv);
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
@@ -113,6 +114,37 @@ public class CvService {
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(res);
+        }catch (Exception ex){
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(null);
+        }
+
+        return responseDTO;
+    }
+
+    @Transactional
+
+    //delete a candidate CV
+    public ResponseDTO deleteCv(String cvId){
+        var responseDTO = new ResponseDTO();
+        //get canidate id of logged user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        String candidateId=userDetails.getCandidateDetails().getCandidateId();
+
+        try {
+            Cv res = cvRepo.findById(cvId).get();
+            if(res.getCandidateId().equals(candidateId)) {
+                res.setIsDeleted(true);
+                responseDTO.setCode(CodeList.RSP_SUCCESS);
+                responseDTO.setMessage("Success");
+            }else{
+                responseDTO.setCode(CodeList.RSP_NOT_AUTHORISED);
+                responseDTO.setMessage("Error Occurred!");
+                responseDTO.setErrors(null);
+            }
         }catch (Exception ex){
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
