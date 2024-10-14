@@ -38,4 +38,24 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
-
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        env:
+          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB}}
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: API_TOKEN_GITHUB
+          script: |
+            cd ~/build/Services
+            sudo docker compose down
+            cd ~
+            sudo rm -r build
+            git clone https://${API_TOKEN_GITHUB}@github.com/RecruitEase/RecruitEase_BackEnd.git build
+            cd ~/build/Services
+            sudo docker compose up config-service -d
+            sleep 60
+            sudo docker compose up discovery-service -d
+            sleep 60
+            sudo docker compose up

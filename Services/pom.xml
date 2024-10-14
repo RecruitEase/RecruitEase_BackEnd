@@ -25,7 +25,7 @@
         <module>file-service</module>
         <module>interview-service</module>
         <module>job-service</module>
-        <module>chat-service</module>
+<!--        <module>chat-service</module>-->
     </modules>
 
     <properties>
