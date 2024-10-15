@@ -43,6 +43,23 @@ public class FileController {
         }
     }
 
+
+    @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+    @PostMapping(path = "/upload-cv", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ResponseDTO> uploadCV(@RequestParam("file") MultipartFile file ) throws IOException {
+
+        ResponseDTO res=s3Service.uploadCv(FileNameGenerator.generateUniqueFileName(Objects.requireNonNull(file.getOriginalFilename())),file);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR','ROLE_RECRUITER','ROLE_CANDIDATE')")
     @RequestMapping(value = "/download/**", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadFile(HttpServletRequest request) {
@@ -64,10 +81,17 @@ public class FileController {
 
         var s3Object = s3Service.getFile(path);
         var content = s3Object.getObjectContent();
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG) // This content type can change by your file :)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+path+"\"")
-                .body(new InputStreamResource(content));
+        if (path.endsWith(".pdf")) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF) // This content type can change by your file :)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+path+"\"")
+                    .body(new InputStreamResource(content));
+        }else {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG) // This content type can change by your file :)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + path + "\"")
+                    .body(new InputStreamResource(content));
+        }
     }
 
 

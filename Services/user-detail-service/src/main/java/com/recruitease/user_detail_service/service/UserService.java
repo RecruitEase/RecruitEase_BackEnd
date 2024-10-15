@@ -17,14 +17,19 @@ import com.recruitease.user_detail_service.repository.CandidateRepository;
 import com.recruitease.user_detail_service.repository.ModeratorRepository;
 import com.recruitease.user_detail_service.repository.RecruiterRepository;
 import com.recruitease.user_detail_service.util.CodeList;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.sasl.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +42,9 @@ public class UserService {
     private final ModeratorRepository moderatorRepository;
 
     public ResponseDTO getUserDetailsLists(UserDetailsRequestDTO request) {
-        var responseDTO=new ResponseDTO();
-        var errors=new HashMap<String,String >();
-        var userDetailResponse=UserDetailsResponseDTO.builder()
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+        var userDetailResponse = UserDetailsResponseDTO.builder()
                 .recruiterIdList(request.recruiterIdList())
                 .candidateIdList(request.candidateIdList())
                 .moderatorIdList(request.moderatorIdList())
@@ -47,25 +52,25 @@ public class UserService {
                 .build();
 
 
-        try{
-            if(request.adminIdList()!=null){
-                List<Admin> adminList=adminRepository.findAllById(request.adminIdList());
-                List<LoggedAdmin> adminDetailList=adminList.stream().map(this::mapToLoggedAdmin).toList();
+        try {
+            if (request.adminIdList() != null) {
+                List<Admin> adminList = adminRepository.findAllById(request.adminIdList());
+                List<LoggedAdmin> adminDetailList = adminList.stream().map(this::mapToLoggedAdmin).toList();
                 userDetailResponse.setAdminList(adminDetailList);
             }
-            if(request.moderatorIdList()!=null){
-                List<Moderator> moderatorList=moderatorRepository.findAllById(request.moderatorIdList());
-                List<LoggedModerator> moderatorDetailList=moderatorList.stream().map(this::mapToLoggedModerator).toList();
+            if (request.moderatorIdList() != null) {
+                List<Moderator> moderatorList = moderatorRepository.findAllById(request.moderatorIdList());
+                List<LoggedModerator> moderatorDetailList = moderatorList.stream().map(this::mapToLoggedModerator).toList();
                 userDetailResponse.setModeratorList(moderatorDetailList);
             }
-            if(request.recruiterIdList()!=null){
-                List<Recruiter> recruiterList=recruiterRepository.findAllById(request.recruiterIdList());
-                List<LoggedRecruiter> recruiterDetailList=recruiterList.stream().map(this::mapToLoggedRecruiter).toList();
+            if (request.recruiterIdList() != null) {
+                List<Recruiter> recruiterList = recruiterRepository.findAllById(request.recruiterIdList());
+                List<LoggedRecruiter> recruiterDetailList = recruiterList.stream().map(this::mapToLoggedRecruiter).toList();
                 userDetailResponse.setRecruiterList(recruiterDetailList);
             }
-            if(request.candidateIdList()!=null){
-                List<Candidate> candidateList=candidateRepository.findAllById(request.candidateIdList());
-                List<LoggedCandidate> candidateDetailList=candidateList.stream().map(this::mapToLoggedCandidate).toList();
+            if (request.candidateIdList() != null) {
+                List<Candidate> candidateList = candidateRepository.findAllById(request.candidateIdList());
+                List<LoggedCandidate> candidateDetailList = candidateList.stream().map(this::mapToLoggedCandidate).toList();
                 userDetailResponse.setCandidateList(candidateDetailList);
             }
 
@@ -73,14 +78,13 @@ public class UserService {
             responseDTO.setMessage("Success");
             responseDTO.setContent(userDetailResponse);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            errors.put("error","Error Occurred!");
+            errors.put("error", "Error Occurred!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
         }
-
 
 
         return responseDTO;
@@ -88,7 +92,7 @@ public class UserService {
     }
 
     private LoggedAdmin mapToLoggedAdmin(Admin res) {
-        LoggedAdmin admin=modelMapper.map(res, LoggedAdmin.class);
+        LoggedAdmin admin = modelMapper.map(res, LoggedAdmin.class);
 
         admin.setId(res.getUser().getId());
         admin.setEmail(res.getUser().getEmail());
@@ -98,8 +102,9 @@ public class UserService {
 
         return admin;
     }
+
     private LoggedModerator mapToLoggedModerator(Moderator res) {
-        LoggedModerator moderator=modelMapper.map(res, LoggedModerator.class);
+        LoggedModerator moderator = modelMapper.map(res, LoggedModerator.class);
 
         moderator.setId(res.getUser().getId());
         moderator.setEmail(res.getUser().getEmail());
@@ -109,8 +114,9 @@ public class UserService {
 
         return moderator;
     }
+
     private LoggedRecruiter mapToLoggedRecruiter(Recruiter res) {
-        LoggedRecruiter recruiter=modelMapper.map(res, LoggedRecruiter.class);
+        LoggedRecruiter recruiter = modelMapper.map(res, LoggedRecruiter.class);
 
         recruiter.setId(res.getUser().getId());
         recruiter.setEmail(res.getUser().getEmail());
@@ -120,8 +126,9 @@ public class UserService {
 
         return recruiter;
     }
+
     private LoggedCandidate mapToLoggedCandidate(Candidate res) {
-        LoggedCandidate candidate=modelMapper.map(res, LoggedCandidate.class);
+        LoggedCandidate candidate = modelMapper.map(res, LoggedCandidate.class);
 
         candidate.setId(res.getUser().getId());
         candidate.setEmail(res.getUser().getEmail());
@@ -133,16 +140,14 @@ public class UserService {
     }
 
 
-
     public ResponseDTO getCandidateDetails(String candidateId) {
-        var responseDTO=new ResponseDTO();
-        var errors=new HashMap<String,String >();
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
 
 
-
-        Candidate res=candidateRepository.findById(candidateId).orElse(null);
-        if(res!=null){
-            LoggedCandidate candidate=modelMapper.map(res,LoggedCandidate.class);
+        Candidate res = candidateRepository.findById(candidateId).orElse(null);
+        if (res != null) {
+            LoggedCandidate candidate = modelMapper.map(res, LoggedCandidate.class);
 
             candidate.setId(res.getUser().getId());
             candidate.setEmail(res.getUser().getEmail());
@@ -154,8 +159,8 @@ public class UserService {
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(candidate);
-        }else{
-            errors.put("candidate","Not found!");
+        } else {
+            errors.put("candidate", "Not found!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
@@ -167,9 +172,9 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-        Recruiter res=recruiterRepository.findById(recruiterId).orElse(null);
-        if(res!=null){
-            LoggedRecruiter recruiter=modelMapper.map(res, LoggedRecruiter.class);
+        Recruiter res = recruiterRepository.findById(recruiterId).orElse(null);
+        if (res != null) {
+            LoggedRecruiter recruiter = modelMapper.map(res, LoggedRecruiter.class);
 
             recruiter.setId(res.getUser().getId());
             recruiter.setEmail(res.getUser().getEmail());
@@ -181,8 +186,8 @@ public class UserService {
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(recruiter);
-        }else{
-            errors.put("recruiter","Not found!");
+        } else {
+            errors.put("recruiter", "Not found!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
@@ -196,9 +201,9 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-        Moderator res=moderatorRepository.findById(moderatorId).orElse(null);
-        if(res!=null){
-            LoggedModerator moderator=modelMapper.map(res, LoggedModerator.class);
+        Moderator res = moderatorRepository.findById(moderatorId).orElse(null);
+        if (res != null) {
+            LoggedModerator moderator = modelMapper.map(res, LoggedModerator.class);
 
             moderator.setId(res.getUser().getId());
             moderator.setEmail(res.getUser().getEmail());
@@ -210,8 +215,8 @@ public class UserService {
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(moderator);
-        }else{
-            errors.put("recruiter","Not found!");
+        } else {
+            errors.put("recruiter", "Not found!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
@@ -224,9 +229,9 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-        Admin res=adminRepository.findById(adminId).orElse(null);
-        if(res!=null){
-            LoggedAdmin admin=modelMapper.map(res, LoggedAdmin.class);
+        Admin res = adminRepository.findById(adminId).orElse(null);
+        if (res != null) {
+            LoggedAdmin admin = modelMapper.map(res, LoggedAdmin.class);
 
             admin.setId(res.getUser().getId());
             admin.setEmail(res.getUser().getEmail());
@@ -238,8 +243,8 @@ public class UserService {
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(admin);
-        }else{
-            errors.put("recruiter","Not found!");
+        } else {
+            errors.put("recruiter", "Not found!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
@@ -248,34 +253,137 @@ public class UserService {
 
     }
 
-
+    @Transactional
     public ResponseDTO updateCandidate(Candidate candidatePutReq) {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-        //get canidate id of logged user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        try {
 
-        String candidateId=userDetails.getCandidateDetails().getCandidateId();
-        System.out.printf("candiateId: %s",candidateId);
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
+            String candidateId = userDetails.getCandidateDetails().getCandidateId();
+            System.out.printf("candiateId: %s", candidateId);
 
-        try{
+            candidatePutReq.setCandidateId(candidateId);
+           Candidate prevData = candidateRepository.findById(candidateId).orElseThrow(AuthenticationException::new);;
+            prevData.updateObject(candidatePutReq);
+            //dont have to call save method, transactional annotation update the db for us if modified
+//            Candidate updateResponse=candidateRepository.save(prevData);
 
+            return getCandidateDetails(prevData.getCandidateId());
 
-            responseDTO.setCode(CodeList.RSP_SUCCESS);
-            responseDTO.setMessage("Success");
-            responseDTO.setContent(candidateId);
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            errors.put("error","Error Occurred!");
+            errors.put("error", "Error Occurred!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
         }
 
+
+        return responseDTO;
+    }
+
+    @Transactional
+    public ResponseDTO updateRecruiter(Recruiter recruiterPutReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
+            System.out.printf("recruiterId: %s", recruiterId);
+
+            recruiterPutReq.setRecruiterId(recruiterId);
+            Recruiter prevData = recruiterRepository.findById(recruiterId).orElseThrow(AuthenticationException::new);;
+            prevData.updateObject(recruiterPutReq);
+            //dont have to call save method, transactional annotation update the db for us if modified
+//            Candidate updateResponse=candidateRepository.save(prevData);
+
+            return getRecruiterDetails(prevData.getRecruiterId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+        return responseDTO;
+    }
+
+    @Transactional
+    public ResponseDTO updateModerator(Moderator moderatorPutReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String moderatorId = userDetails.getModeratorDetails().getModeratorId();
+            System.out.printf("moderatorId: %s", moderatorId);
+
+            moderatorPutReq.setModeratorId(moderatorId);
+            Moderator prevData = moderatorRepository.findById(moderatorId).orElseThrow(AuthenticationException::new);;
+            prevData.updateObject(moderatorPutReq);
+            //dont have to call save method, transactional annotation update the db for us if modified
+//            Candidate updateResponse=candidateRepository.save(prevData);
+
+            return getModeratorDetails(prevData.getModeratorId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+        return responseDTO;
+    }
+
+    @Transactional
+    public ResponseDTO updateAdmin(Admin adminPutReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String adminId = userDetails.getAdminDetails().getAdminId();
+            System.out.printf("adminId: %s", adminId);
+
+            adminPutReq.setAdminId(adminId);
+            Admin prevData = adminRepository.findById(adminId).orElseThrow(AuthenticationException::new);;
+            prevData.updateObject(adminPutReq);
+            //dont have to call save method, transactional annotation update the db for us if modified
+//            Candidate updateResponse=candidateRepository.save(prevData);
+
+            return getAdminDetails(prevData.getAdminId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
 
 
         return responseDTO;

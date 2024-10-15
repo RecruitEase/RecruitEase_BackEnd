@@ -2,7 +2,10 @@ package com.recruitease.user_detail_service.controller;
 
 import com.recruitease.user_detail_service.DTO.ResponseDTO;
 import com.recruitease.user_detail_service.DTO.UserDetailsRequestDTO;
+import com.recruitease.user_detail_service.entity.Admin;
 import com.recruitease.user_detail_service.entity.Candidate;
+import com.recruitease.user_detail_service.entity.Moderator;
+import com.recruitease.user_detail_service.entity.Recruiter;
 import com.recruitease.user_detail_service.service.UserService;
 import com.recruitease.user_detail_service.util.CodeList;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +103,51 @@ public class UserDetailsController {
     @PreAuthorize("hasRole('ROLE_CANDIDATE')")
     public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Candidate candidatePutReq) {
         ResponseDTO res= userService.updateCandidate(candidatePutReq);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PutMapping("/update-recruiter")
+    @PreAuthorize("hasRole('ROLE_RECRUITER')")
+    public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Recruiter recruiterPutReq) {
+        ResponseDTO res= userService.updateRecruiter(recruiterPutReq);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PutMapping("/update-moderator")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Moderator moderatorPutReq) {
+        ResponseDTO res= userService.updateModerator(moderatorPutReq);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res,HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PutMapping("/update-admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Admin adminPutReq) {
+        ResponseDTO res= userService.updateAdmin(adminPutReq);
         if(res.getCode().equals(CodeList.RSP_SUCCESS)){
 
             return new ResponseEntity<>(res,HttpStatus.OK);

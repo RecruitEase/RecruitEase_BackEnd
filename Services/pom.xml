@@ -19,18 +19,20 @@
         <module>application-service</module>
         <module>auth-service</module>
         <module>user-detail-service</module>
+        <module>cv-service</module>
         <module>config-server</module>
         <module>discovery</module>
         <module>file-service</module>
         <module>interview-service</module>
         <module>job-service</module>
-        <module>chat-service</module>
+<!--        <module>chat-service</module>-->
     </modules>
 
     <properties>
         <java.version>21</java.version>
         <spring-cloud.version>2023.0.2</spring-cloud.version>
-        <dockerPassword>dckr_pat_mFe-KdIElZ3CcHgtCQdZ8rSsQrE</dockerPassword> <!--dockerhub access token-->
+        <dockerPassword>${env.DOCKER_PASSWORD}</dockerPassword> <!--dockerhub access token-->
+        <dockerUsername>${env.DOCKER_USERNAME}</dockerUsername> <!--dockerhub access token-->
     </properties>
     <!--mvn spring-boot:build-image -DskipTests -DdockerPassword={dockerhubaccess token}-->
     <dependencyManagement>
@@ -56,7 +58,7 @@
                     </image>
                     <docker>
                         <publishRegistry>
-                            <username>recruitease</username>
+                            <username>${dockerUsername}</username>
                             <password>${dockerPassword}</password>
                         </publishRegistry>
                     </docker>

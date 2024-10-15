@@ -1,4 +1,5 @@
 package com.recruitease.user_detail_service.DTO.LoggedUser;
+import jakarta.persistence.Column;
 import lombok.*;
 @Getter
 @Setter
@@ -19,4 +20,7 @@ public class LoggedCandidate {
     private String profilePic;
     private String profileStatus;
     private String candidateId;
+    private String skills;
+    private String experience;
+    private String education;
 }
