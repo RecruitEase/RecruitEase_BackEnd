@@ -1,26 +1,29 @@
 package com.recruitease.joblisting.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.recruitease.joblisting.model.Job;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class JobRequest {
 
-            private String title;
-            private String description;
-            private Date deadline;
-            private String status;
-            private String recruiterId;
-            private String location;
-            private String industry;
-            private String type;
-            private String level;
+    private String title;
+    private Job.JobType type;
+    private Job.Location location;
+    private List<Integer> fields;
+    private Integer experienceLevel;
+    private Integer educationLevel;
+    private String description;
+    private String overview;
+    private LocalDate deadline;
+    private String imageUrl;
+
 }

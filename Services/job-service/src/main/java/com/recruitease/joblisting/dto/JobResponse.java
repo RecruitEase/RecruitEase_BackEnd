@@ -1,10 +1,12 @@
 package com.recruitease.joblisting.dto;
 
+import com.recruitease.joblisting.model.Job;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -13,14 +15,20 @@ import java.util.Date;
 @NoArgsConstructor
 public class JobResponse {
 
-            private String id;
-            private String title;
-            private String description;
-            private Date deadline;
-            private String status;
-            private String recruiterId;
-            private String location;
-            private String industry;
-            private String type;
-            private String level;
+    private String id;
+    private String title;
+    private Job.JobType type;
+    private Job.Location location;
+    private String field;
+    private Integer experienceLevel;
+    private Integer educationalLevel;
+    private String description;
+    private String overview;
+    private LocalDate deadline;
+    private Job.JobStatus status;
+    private String recruiterId;
+    private String imageUrl;
+
+
+
 }
