@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -17,14 +18,12 @@ public class JobRequest {
     private String title;
     private Job.JobType type;
     private Job.Location location;
-    private String field;
-    private Job.ExperienceLevel experienceLevel;
-    private Job.EducationLevel educationalLevel;
+    private List<Integer> fields;
+    private Integer experienceLevel;
+    private Integer educationLevel;
     private String description;
     private String overview;
     private LocalDate deadline;
-    private Job.JobStatus status;
-    private String recruiterId;
     private String imageUrl;
 
 }

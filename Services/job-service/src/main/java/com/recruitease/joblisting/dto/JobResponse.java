@@ -20,8 +20,8 @@ public class JobResponse {
     private Job.JobType type;
     private Job.Location location;
     private String field;
-    private Job.ExperienceLevel experienceLevel;
-    private Job.EducationLevel educationalLevel;
+    private Integer experienceLevel;
+    private Integer educationalLevel;
     private String description;
     private String overview;
     private LocalDate deadline;

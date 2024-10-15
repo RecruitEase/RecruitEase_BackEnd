@@ -1,5 +1,6 @@
 package com.recruitease.joblisting.service;
 
+import com.recruitease.joblisting.config.CustomUserDetails;
 import com.recruitease.joblisting.dto.JobRequest;
 import com.recruitease.joblisting.dto.JobResponse;
 import com.recruitease.joblisting.dto.Response;
@@ -8,6 +9,9 @@ import com.recruitease.joblisting.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -25,14 +29,23 @@ public class JobService {
     public Response createJob(JobRequest jobRequest) {
         Response response = new Response();
         try {
-          
-            Job job = modelMapper.map(jobRequest, Job.class);
 
-            jobRepository.save(job);
-            log.info("Job created successfully with ID: {}", job.getId());
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
+
+            Job job = modelMapper.map(jobRequest, Job.class);
+            job.setRecruiterId(recruiterId);
+            job.setStatus(Job.JobStatus.LIVE);
+
+            System.out.println(job.toString());
+            var res=jobRepository.save(job);
 
             response.setCode("201");
             response.setMessage("Job created successfully");
+            response.setContent(res.getJobId());
             return response;
 
         } catch (Exception e) {
