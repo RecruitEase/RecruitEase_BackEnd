@@ -89,7 +89,7 @@ public class CvService {
                     .map(source->modelMapper.map(source, Cv.class))
                     .toList();
 
-            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(res);
         }catch (Exception e){
