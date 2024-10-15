@@ -19,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.sasl.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +72,86 @@ public class JobService {
         }
     }
 
+
+    @Transactional
+    public ResponseDTO updateJob(Job updateReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
+            System.out.printf("recruiterId: %s", recruiterId);
+
+            Optional<Job> res = jobRepository.findByJobIdAndRecruiterId(updateReq.getJobId(),recruiterId);
+            if(res.isPresent()){
+                var prevData=res.get();
+                prevData.updateObject(updateReq);
+                //dont have to call save method, transactional annotation update the db for us if modified
+//            Candidate updateResponse=candidateRepository.save(prevData);
+                responseDTO.setCode(CodeList.RSP_SUCCESS);
+                responseDTO.setMessage("Success");
+                return responseDTO;
+            }else{
+                responseDTO.setCode(CodeList.RSP_ERROR);
+                responseDTO.setMessage("Not Found!");
+                responseDTO.setErrors(errors);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+        return responseDTO;
+    }
+
+    public ResponseDTO deleteJob(String jobId) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
+            System.out.printf("recruiterId: %s", recruiterId);
+
+            Optional<Job> res = jobRepository.findByJobIdAndRecruiterId(jobId,recruiterId);
+            if(res.isPresent()){
+                jobRepository.delete(res.get());
+                responseDTO.setCode(CodeList.RSP_SUCCESS);
+                responseDTO.setMessage("Success");
+                return responseDTO;
+            }else{
+                responseDTO.setCode(CodeList.RSP_ERROR);
+                responseDTO.setMessage("Not Found!");
+                responseDTO.setErrors(errors);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+        return responseDTO;
+    }
 
     public ResponseDTO getAllJobs() {
         var responseDTO=new ResponseDTO();

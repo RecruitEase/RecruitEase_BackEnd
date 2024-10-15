@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -163,5 +164,22 @@ public class Job {
                 ratnapura,
                 trincomalee,
                 vavuniya,
+        }
+
+        public void updateObject(Job srcObj){
+
+                Optional.ofNullable(srcObj.getDeadline()).ifPresent(this::setDeadline);
+                Optional.ofNullable(srcObj.getTitle()).ifPresent(this::setTitle);
+                Optional.ofNullable(srcObj.getType()).ifPresent(this::setType);
+                Optional.ofNullable(srcObj.getLocation()).ifPresent(this::setLocation);
+                Optional.ofNullable(srcObj.getFields()).ifPresent(this::setFields);
+                Optional.ofNullable(srcObj.getExperienceLevel()).ifPresent(this::setExperienceLevel);
+                Optional.ofNullable(srcObj.getEducationLevel()).ifPresent(this::setEducationLevel);
+                Optional.ofNullable(srcObj.getDescription()).ifPresent(this::setDescription);
+                Optional.ofNullable(srcObj.getOverview()).ifPresent(this::setOverview);
+                Optional.ofNullable(srcObj.getStatus()).ifPresent(this::setStatus);
+                Optional.ofNullable(srcObj.getRecruiterId()).ifPresent(this::setRecruiterId);
+                Optional.ofNullable(srcObj.getImageUrl()).ifPresent(this::setImageUrl);
+
         }
 }
