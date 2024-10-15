@@ -56,7 +56,7 @@ public class CvService {
         return responseDTO;
     }
 
-    //get cv when cv id is given
+    //get cv when cvId is given
     public ResponseDTO getCv(String cvId) {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
@@ -89,7 +89,7 @@ public class CvService {
                     .map(source->modelMapper.map(source, Cv.class))
                     .toList();
 
-            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(res);
         }catch (Exception e){
