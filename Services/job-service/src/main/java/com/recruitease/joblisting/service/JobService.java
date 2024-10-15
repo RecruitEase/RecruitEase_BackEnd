@@ -4,8 +4,12 @@ import com.recruitease.joblisting.config.CustomUserDetails;
 import com.recruitease.joblisting.dto.JobRequest;
 import com.recruitease.joblisting.dto.JobResponse;
 import com.recruitease.joblisting.dto.Response;
+import com.recruitease.joblisting.dto.ResponseDTO;
+import com.recruitease.joblisting.model.Field;
 import com.recruitease.joblisting.model.Job;
+import com.recruitease.joblisting.repository.FieldRepository;
 import com.recruitease.joblisting.repository.JobRepository;
+import com.recruitease.joblisting.util.CodeList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -14,8 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +31,7 @@ import java.util.Optional;
 public class JobService {
 
     private final JobRepository jobRepository;
+    private final FieldRepository fieldRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -39,7 +48,11 @@ public class JobService {
             Job job = modelMapper.map(jobRequest, Job.class);
             job.setRecruiterId(recruiterId);
             job.setStatus(Job.JobStatus.LIVE);
-
+            Set<Field> jobFields = jobRequest.getFields().stream()
+                    .map(key -> fieldRepository.findById(key)
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid field key: " + key)))
+                    .collect(Collectors.toSet());
+            job.setFields(jobFields);
             System.out.println(job.toString());
             var res=jobRepository.save(job);
 
@@ -58,72 +71,44 @@ public class JobService {
     }
 
 
-    @Transactional(readOnly = true)
-    public Response getAllJobs() {
-        Response response = new Response();
-        try {
-         
-            List<Job> jobs = jobRepository.findAll();
+    public ResponseDTO getAllJobs() {
+        var responseDTO=new ResponseDTO();
+        var errors=new HashMap<String,String >();
 
-          
-            if (jobs.isEmpty()) {
-                log.info("No jobs available");
-                response.setCode("204");
-                response.setMessage("No jobs available");
-                return response;
-            }
+try{
+    List<Job> res=jobRepository.findAll();
+    responseDTO.setCode(CodeList.RSP_SUCCESS);
+    responseDTO.setMessage("Success");
+    responseDTO.setContent(res);
+} catch (Exception e) {
+    responseDTO.setCode(CodeList.RSP_ERROR);
+    responseDTO.setMessage("Error Occurred!");
+    responseDTO.setErrors(e.getMessage());
+}
 
-        
-            List<JobResponse> jobResponses = jobs.stream()
-                    .map(job -> modelMapper.map(job, JobResponse.class))
-                    .toList();
-
-           
-            response.setCode("200");
-            response.setMessage("Success");
-            response.setContent(jobResponses);
-            return response;
-
-        } catch (Exception e) {
-            log.error("Error occurred while fetching jobs: {}", e.getMessage(), e);
-            response.setCode("500");
-            response.setMessage("An error occurred while fetching jobs");
-            response.setError(e.getMessage());
-            return response;
-        }
+        return responseDTO;
     }
 
- 
-    // @Transactional(readOnly = true)
-    // public Response getJobById(Long jobId) {
-    //     Response response = new Response();
-    //     try {
-        
-    //         Optional<Job> jobOptional = jobRepository.findById(jobId);
 
-        
-    //         if (jobOptional.isEmpty()) {
-    //             log.warn("Job with ID {} not found", jobId);
-    //             response.setCode("404");
-    //             response.setMessage("Job not found");
-    //             return response;
-    //         }
+    public ResponseDTO getJob(String jobId) {
+        var responseDTO=new ResponseDTO();
+        var errors=new HashMap<String,String >();
 
-        
-    //         JobResponse jobResponse = modelMapper.map(jobOptional.get(), JobResponse.class);
 
-        
-    //         response.setCode("200");
-    //         response.setMessage("Job found");
-    //         response.setContent(jobResponse);
-    //         return response;
+        if(jobRepository.existsById(jobId)){
+            Job res=jobRepository.findById(jobId).orElse(null);
 
-    //     } catch (Exception e) {
-    //         log.error("Error occurred while fetching job with ID {}: {}", jobId, e.getMessage(), e);
-    //         response.setCode("500");
-    //         response.setMessage("An error occurred while fetching the job");
-    //         response.setError(e.getMessage());
-    //         return response;
-    //     }
-    // }
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        }else{
+            errors.put("job","Not found!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+
+        return responseDTO;
+    }
 }

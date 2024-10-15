@@ -29,4 +29,6 @@ public class JobResponse {
     private String recruiterId;
     private String imageUrl;
 
+
+
 }

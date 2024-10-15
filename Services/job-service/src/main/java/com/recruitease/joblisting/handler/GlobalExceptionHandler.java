@@ -90,4 +90,12 @@ public class GlobalExceptionHandler {
         responseDto.setContent(exp.getMessage());
         return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseDTO> handle(IllegalArgumentException exp){
+        var responseDto=new ResponseDTO();
+        responseDto.setCode(CodeList.RSP_ERROR);
+        responseDto.setMessage("Invalid Data");
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
 }
