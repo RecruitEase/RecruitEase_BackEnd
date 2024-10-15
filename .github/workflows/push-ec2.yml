@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+
+
+
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+
+      - name: Build and push Docker image
+        run: |
+          cd Services
+          ls -alh
+          mvn spring-boot:build-image -DskipTests
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        env:
+          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB}}
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: API_TOKEN_GITHUB
+          script: |
+            cd ~/build/Services
+            sudo docker compose down
+            cd ~
+            sudo rm -r build
+            git clone https://${API_TOKEN_GITHUB}@github.com/RecruitEase/RecruitEase_BackEnd.git build
+            cd ~/build/Services
+            sudo docker compose pull
+            sudo docker compose up config-service -d
+            sleep 60
+            sudo docker compose up discovery-service -d
+            sleep 60
+            sudo docker compose up -d
