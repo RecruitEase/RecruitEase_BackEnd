@@ -98,9 +98,22 @@ public class Job {
 
         @Column(name = "experience_level", length = 50)
         private Integer experienceLevel;
+//        {key: 1, label: "Entry Level"},
+//        {key: 2, label: "6 Months"},
+//        {key: 3, label: "1-2 Years"},
+//        {key: 4, label: "2-3 Years"},
+//        {key: 5, label: "3-5 Years"},
+//        {key: 6, label: "5+ Years"},
 
         @Column(name = "education_level", length = 50)
         private Integer educationLevel;
+//        {key: 1, label: "Ordinary Level"},
+//        {key: 2, label: "Advanced Level"},
+//        {key: 3, label: "Bachelor’s Degree"},
+//        {key: 4, label: "Masters Degree"},
+//        {key: 5, label: "PhD"},
+//        {key: 6, label: "Diploma/HND"},
+//        {key: 7, label: "Certificate"},
 
         @Column(name = "description", columnDefinition = "TEXT")
         private String description;
