@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.sasl.AuthenticationException;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,6 @@ public class JobService {
     private final FieldRepository fieldRepository;
     private final ModelMapper modelMapper;
 
-    @Transactional
     public Response createJob(JobRequest jobRequest) {
         Response response = new Response();
         try {
@@ -55,6 +55,7 @@ public class JobService {
                             .orElseThrow(() -> new IllegalArgumentException("Invalid field key: " + key)))
                     .collect(Collectors.toSet());
             job.setFields(jobFields);
+            job.setCreatedAt(LocalDateTime.now());
             System.out.println(job.toString());
             var res = jobRepository.save(job);
 
