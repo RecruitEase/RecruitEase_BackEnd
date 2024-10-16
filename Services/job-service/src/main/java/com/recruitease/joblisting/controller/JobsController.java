@@ -83,6 +83,18 @@ public class JobsController {
         }
     }
 
+    @GetMapping("/get-all-live-jobs")
+    public ResponseEntity<ResponseDTO> getAllLiveJobs() {
+        ResponseDTO res= jobService.getAllLiveJobs();
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/getall")
     public ResponseEntity<ResponseDTO> getAllJobs() {

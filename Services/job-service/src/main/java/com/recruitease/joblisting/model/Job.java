@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -133,6 +135,10 @@ public class Job {
 
         @Column(name = "image_url", length = 100)
         private String imageUrl;
+
+        @CreatedDate
+        @Column(updatable = false, nullable = false)
+        private LocalDateTime createdAt;
 
 
         public enum JobStatus {

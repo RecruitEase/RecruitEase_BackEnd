@@ -238,4 +238,22 @@ public class JobService {
 
         return responseDTO;
     }
+
+    public ResponseDTO getAllLiveJobs() {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+            List<Job> res = jobRepository.findAllByStatus(Job.JobStatus.LIVE);
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        } catch (Exception e) {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(e.getMessage());
+        }
+
+        return responseDTO;
+    }
 }
