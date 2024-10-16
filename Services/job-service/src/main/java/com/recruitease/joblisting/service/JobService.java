@@ -56,7 +56,7 @@ public class JobService {
                     .collect(Collectors.toSet());
             job.setFields(jobFields);
             System.out.println(job.toString());
-            var res=jobRepository.save(job);
+            var res = jobRepository.save(job);
 
             response.setCode("201");
             response.setMessage("Job created successfully");
@@ -87,16 +87,16 @@ public class JobService {
             String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
             System.out.printf("recruiterId: %s", recruiterId);
 
-            Optional<Job> res = jobRepository.findByJobIdAndRecruiterId(updateReq.getJobId(),recruiterId);
-            if(res.isPresent()){
-                var prevData=res.get();
+            Optional<Job> res = jobRepository.findByJobIdAndRecruiterId(updateReq.getJobId(), recruiterId);
+            if (res.isPresent()) {
+                var prevData = res.get();
                 prevData.updateObject(updateReq);
                 //dont have to call save method, transactional annotation update the db for us if modified
 //            Candidate updateResponse=candidateRepository.save(prevData);
                 responseDTO.setCode(CodeList.RSP_SUCCESS);
                 responseDTO.setMessage("Success");
                 return responseDTO;
-            }else{
+            } else {
                 responseDTO.setCode(CodeList.RSP_ERROR);
                 responseDTO.setMessage("Not Found!");
                 responseDTO.setErrors(errors);
@@ -128,13 +128,13 @@ public class JobService {
             String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
             System.out.printf("recruiterId: %s", recruiterId);
 
-            Optional<Job> res = jobRepository.findByJobIdAndRecruiterId(jobId,recruiterId);
-            if(res.isPresent()){
+            Optional<Job> res = jobRepository.findByJobIdAndRecruiterId(jobId, recruiterId);
+            if (res.isPresent()) {
                 jobRepository.delete(res.get());
                 responseDTO.setCode(CodeList.RSP_SUCCESS);
                 responseDTO.setMessage("Success");
                 return responseDTO;
-            }else{
+            } else {
                 responseDTO.setCode(CodeList.RSP_ERROR);
                 responseDTO.setMessage("Not Found!");
                 responseDTO.setErrors(errors);
@@ -154,42 +154,87 @@ public class JobService {
     }
 
     public ResponseDTO getAllJobs() {
-        var responseDTO=new ResponseDTO();
-        var errors=new HashMap<String,String >();
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
 
-try{
-    List<Job> res=jobRepository.findAll();
-    responseDTO.setCode(CodeList.RSP_SUCCESS);
-    responseDTO.setMessage("Success");
-    responseDTO.setContent(res);
-} catch (Exception e) {
-    responseDTO.setCode(CodeList.RSP_ERROR);
-    responseDTO.setMessage("Error Occurred!");
-    responseDTO.setErrors(e.getMessage());
-}
+        try {
+            List<Job> res = jobRepository.findAll();
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        } catch (Exception e) {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(e.getMessage());
+        }
 
         return responseDTO;
     }
 
 
     public ResponseDTO getJob(String jobId) {
-        var responseDTO=new ResponseDTO();
-        var errors=new HashMap<String,String >();
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
 
 
-        if(jobRepository.existsById(jobId)){
-            Job res=jobRepository.findById(jobId).orElse(null);
+        if (jobRepository.existsById(jobId)) {
+            Job res = jobRepository.findById(jobId).orElse(null);
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(res);
-        }else{
-            errors.put("job","Not found!");
+        } else {
+            errors.put("job", "Not found!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
         }
 
+
+        return responseDTO;
+    }
+
+    //gives live jobs only
+    public ResponseDTO getLiveJobsByRecruiterId(String recruiterId) {
+        var responseDTO = new ResponseDTO();
+
+        try {
+            //get only live jobs
+            List<Job> res = jobRepository.findAllByRecruiterIdAndStatus(recruiterId, Job.JobStatus.LIVE);
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        } catch (Exception e) {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(e.getMessage());
+        }
+
+        return responseDTO;
+    }
+
+    //give all jobs despite the status
+    public ResponseDTO getJobsByRecruiterId() {
+        var responseDTO = new ResponseDTO();
+
+        try {
+            //get recruiter id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String recruiterId = userDetails.getRecruiterDetails().getRecruiterId();
+            System.out.printf("recruiterId: %s", recruiterId);
+
+            //get only live jobs
+            List<Job> res = jobRepository.findAllByRecruiterId(recruiterId);
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        } catch (Exception e) {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(e.getMessage());
+        }
 
         return responseDTO;
     }

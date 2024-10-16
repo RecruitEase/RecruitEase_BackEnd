@@ -97,6 +97,35 @@ public class JobsController {
         }
     }
 
+    //public api to get jobs for each recruiter - only live jobs are given
+    @GetMapping("/get-live-jobs-by-recruiter/{recruiterId}")
+    public ResponseEntity<ResponseDTO> getLiveJobsByRecruiter(@PathVariable String recruiterId) {
+        ResponseDTO res= jobService.getLiveJobsByRecruiterId(recruiterId);
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //private api for recruiters to get their own jobs despite the status
+    @GetMapping("/get-my-jobs")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR','ROLE_RECRUITER')")
+    public ResponseEntity<ResponseDTO> getJobsByRecruiter() {
+        ResponseDTO res= jobService.getJobsByRecruiterId();
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
    
