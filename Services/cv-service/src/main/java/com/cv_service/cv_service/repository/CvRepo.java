@@ -15,4 +15,6 @@ public interface CvRepo extends JpaRepository<Cv, String> {
 
     List<Cv> findByCvIdIn (List<String> cvIds);
 
+    List<Cv> findByCandidateIdAndIsDeletedFalse(String candidateId);
+
 }

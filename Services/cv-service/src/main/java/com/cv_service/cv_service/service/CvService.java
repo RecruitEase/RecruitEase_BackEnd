@@ -56,7 +56,7 @@ public class CvService {
         return responseDTO;
     }
 
-    //get cv when cv id is given
+    //get cv when cvId is given
     public ResponseDTO getCv(String cvId) {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
@@ -84,8 +84,9 @@ public class CvService {
 
         var responseDTO=new ResponseDTO();
         try{
-            var res = cvRepo.findByCandidateId(candidateId)
+            var res = cvRepo.findByCandidateIdAndIsDeletedFalse(candidateId)
                     .stream()
+//                    .filter(cv->!cv.getIsDeleted())
                     .map(source->modelMapper.map(source, Cv.class))
                     .toList();
 
