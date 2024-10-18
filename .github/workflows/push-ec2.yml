@@ -33,10 +33,10 @@ jobs:
         run: |
           cd Services
           ls -alh
-          sudo echo "server.ssl.key-store=classpath:recruiteasebackend.chathuralakshan.com.p12" >> ./config-server/src/main/resources/configurations/api-gateway.properties
-          sudo echo "server.ssl.key-store-password=${{ secrets.KEY_PARSE_PASSWORD }}" >> ./config-server/src/main/resources/configurations/api-gateway.properties
-          sudo echo "server.ssl.key-store-type=PKCS12" >> ./config-server/src/main/resources/configurations/api-gateway.properties
-          sudo echo "server.ssl.key-alias=recruiteasebackend.chathuralakshan.com" >> ./config-server/src/main/resources/configurations/api-gateway.properties
+#          sudo echo "server.ssl.key-store=classpath:recruiteasebackend.chathuralakshan.com.p12" >> ./config-server/src/main/resources/configurations/api-gateway.properties
+#          sudo echo "server.ssl.key-store-password=${{ secrets.KEY_PARSE_PASSWORD }}" >> ./config-server/src/main/resources/configurations/api-gateway.properties
+#          sudo echo "server.ssl.key-store-type=PKCS12" >> ./config-server/src/main/resources/configurations/api-gateway.properties
+#          sudo echo "server.ssl.key-alias=recruiteasebackend.chathuralakshan.com" >> ./config-server/src/main/resources/configurations/api-gateway.properties
           mvn spring-boot:build-image -DskipTests
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
