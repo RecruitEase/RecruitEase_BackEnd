@@ -84,8 +84,9 @@ public class CvService {
 
         var responseDTO=new ResponseDTO();
         try{
-            var res = cvRepo.findByCandidateId(candidateId)
+            var res = cvRepo.findByCandidateIdAndIsDeletedFalse(candidateId)
                     .stream()
+//                    .filter(cv->!cv.getIsDeleted())
                     .map(source->modelMapper.map(source, Cv.class))
                     .toList();
 
