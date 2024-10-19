@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "13feb121-4bb2-4376-a482-b5b8fd9d01ca",
+		"name": "Interview Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36200064"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"applicationId\":\"d84ac88d-4aef-4f34-afe9-4f618c193738\",\r\n    \"candidateId\":\"3b0334d9-4464-4e7d-9d05-a2859a5a583a\",\r\n    \"type\":\"onsite\",\r\n    \"date\":\"2024-10-11\",\r\n    \"time\":\"10.00 AM\",\r\n    \"location\":\"colombo\",\r\n    \"link\":\"\",\r\n    \"dressCode\":\"Samart casual\",\r\n    \"description\":\"description 2\",\r\n    \"cutoffDate\":\"2024-10-30\",\r\n    \"cutoffTime\":\"11.59 PM\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/interviews/create",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"interviews",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"applicationId\":\"22\",\r\n    \"type\":\"onlindsse\",\r\n    \"date\":\"12\",\r\n    \"time\":\"12\",\r\n    \"location\":\"ddd\",\r\n    \"link\":\"sddd\",\r\n    \"dressCode\":\"dddd\",\r\n    \"description\":\"sss\",\r\n    \"cutoffDate\":\"sss\",\r\n    \"cutoffTime\":\"ddd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/interviews/create",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"interviews",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get interview list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/interviews/list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"interviews",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a interview",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/interviews/66c1ea5d915ed473308c13b2",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"interviews",
+						"66c1ea5d915ed473308c13b2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\":\"onsite\",\r\n    \"date\":\"2024-08-30\",\r\n    \"time\":\"10.11 AM\",\r\n    \"location\":\"dematagoda\",\r\n    \"link\":\"\",\r\n    \"dressCode\":\"\",\r\n    \"description\":\"lllsss\",\r\n    \"cutoffDate\":\"2024-08-30\",\r\n    \"cutoffTime\":\"10.00 AM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/interviews/66c1ea5d915ed473308c13b2",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"interviews",
+						"66c1ea5d915ed473308c13b2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "accessToken"
+		}
+	]
+}

@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "56a3872c-56bf-427c-a830-a64c50dbe3d5",
+		"name": "CV Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36200064"
+	},
+	"item": [
+		{
+			"name": "Save cv",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"file\":\"cvs/95a586e6-9c16-49f1-9328-9c32f09dccfe.pdf\",\n    \"cvImage\":\"https://recruiteasebucket.s3.amazonaws.com/public/cvthumbnails/1503c136-43b1-4225-b576-24c66cf98c25.pdf.png\",\n    \"cvData\":null,\n    \"cvName\":\"Akila CV1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/cv/saveCv",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"cv",
+						"saveCv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get cvs for given ids",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"130ae706-4a93-419d-b064-adc2d150b052\",\r\n    \"34c1bc5e-c30e-4944-88f5-7fb6c94c6bfe\"\r\n\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/cv/list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"cv",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get cv by cvId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/cv/view/0ed8def7-9af5-423e-9529-36cfb0fa2e04",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"cv",
+						"view",
+						"0ed8def7-9af5-423e-9529-36cfb0fa2e04"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get cv by cvId Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/cv/delete/37c55746-890c-4529-b6e9-a6b865fb5ab1",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"cv",
+						"delete",
+						"37c55746-890c-4529-b6e9-a6b865fb5ab1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get cvs for given candidate id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/cv/candidate/3b0334d9-4464-4e7d-9d05-a2859a5a583a",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"cv",
+						"candidate",
+						"3b0334d9-4464-4e7d-9d05-a2859a5a583a"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

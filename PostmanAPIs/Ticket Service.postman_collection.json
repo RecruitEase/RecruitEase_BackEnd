@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "05bc1dc3-1195-4c90-865e-a896377050c8",
+		"name": "Ticket Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36200064"
+	},
+	"item": [
+		{
+			"name": "GetAllTickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/ticket/get-all-tickets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"ticket",
+						"get-all-tickets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTicketById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/ticket/get-by-id?id=152",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"ticket",
+						"get-by-id"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "152"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveTickets",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"delay\": \"3 days\",\r\n    \"subject\": \"Issue with Add a photo\",\r\n    \"type\": \"Issue\",\r\n    \"jobTitle\": \"Software Engineer\",\r\n    \"date\": \"2025-09-14\",\r\n    \"status\": \"Open\",\r\n    \"name\": \"sanje Dulhani\",\r\n    \"description\": \"User is unable to upload 4to.\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/ticket/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"ticket",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateTicket",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ticketId\": 152,\r\n    \"delay\": \"9 days\",\r\n    \"date\": \"2026-09-14\",\r\n    \"status\": \"close\"\r\n   \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/ticket/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"ticket",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

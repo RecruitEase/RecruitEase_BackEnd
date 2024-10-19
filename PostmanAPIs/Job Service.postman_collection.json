@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "c746d7df-6406-499f-ad84-a0547739e515",
+		"name": "Job Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36200064"
+	},
+	"item": [
+		{
+			"name": "createjob",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n  \"title\": \"Engineer\",\r\n  \"type\": \"full_time\",\r\n  \"location\": \"island_wide\",\r\n  \"fields\": [1,2],\r\n  \"experienceLevel\": 1,\r\n  \"educationLevel\": 1,\r\n  \"description\": \"Responsible for developing and maintaining web applications using modern frameworks.\",\r\n  \"overview\": \"Join our dynamic team to create innovative software solutions in a fast-paced environment.\",\r\n  \"deadline\": \"2024-12-31\",\r\n  \"imageUrl\": null\r\n }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upate job",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"jobId\":\"b20540d9-8bad-403b-9df7-e07b1339e99f\",\r\n    \"status\":\"UNPUBLISHED\"\r\n }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/update-job",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"update-job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetJobs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/getall",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"getall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all live jobs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/get-all-live-jobs",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"get-all-live-jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Jobs by Logged Recruiter",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/get-my-jobs",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"get-my-jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Live Jobs for given  Recruiter Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/get-live-jobs-by-recruiter/b3cc5bd3-9bf3-4e38-82de-cc60ef60279a",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"get-live-jobs-by-recruiter",
+						"b3cc5bd3-9bf3-4e38-82de-cc60ef60279a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/view/62ed5854-2439-4cc6-967c-a36d40171a52",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"view",
+						"62ed5854-2439-4cc6-967c-a36d40171a52"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteJob",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/jobs/delete-job/55f1283a-e29a-4803-8212-02a23b5fac94",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"delete-job",
+						"55f1283a-e29a-4803-8212-02a23b5fac94"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

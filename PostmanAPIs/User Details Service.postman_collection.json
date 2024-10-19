@@ -1,0 +1,784 @@
+{
+	"info": {
+		"_postman_id": "53758723-2e2e-4276-876f-ff2ba9feb270",
+		"name": "User Details Service",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36200064"
+	},
+	"item": [
+		{
+			"name": "Get candidate details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/user/candidate/ef50885e-9d1b-47c8-80a5-930b53d61a47",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"candidate",
+						"ef50885e-9d1b-47c8-80a5-930b53d61a47"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get detail list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"recruiterIdList\":[\n    \"33d27ee6-86e8-4a13-b6ae-1ff8fb51daba\",\n    \"6121e6de-cf97-4ad8-82ac-895cf06d313e\"\n  ],\n  \"candidateIdList\":[\n    \"3b0334d9-4464-4e7d-9d05-a2859a5a583a\",\n    \"69793eab-a8c0-4660-a76e-6d87c15c07ba\"\n  ],\n  \"moderatorIdList\": [\n    \"a45c013f-9891-4493-858a-fc607c2fd551\",\n    \"1f7c7a15-bf0b-4387-9fb6-f0115aded01a\"\n  ],\n  \"adminIdList\": [\n    \"6b1d58e6-c5b2-4d83-b7a3-1fc4193b717e\",\n    \"a29faf21-93af-45d4-ae7e-8df7500aca85\"\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/detail-list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"detail-list"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "update candidate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"chathura\",\n  \"lastName\": \"lakshan\",\n  \"address\": \"wattala 11\",\n  \"city\": \"Nuwara ELiya\",\n  \"mobileNumber\": \"0112939220\",\n  \"profilePic\": null,\n  \"profileStatus\": null,\n  \"skills\": null,\n  \"experience\": \"99X\",\n  \"education\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/update-candidate",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"update-candidate"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "update recruiter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"mobileNumber\": \"+1234567890\",\n  \"profilePic\": null,\n  \"website\": \"https://johndoe.com\",\n  \"businessRegistrationNumber\": \"BR123456789\",\n  \"companyName\": \"Doe Enterprises\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/update-recruiter",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"update-recruiter"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "update admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"address\": \"456 Oak Avenue\",\n  \"city\": \"Los Angeles\",\n  \"mobileNumber\": \"+1987654321\",\n  \"profilePic\": null\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/update-admin",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"update-admin"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "update moderator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"address\": \"456 Oak Avenue\",\n  \"city\": \"Los Angeles\",\n  \"mobileNumber\": \"+1987654321\",\n  \"profilePic\": null\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/update-moderator",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"update-moderator"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get moderator list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"moderatorIdList\": [\n    \"a45c013f-9891-4493-858a-fc607c2fd551\",\n    \"1f7c7a15-bf0b-4387-9fb6-f0115aded01a\"\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/moderator-list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"moderator-list"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get admin list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"adminIdList\": [\n    \"6b1d58e6-c5b2-4d83-b7a3-1fc4193b717e\",\n    \"a29faf21-93af-45d4-ae7e-8df7500aca85\"\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/admin-list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"admin-list"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get candidate list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n  \"candidateIdList\":[\n    \"3b0334d9-4464-4e7d-9d05-a2859a5a583a\",\n    \"69793eab-a8c0-4660-a76e-6d87c15c07ba\"\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/candidate-list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"candidate-list"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get recruiter list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"recruiterIdList\":[\n    \"33d27ee6-86e8-4a13-b6ae-1ff8fb51daba\",\n    \"6121e6de-cf97-4ad8-82ac-895cf06d313e\"\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/user/recruiter-list",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"recruiter-list"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get moderator details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/user/moderator/1f7c7a15-bf0b-4387-9fb6-f0115aded01a",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"moderator",
+						"1f7c7a15-bf0b-4387-9fb6-f0115aded01a"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get admin details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/user/admin/6b1d58e6-c5b2-4d83-b7a3-1fc4193b717e",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"admin",
+						"6b1d58e6-c5b2-4d83-b7a3-1fc4193b717e"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Get recruiter details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/user/recruiter/33d27ee6-86e8-4a13-b6ae-1ff8fb51daba",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"user",
+						"recruiter",
+						"33d27ee6-86e8-4a13-b6ae-1ff8fb51daba"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIwNTkxMjFkYy02M2I0LTQxOGYtYmE3Yy1hNjA5OGM3ZDQxNDEiLCJpYXQiOjE3MjMwMjQwMjAsImV4cCI6MTcyMzAyNDMyMH0.a7YJvlGe2n9wnapevWBi1WUWgxKj-pTlPlrGNNCdvV3Fzq8NXr9OYiHPe1c9yV9L",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		}
+	]
+}
