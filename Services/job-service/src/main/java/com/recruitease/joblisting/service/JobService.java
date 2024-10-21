@@ -13,6 +13,7 @@ import com.recruitease.joblisting.util.CodeList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.sasl.AuthenticationException;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +39,30 @@ public class JobService {
     private final JobRepository jobRepository;
     private final FieldRepository fieldRepository;
     private final ModelMapper modelMapper;
+
+    // Sri Lanka time zone
+    private static final ZoneId SRI_LANKA_ZONE = ZoneId.of("Asia/Colombo");
+
+    // Run this task every day at midnight in the server's time zone
+    // change job status after deadline
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateExpiredJobs() {
+        // Get the current time in Sri Lankan time zone
+        LocalDate nowSriLankaDate = LocalDate.now(SRI_LANKA_ZONE);
+
+        // Fetch all active job offers
+        List<Job> activeJobs = jobRepository.findByStatus(Job.JobStatus.LIVE);
+
+        for (Job job : activeJobs) {
+            // Check if the final acceptance date has passed according to Sri Lankan time
+            if (job.getDeadline().isBefore(nowSriLankaDate)) {
+                // Set status to expired
+                job.setStatus(Job.JobStatus.ARCHIVED);
+                jobRepository.save(job); // Save the updated status
+            }
+        }
+    }
+
 
     public Response createJob(JobRequest jobRequest) {
         Response response = new Response();

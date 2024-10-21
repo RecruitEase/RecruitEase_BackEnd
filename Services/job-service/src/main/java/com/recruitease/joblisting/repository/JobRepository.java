@@ -19,4 +19,6 @@ public interface JobRepository extends JpaRepository<Job, String> {
     List<Job> findAllByRecruiterIdAndStatus(String recruiterId, Job.JobStatus status);
 
     List<Job> findAllByStatus(Job.JobStatus jobStatus);
+
+    List<Job> findByStatus(Job.JobStatus jobStatus);
 }
