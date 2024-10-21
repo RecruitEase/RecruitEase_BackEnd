@@ -82,7 +82,7 @@ public class JobService {
                             .orElseThrow(() -> new IllegalArgumentException("Invalid field key: " + key)))
                     .collect(Collectors.toSet());
             job.setFields(jobFields);
-            job.setCreatedAt(LocalDateTime.now());
+            job.setCreatedAt(LocalDateTime.now(SRI_LANKA_ZONE));
             System.out.println(job.toString());
             var res = jobRepository.save(job);
 

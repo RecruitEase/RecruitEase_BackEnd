@@ -67,6 +67,7 @@ public class OfferService {
 
         if (applicationOptional.isPresent()) {
             Application application = applicationOptional.get();
+            offer.setCreatedAt(LocalDateTime.now(SRI_LANKA_ZONE));
 
             offer.setStatus(Offer.OfferStatus.PENDING);
             offer.setApplication(application);

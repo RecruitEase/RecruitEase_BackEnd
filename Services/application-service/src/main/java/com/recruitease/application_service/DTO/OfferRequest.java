@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record OfferRequest(
+        String offerId,
         @NotNull(message = "ApplicationId is required")
         @NotEmpty(message = "ApplicationId cannot be empty")
         String applicationId,
@@ -19,10 +20,8 @@ public record OfferRequest(
         @NotEmpty(message = "RecruiterId cannot be empty")
         String recruiterId,
         @NotNull(message = "CuttOff Date and Time is required")
-        @NotEmpty(message = "CuttOff Date and Time cannot be empty")
         LocalDateTime finalAcceptanceDateTime,
         @NotNull(message = "Start Date and Time is required")
-        @NotEmpty(message = "Start Date and Time cannot be empty")
         LocalDateTime startDateTime,
         @NotNull(message = "Description is required")
         @NotEmpty(message = "Description cannot be empty")

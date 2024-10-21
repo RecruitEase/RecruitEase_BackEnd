@@ -19,7 +19,7 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String offerId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 
@@ -28,12 +28,18 @@ public class Offer {
     private String jobId;
 
     private String location;
+
+    @Enumerated(EnumType.STRING)
     private OfferStatus status;
     private LocalDateTime startDateTime;
     private LocalDateTime finalAcceptanceDateTime;
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(columnDefinition = "TEXT",nullable = true)
+    private String statusChangeNote;
+
 
     @CreatedDate
     @Column(updatable = false, nullable = false)

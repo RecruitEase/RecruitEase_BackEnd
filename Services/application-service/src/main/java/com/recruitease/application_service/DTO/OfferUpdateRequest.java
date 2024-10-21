@@ -11,7 +11,9 @@ public record OfferUpdateRequest(
         @NotEmpty(message = "OfferId cannot be empty")
         String offerId,
         @NotNull(message = "status is required")
-        Offer.OfferStatus status
+        Offer.OfferStatus status,
+        String statusChangeNote
+
 ) {
 
 }
