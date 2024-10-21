@@ -1,8 +1,9 @@
 package com.recruitease.application_service.service;
 
-import com.recruitease.application_service.DTO.ApplicationResponse;
 import com.recruitease.application_service.DTO.OfferRequest;
+import com.recruitease.application_service.DTO.OfferUpdateRequest;
 import com.recruitease.application_service.DTO.ResponseDTO;
+import com.recruitease.application_service.config.CustomUserDetails;
 import com.recruitease.application_service.entity.Application;
 import com.recruitease.application_service.entity.Offer;
 import com.recruitease.application_service.repository.ApplicationRepository;
@@ -12,8 +13,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Repository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +116,7 @@ public class OfferService {
         return responseDTO;
     }
 
-    public ResponseDTO getoffersPerCandidate(String candidateId) {
+    public ResponseDTO getOffersPerCandidate(String candidateId) {
 
         var responseDTO=new ResponseDTO();
         try {
@@ -136,7 +139,7 @@ public class OfferService {
         return responseDTO;
     }
 
-    public ResponseDTO getoffersPerRecruiter(String recruiterId) {
+    public ResponseDTO getOffersPerRecruiter(String recruiterId) {
 
         var responseDTO=new ResponseDTO();
         try {
@@ -153,6 +156,72 @@ public class OfferService {
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(null);
+        }
+
+
+        return responseDTO;
+    }
+
+    public ResponseDTO getOffersPerJob(String jobId) {
+        var responseDTO=new ResponseDTO();
+        try {
+            //get list of applications for the given candidateId
+            var res = repository.findByJobId(jobId)
+                    .stream()
+                    .map(source->modelMapper.map(source,Offer.class))
+                    .toList();
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        }catch (Exception e){
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(null);
+        }
+
+
+        return responseDTO;
+    }
+
+    @Transactional
+    public ResponseDTO updateOffer(String offerId,OfferUpdateRequest updateReq) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+
+            //get canidate id of logged user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            Optional<Offer> res = Optional.empty();
+            if(userDetails.getRole().equals("candidate")){
+                res= repository.findByOfferIdAndCandidateId(updateReq.offerId(),userDetails.getCandidateDetails().getCandidateId());
+            }else if(userDetails.getRole().equals("recruiter")){
+                res= repository.findByOfferIdAndRecruiterId(updateReq.offerId(),userDetails.getRecruiterDetails().getRecruiterId());
+            }
+
+            if (res.isPresent()) {
+                var prevData = res.get();
+                prevData.setStatus(updateReq.status());
+                //dont have to call save method, transactional annotation update the db for us if modified
+//            Candidate updateResponse=candidateRepository.save(prevData);
+                responseDTO.setCode(CodeList.RSP_SUCCESS);
+                responseDTO.setMessage("Success");
+                return responseDTO;
+            } else {
+                responseDTO.setCode(CodeList.RSP_ERROR);
+                responseDTO.setMessage("Not Found!");
+                responseDTO.setErrors(errors);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
         }
 
 
