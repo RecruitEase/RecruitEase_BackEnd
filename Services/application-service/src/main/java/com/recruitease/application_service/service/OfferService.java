@@ -205,6 +205,7 @@ public class OfferService {
             if (res.isPresent()) {
                 var prevData = res.get();
                 prevData.setStatus(updateReq.status());
+                prevData.setStatusChangeNote(updateReq.statusChangeNote());
                 //dont have to call save method, transactional annotation update the db for us if modified
 //            Candidate updateResponse=candidateRepository.save(prevData);
                 responseDTO.setCode(CodeList.RSP_SUCCESS);
