@@ -21,9 +21,14 @@ public class SecurityConfig  {
         http.addFilterBefore(userContextFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/jobs/getall",
+                                "/api/jobs/get-all-live-jobs",
+                                "/api/jobs/get-live-jobs-by-recruiter/**",
+                                "/api/jobs/view/**").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }
+
 
     @Bean
     public UserContextFilter userContextFilter() {

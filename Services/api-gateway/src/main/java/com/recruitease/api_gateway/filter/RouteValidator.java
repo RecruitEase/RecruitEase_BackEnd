@@ -22,7 +22,12 @@ public class RouteValidator {
             "/user/candidate",
             "/user/recruiter",
             "/user/admin",
-            "/user/moderator"
+            "/user/moderator",
+            "/api/jobs/get-all-live-jobs",
+            "/api/jobs/getall",
+            "/api/jobs/get-live-jobs-by-recruiter/",
+            "/api/jobs/view/"
+
     );
 
     public Predicate<ServerHttpRequest> isSecured =
