@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class InterviewForCandidateDTO {
     private String id;
     private String applicationId;
+    private String candidateId;
+    private String recruiterId;
     private String type;
     private String date;
     private String time;
