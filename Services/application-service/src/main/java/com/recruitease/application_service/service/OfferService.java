@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -35,24 +36,37 @@ public class OfferService {
     // Sri Lanka time zone
     private static final ZoneId SRI_LANKA_ZONE = ZoneId.of("Asia/Colombo");
 
-    // Run this task every day at midnight in the server's time zone
-    // change offer status
-    @Scheduled(cron = "0 0 0 * * ?")
+
+    // Run this task every day at midnight Sri Lanka time
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Colombo")
     public void updateExpiredJobOffers() {
         // Get the current time in Sri Lankan time zone
-        LocalDateTime nowSriLankaTime = LocalDateTime.now(SRI_LANKA_ZONE);
+        ZonedDateTime zonedNow = ZonedDateTime.now(SRI_LANKA_ZONE);
+        LocalDateTime nowSriLankaTime = zonedNow.toLocalDateTime();
 
-        // Fetch all active job offers
+        // Log the execution time for debugging
+        System.out.println("Executing offer update task at: " + zonedNow);
+
+        // Fetch all pending job offers
         List<Offer> activeJobOffers = repository.findByStatus(Offer.OfferStatus.PENDING);
+        int expiredCount = 0;
 
         for (Offer jobOffer : activeJobOffers) {
             // Check if the final acceptance date has passed according to Sri Lankan time
-            if (jobOffer.getFinalAcceptanceDateTime().isBefore(nowSriLankaTime)) {
+            if (jobOffer.getFinalAcceptanceDateTime() != null &&
+                    jobOffer.getFinalAcceptanceDateTime().isBefore(nowSriLankaTime)) {
                 // Set status to expired
                 jobOffer.setStatus(Offer.OfferStatus.EXPIRED);
-                repository.save(jobOffer); // Save the updated status
+                repository.save(jobOffer);
+                expiredCount++;
+
+                System.out.println("Expired offer with ID: " + jobOffer.getOfferId() +
+                        ", Final acceptance datetime: " +
+                        jobOffer.getFinalAcceptanceDateTime());
             }
         }
+
+        System.out.println("Total offers expired: " + expiredCount);
     }
 
 
