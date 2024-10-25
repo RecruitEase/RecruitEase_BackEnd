@@ -126,6 +126,9 @@ public class Job {
         @Column(name = "deadline")
         private LocalDate deadline;
 
+        @Column(name = "questions", columnDefinition = "TEXT",nullable = true)
+        private String questions;
+
         @Enumerated(EnumType.STRING)
         @Column(name = "status", length = 20)
         private JobStatus status;

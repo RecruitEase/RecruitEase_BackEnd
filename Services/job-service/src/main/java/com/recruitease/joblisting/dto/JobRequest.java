@@ -23,6 +23,7 @@ public class JobRequest {
     private Integer experienceLevel;
     private Integer educationLevel;
     private String description;
+    private String questions;
     private String overview;
     private LocalDate deadline;
     private String imageUrl;

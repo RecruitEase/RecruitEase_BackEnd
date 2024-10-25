@@ -24,6 +24,7 @@ public class JobResponse {
     private Integer experienceLevel;
     private Integer educationalLevel;
     private String description;
+    private String questions;
     private String overview;
     private LocalDate deadline;
     private Job.JobStatus status;
