@@ -25,6 +25,7 @@ import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -43,22 +44,27 @@ public class JobService {
     // Sri Lanka time zone
     private static final ZoneId SRI_LANKA_ZONE = ZoneId.of("Asia/Colombo");
 
-    // Run this task every day at midnight in the server's time zone
-    // change job status after deadline
-    @Scheduled(cron = "0 0 0 * * ?")
+    // Run this task every day at midnight Sri Lanka time
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Colombo")
     public void updateExpiredJobs() {
         // Get the current time in Sri Lankan time zone
-        LocalDate nowSriLankaDate = LocalDate.now(SRI_LANKA_ZONE);
+        ZonedDateTime nowSriLanka = ZonedDateTime.now(SRI_LANKA_ZONE);
+        LocalDate nowSriLankaDate = nowSriLanka.toLocalDate();
+
+        // Log the execution time for debugging
+        System.out.println("Executing job update task at: " + nowSriLanka);
 
         // Fetch all active job offers
         List<Job> activeJobs = jobRepository.findByStatus(Job.JobStatus.LIVE);
 
         for (Job job : activeJobs) {
             // Check if the final acceptance date has passed according to Sri Lankan time
-            if (job.getDeadline().isBefore(nowSriLankaDate)) {
+            if (job.getDeadline() != null && job.getDeadline().isBefore(nowSriLankaDate)) {
                 // Set status to expired
                 job.setStatus(Job.JobStatus.ARCHIVED);
-                jobRepository.save(job); // Save the updated status
+                jobRepository.save(job);
+                System.out.println("Archived job with ID: " + job.getJobId() +
+                        ", Deadline: " + job.getDeadline());
             }
         }
     }
