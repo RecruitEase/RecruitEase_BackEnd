@@ -15,6 +15,7 @@ public class LoggedCandidate {
     private String createdAt;
     private String firstName;
     private String lastName;
+    private String address;
     private String city;
     private String gender;
     private String profilePic;
