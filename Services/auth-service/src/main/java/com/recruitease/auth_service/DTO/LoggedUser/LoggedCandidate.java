@@ -22,6 +22,7 @@ public class LoggedCandidate {
     private String profileStatus;
     private String candidateId;
     private String skills;
+    private String aboutMe;
     private String experience;
     private String education;
 }

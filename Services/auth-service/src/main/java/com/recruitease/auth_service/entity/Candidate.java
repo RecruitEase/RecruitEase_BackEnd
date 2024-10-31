@@ -40,6 +40,8 @@ public class Candidate {
     @Column(columnDefinition="TEXT")
     private String skills;
     @Column(columnDefinition="TEXT")
+    private String aboutMe;
+    @Column(columnDefinition="TEXT")
     private String experience;
     @Column(columnDefinition="TEXT")
     private String education;
@@ -62,6 +64,7 @@ public class Candidate {
         Optional.ofNullable(srcObj.getProfilePic()).ifPresent(this::setProfilePic);
         Optional.ofNullable(srcObj.getProfileStatus()).ifPresent(this::setProfileStatus);
         Optional.ofNullable(srcObj.getSkills()).ifPresent(this::setSkills);
+        Optional.ofNullable(srcObj.getAboutMe()).ifPresent(this::setAboutMe);
         Optional.ofNullable(srcObj.getExperience()).ifPresent(this::setExperience);
         Optional.ofNullable(srcObj.getEducation()).ifPresent(this::setEducation);
 

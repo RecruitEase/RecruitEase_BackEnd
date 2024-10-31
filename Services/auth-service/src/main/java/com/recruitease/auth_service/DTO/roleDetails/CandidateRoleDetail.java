@@ -13,6 +13,7 @@ public class CandidateRoleDetail extends RoleDetailObject {
     private String nic;
     private LocalDate dob;
     private String skills;
+    private String aboutMe;
     private String experience;
     private String education;
 }
