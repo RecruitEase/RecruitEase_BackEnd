@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ApplicationResponse {
-    private String code;
-    private String message;
-    private List<ApplicationResponseContent> content; 
-    private Object errors;
+public class CvListRequest {
+    private List<String> cvIds;
 }
+ 
+    
+
