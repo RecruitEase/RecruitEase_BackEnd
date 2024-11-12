@@ -1,5 +1,7 @@
 package com.recruitease.recommendation.DTO;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -13,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class ApplicationResponse {
     private String code;
     private String message;
-    private Object content; 
+    private List<ApplicationResponseContent> content;
     private Object errors;
 }
