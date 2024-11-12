@@ -1,136 +1,114 @@
 package com.recruitease.recommendation.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
-    // import org.apache.tika.Tika;
-    // import org.apache.tika.exception.TikaException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-
-import com.recruitease.recommendation.DTO.RecommendationResponseDTO;
 import com.recruitease.recommendation.DTO.RecommendationRequestDTO;
+import com.recruitease.recommendation.DTO.RecommendationResponseDTO;
 import com.recruitease.recommendation.DTO.ResponseDTO;
+
+import java.io.IOException;
+
+import feign.Response;
 
 @Service
 public class CandidateRecommendation {
 
-    public ResponseDTO rankCandidates (List<RecommendationRequestDTO> recommendations, List<String> keywords) throws Exception {
+    private static final Logger logger = LoggerFactory.getLogger(CandidateRecommendation.class);
+
+    private final PdfService pdfService;
+
+    public CandidateRecommendation(PdfService pdfService) {
+        this.pdfService = pdfService;
+    }
+
+    public ResponseDTO rankCandidates(List<RecommendationRequestDTO> recommendations, List<String> keywords) {
         Map<String, Double> candidateMatchPercentages = new HashMap<>();
 
-        PdfService pdfService = new PdfService();
+        try {
+            for (RecommendationRequestDTO dto : recommendations) {
+                String combinedContent = extractPersonalData(dto);
 
-        for (RecommendationRequestDTO dto : recommendations) {
-            String content = extractPersonalData(dto);
+                // Fetch and process PDF content if available
+                if (dto.getFile() != null && !dto.getFile().isEmpty()) {
+                    try {
+                        String pdfContent = pdfService.downloadAndExtractText(dto.getFile());
+                        combinedContent += " " + pdfContent;
+                    } catch (IOException e) {
+                        logger.error("Failed to extract text from PDF for candidate ID: {}", dto.getId(), e);
+                    }
+                }
 
-            RecommendationResponseDTO responseDTO = RecommendationResponseDTO.builder()
-                    .id(dto.getId())
-                    .firstName(dto.getFirstName())
-                    .lastName(dto.getLastName())
-                    .cvId(dto.getCvId())
-                    .build();
-
-
-            String pdfContent = "";
-            if (dto.getFile() != null && !dto.getFile().isEmpty()) {
-                pdfContent = pdfService.downloadAndExtractText(dto.getFile());
+                // Calculate match percentage with provided keywords
+                double matchPercentage = calculateMatchPercentage(combinedContent, keywords);
+                candidateMatchPercentages.put(dto.getId(), matchPercentage);
             }
 
-            String combinedContent = content + " " + pdfContent;
+            // Sort candidates by match percentage in descending order
+            List<RecommendationResponseDTO> rankedCandidateList = generateRankedCandidates(recommendations, candidateMatchPercentages);
 
-            double matchPercentage = calculateMatchPercentage(combinedContent, keywords);
-            responseDTO.setMatchPercentage(matchPercentage);
+          ResponseDTO response = new ResponseDTO();
+            response.setCode("200");
+            response.setMessage("Candidates ranked successfully");
+            response.setContent(rankedCandidateList);
+            return response;
 
-            candidateMatchPercentages.put(dto.getId(), matchPercentage);
-
-
-
-           
+        } catch (Exception e) {
+           ResponseDTO response = new ResponseDTO();
+            response.setCode("500");
+            response.setMessage("Failed to rank candidates");
+            return response;
         }
-
-        //sort the map by value in descending order
-        List<Map.Entry<String, Double>> sortedCandidates = candidateMatchPercentages.entrySet().stream()
-                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
-                .collect(Collectors.toList());
-
-        List<RecommendationResponseDTO> rankedCandidateList = sortedCandidates.stream()
-                .map(entry -> {
-                    Optional<RecommendationResponseDTO> candidate = recommendations.stream()
-                            .filter(recommendation -> recommendation.getId().equals(entry.getKey()))
-                            .map(recommendation -> RecommendationResponseDTO.builder()
-                                    .id(recommendation.getId())
-                                    .firstName(recommendation.getFirstName())
-                                    .lastName(recommendation.getLastName())
-                                    .cvId(recommendation.getCvId())
-                                    .matchPercentage(entry.getValue())
-                                    .build())
-                            .findFirst();
-
-                    return candidate.orElse(null);
-                })
-                .collect(Collectors.toList());
-
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setContent(rankedCandidateList);
-        responseDTO.setCode("200");
-        responseDTO.setMessage("Success");
-
-        return responseDTO;
-
-
     }
 
     private String extractPersonalData(RecommendationRequestDTO candidate) {
         StringBuilder content = new StringBuilder();
 
-       
-        if (candidate.getGender() != null) {
-            content.append("Gender: ").append(candidate.getGender()).append(" ");
-        }
-        if (candidate.getSkills() != null) {
-            content.append("Skills: ").append(candidate.getSkills()).append(" ");
-        }
-        if (candidate.getAboutMe() != null) {
-            content.append("About Me: ").append(candidate.getAboutMe()).append(" ");
-        }
-        if (candidate.getEducation() != null) {
-            content.append("Education: ").append(candidate.getEducation()).append(" ");
-        }
-        if (candidate.getExperience() != null) {
-            content.append("Experience: ").append(candidate.getExperience()).append(" ");
-        }
+        Optional.ofNullable(candidate.getGender()).ifPresent(gender -> content.append("Gender: ").append(gender).append(" "));
+        Optional.ofNullable(candidate.getSkills()).ifPresent(skills -> content.append("Skills: ").append(skills).append(" "));
+        Optional.ofNullable(candidate.getAboutMe()).ifPresent(aboutMe -> content.append("About Me: ").append(aboutMe).append(" "));
+        Optional.ofNullable(candidate.getEducation()).ifPresent(education -> content.append("Education: ").append(education).append(" "));
+        Optional.ofNullable(candidate.getExperience()).ifPresent(experience -> content.append("Experience: ").append(experience).append(" "));
 
         return content.toString();
     }
 
     private double calculateMatchPercentage(String content, List<String> keywords) {
-        int totalKeywords = keywords.size();
-        int matchCount = 0;
-
-       
-        content = content.toLowerCase();
-        for (String keyword : keywords) {
-            if (content.contains(keyword.toLowerCase())) {
-                matchCount++;
-            }
+        if (keywords.isEmpty()) {
+            logger.warn("No keywords provided for match calculation");
+            return 0.0;
         }
 
+        final String lowerCaseContent = content.toLowerCase();
+        long matchCount = keywords.stream()
+                .filter(keyword -> lowerCaseContent.contains(keyword.toLowerCase()))
+                .count();
 
-        return totalKeywords == 0 ? 0.0 : ((double) matchCount / totalKeywords) * 100;
+        return ((double) matchCount / keywords.size()) * 100;
     }
 
-    
+    private List<RecommendationResponseDTO> generateRankedCandidates(
+            List<RecommendationRequestDTO> recommendations,
+            Map<String, Double> candidateMatchPercentages) {
 
-  
+        return candidateMatchPercentages.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .map(entry -> recommendations.stream()
+                        .filter(recommendation -> recommendation.getId().equals(entry.getKey()))
+                        .findFirst()
+                        .map(recommendation -> RecommendationResponseDTO.builder()
+                                .id(recommendation.getId())
+                                .firstName(recommendation.getFirstName())
+                                .lastName(recommendation.getLastName())
+                                .cvId(recommendation.getCvId())
+                                .matchPercentage(entry.getValue())
+                                .build())
+                        .orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
 }

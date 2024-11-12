@@ -10,7 +10,6 @@ import lombok.*;
 
 public class RecommendationResponseDTO {
 
-    private int rank;
     private double matchPercentage;
     private String id;
     private String firstName;
