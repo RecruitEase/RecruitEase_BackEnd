@@ -2,7 +2,7 @@ package com.recruitease.ticket_service.controller;
 
 import com.recruitease.ticket_service.dto.TicketDTO;
 import com.recruitease.ticket_service.dto.request.TicketUpdateDTO;
-import com.recruitease.ticket_service.service.TicketService;
+import com.recruitease.ticket_service.service.TicketServiceNew;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketController {
 
-    private final TicketService ticketService;
+    private final TicketServiceNew ticketService;
 
     @PostMapping(
             path = {"/save"}

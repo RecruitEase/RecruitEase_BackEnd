@@ -27,9 +27,10 @@ public class Ticket {
     private TicketStatus status;
     private String subject;
     private String description;
+    private String creatorId;
+    private CreatorRole creatorRole;
     private String note; //status change note
     @CreatedDate
-    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime modifiedAt;
@@ -38,6 +39,11 @@ public class Ticket {
         RESOLVED,
         REJECTED,
         UNDER_REVIEW,
+    }
+
+    public enum CreatorRole {
+        CANDIDATE,
+        RECRUITER
     }
 
     public enum TicketType {
