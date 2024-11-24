@@ -7,22 +7,62 @@
 	},
 	"item": [
 		{
-			"name": "GetAllTickets",
+			"name": "get all ticket of recruiter",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/v1/ticket/get-all-tickets",
-					"protocol": "http",
+					"raw": "{{BaseUrl}}/api/v1/ticket/recruiter/b3cc5bd3-9bf3-4e38-82de-cc60ef60279a",
 					"host": [
-						"localhost"
+						"{{BaseUrl}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"v1",
 						"ticket",
-						"get-all-tickets"
+						"recruiter",
+						"b3cc5bd3-9bf3-4e38-82de-cc60ef60279a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all ticket of candidate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseUrl}}/api/v1/ticket/candidate/9e165564-237b-4d9c-8a66-e91b52318b14",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ticket",
+						"candidate",
+						"9e165564-237b-4d9c-8a66-e91b52318b14"
 					]
 				}
 			},
@@ -31,26 +71,29 @@
 		{
 			"name": "GetTicketById",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/v1/ticket/get-by-id?id=152",
-					"protocol": "http",
+					"raw": "{{BaseUrl}}/api/v1/ticket/view/5b665785-5ffa-4764-afb8-a5fbb6bee55b",
 					"host": [
-						"localhost"
+						"{{BaseUrl}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"v1",
 						"ticket",
-						"get-by-id"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "152"
-						}
+						"view",
+						"5b665785-5ffa-4764-afb8-a5fbb6bee55b"
 					]
 				}
 			},
@@ -59,11 +102,21 @@
 		{
 			"name": "SaveTickets",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\r\n    \"delay\": \"3 days\",\r\n    \"subject\": \"Issue with Add a photo\",\r\n    \"type\": \"Issue\",\r\n    \"jobTitle\": \"Software Engineer\",\r\n    \"date\": \"2025-09-14\",\r\n    \"status\": \"Open\",\r\n    \"name\": \"sanje Dulhani\",\r\n    \"description\": \"User is unable to upload 4to.\"\r\n}\r\n",
+					"raw": "{\r\n\r\n    \"type\": \"INTERVIEW\",\r\n    \"subject\": \"Issue with interview\",\r\n    \"description\": \"Issue description\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -71,17 +124,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/api/v1/ticket/save",
-					"protocol": "http",
+					"raw": "{{BaseUrl}}/api/v1/ticket/create",
 					"host": [
-						"localhost"
+						"{{BaseUrl}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"v1",
 						"ticket",
-						"save"
+						"create"
 					]
 				}
 			},
@@ -90,11 +141,21 @@
 		{
 			"name": "UpdateTicket",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"ticketId\": 152,\r\n    \"delay\": \"9 days\",\r\n    \"date\": \"2026-09-14\",\r\n    \"status\": \"close\"\r\n   \r\n}\r\n",
+					"raw": "{\r\n    \"status\":\"RESOLVED\",\r\n    \"note\":\"Resolved by me\"\r\n   \r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,17 +163,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/api/v1/ticket/update",
-					"protocol": "http",
+					"raw": "{{BaseUrl}}/api/v1/ticket/update/5b665785-5ffa-4764-afb8-a5fbb6bee55b",
 					"host": [
-						"localhost"
+						"{{BaseUrl}}"
 					],
-					"port": "8081",
 					"path": [
 						"api",
 						"v1",
 						"ticket",
-						"update"
+						"update",
+						"5b665785-5ffa-4764-afb8-a5fbb6bee55b"
 					]
 				}
 			},
