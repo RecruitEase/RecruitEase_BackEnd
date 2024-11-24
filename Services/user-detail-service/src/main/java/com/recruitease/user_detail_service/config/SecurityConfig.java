@@ -1,6 +1,5 @@
 package com.recruitease.user_detail_service.config;
 
-import com.recruitease.user_detail_service.config.UserContextFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity //for pre post authorization for roles
-public class SecurityConfig  {
+@EnableMethodSecurity // for pre post authorization for roles
+public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.addFilterBefore(userContextFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -29,7 +28,8 @@ public class SecurityConfig  {
                                 "/user/candidate-list",
                                 "/user/moderator-list",
                                 "/user/recruiter-list",
-                                "/user/detail-list").permitAll()
+                                "/user/detail-list")
+                        .permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }
@@ -41,6 +41,6 @@ public class SecurityConfig  {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/ignore1", "/ignore2"); // Configure paths to ignore if needed
+        return (web) -> web.ignoring().requestMatchers("/user/detail-list");
     }
 }

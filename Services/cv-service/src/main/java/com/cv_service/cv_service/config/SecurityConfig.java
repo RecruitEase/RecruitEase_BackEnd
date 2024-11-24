@@ -1,6 +1,5 @@
 package com.cv_service.cv_service.config;
 
-import com.cv_service.cv_service.config.UserContextFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +31,6 @@ public class SecurityConfig  {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/ignore1", "/ignore2"); // Configure paths to ignore if needed
+        return (web) -> web.ignoring().requestMatchers("/api/v1/cv/list/**");
     }
 }

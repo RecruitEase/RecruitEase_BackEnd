@@ -1,14 +1,12 @@
-package com.recruitease.user_detail_service.DTO.LoggedUser;
-
+package com.recruitease.recommendation.DTO;
 import lombok.*;
-
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class LoggedRecruiter {
+public class CandidateData {
     private String id;
     private String email;
     private String role;
@@ -16,12 +14,14 @@ public class LoggedRecruiter {
     private String createdAt;
     private String firstName;
     private String lastName;
-    private String profilePic;
-    private String recruiterId;
-    private String companyName;
+    private String address;
     private String city;
     private String gender;
-    private String address;
-    private String businessRegistrationNumber;
-    private String website;
+    private String profilePic;
+    private String profileStatus;
+    private String candidateId;
+    private String skills;
+    private String aboutMe;
+    private String experience;
+    private String education;
 }

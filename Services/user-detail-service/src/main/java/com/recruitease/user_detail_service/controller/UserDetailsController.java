@@ -23,78 +23,72 @@ public class UserDetailsController {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-
-
-    @PostMapping({"/detail-list", "/recruiter-list","/admin-list","/moderator-list","/candidate-list"})
+    @PostMapping({ "/detail-list", "/recruiter-list", "/admin-list", "/moderator-list", "/candidate-list" })
     public ResponseEntity<ResponseDTO> userDetailList(@RequestBody UserDetailsRequestDTO request) {
-        ResponseDTO res= userService.getUserDetailsLists(request);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+        ResponseDTO res = userService.getUserDetailsLists(request);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
 
-
-
-
-
     @GetMapping("/candidate/{candidateId}")
-    public ResponseEntity<ResponseDTO> candidateDetails(@PathVariable  String candidateId) {
-        ResponseDTO res= userService.getCandidateDetails(candidateId);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+    public ResponseEntity<ResponseDTO> candidateDetails(@PathVariable String candidateId) {
+        ResponseDTO res = userService.getCandidateDetails(candidateId);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @GetMapping("/recruiter/{recruiterId}")
-    public ResponseEntity<ResponseDTO> recruiterDetails(@PathVariable  String recruiterId) {
-        ResponseDTO res= userService.getRecruiterDetails(recruiterId);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+    public ResponseEntity<ResponseDTO> recruiterDetails(@PathVariable String recruiterId) {
+        ResponseDTO res = userService.getRecruiterDetails(recruiterId);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @GetMapping("/moderator/{moderatorId}")
-    public ResponseEntity<ResponseDTO> moderatorDetails(@PathVariable  String moderatorId) {
-        ResponseDTO res= userService.getModeratorDetails(moderatorId);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+    public ResponseEntity<ResponseDTO> moderatorDetails(@PathVariable String moderatorId) {
+        ResponseDTO res = userService.getModeratorDetails(moderatorId);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @GetMapping("/admin/{adminId}")
-    public ResponseEntity<ResponseDTO> adminDetails(@PathVariable  String adminId) {
-        ResponseDTO res= userService.getAdminDetails(adminId);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+    public ResponseEntity<ResponseDTO> adminDetails(@PathVariable String adminId) {
+        ResponseDTO res = userService.getAdminDetails(adminId);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -102,14 +96,14 @@ public class UserDetailsController {
     @PutMapping("/update-candidate")
     @PreAuthorize("hasRole('ROLE_CANDIDATE')")
     public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Candidate candidatePutReq) {
-        ResponseDTO res= userService.updateCandidate(candidatePutReq);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+        ResponseDTO res = userService.updateCandidate(candidatePutReq);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -117,14 +111,14 @@ public class UserDetailsController {
     @PutMapping("/update-recruiter")
     @PreAuthorize("hasRole('ROLE_RECRUITER')")
     public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Recruiter recruiterPutReq) {
-        ResponseDTO res= userService.updateRecruiter(recruiterPutReq);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+        ResponseDTO res = userService.updateRecruiter(recruiterPutReq);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -132,14 +126,14 @@ public class UserDetailsController {
     @PutMapping("/update-moderator")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Moderator moderatorPutReq) {
-        ResponseDTO res= userService.updateModerator(moderatorPutReq);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+        ResponseDTO res = userService.updateModerator(moderatorPutReq);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -147,14 +141,14 @@ public class UserDetailsController {
     @PutMapping("/update-admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Admin adminPutReq) {
-        ResponseDTO res= userService.updateAdmin(adminPutReq);
-        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+        ResponseDTO res = userService.updateAdmin(adminPutReq);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }else{//some error
+        } else {// some error
 
-            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
 
     }

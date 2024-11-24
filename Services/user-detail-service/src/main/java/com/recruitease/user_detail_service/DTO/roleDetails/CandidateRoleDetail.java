@@ -1,14 +1,18 @@
 package com.recruitease.user_detail_service.DTO.roleDetails;
 
 import com.recruitease.user_detail_service.DTO.roleDetails.RoleDetailObject;
+
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
+
 @EqualsAndHashCode(callSuper = true)
+@Builder
 @Data()
 public class CandidateRoleDetail extends RoleDetailObject {
-    //attributes other than common attributes
+    // attributes other than common attributes
     private String candidateId;
     private String profileStatus;
     private String nic;
@@ -18,4 +22,3 @@ public class CandidateRoleDetail extends RoleDetailObject {
     private String experience;
     private String education;
 }
-

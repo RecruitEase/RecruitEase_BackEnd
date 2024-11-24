@@ -51,7 +51,6 @@ public class UserService {
                 .adminIdList(request.adminIdList())
                 .build();
 
-
         try {
             if (request.adminIdList() != null) {
                 List<Admin> adminList = adminRepository.findAllById(request.adminIdList());
@@ -60,17 +59,20 @@ public class UserService {
             }
             if (request.moderatorIdList() != null) {
                 List<Moderator> moderatorList = moderatorRepository.findAllById(request.moderatorIdList());
-                List<LoggedModerator> moderatorDetailList = moderatorList.stream().map(this::mapToLoggedModerator).toList();
+                List<LoggedModerator> moderatorDetailList = moderatorList.stream().map(this::mapToLoggedModerator)
+                        .toList();
                 userDetailResponse.setModeratorList(moderatorDetailList);
             }
             if (request.recruiterIdList() != null) {
                 List<Recruiter> recruiterList = recruiterRepository.findAllById(request.recruiterIdList());
-                List<LoggedRecruiter> recruiterDetailList = recruiterList.stream().map(this::mapToLoggedRecruiter).toList();
+                List<LoggedRecruiter> recruiterDetailList = recruiterList.stream().map(this::mapToLoggedRecruiter)
+                        .toList();
                 userDetailResponse.setRecruiterList(recruiterDetailList);
             }
             if (request.candidateIdList() != null) {
                 List<Candidate> candidateList = candidateRepository.findAllById(request.candidateIdList());
-                List<LoggedCandidate> candidateDetailList = candidateList.stream().map(this::mapToLoggedCandidate).toList();
+                List<LoggedCandidate> candidateDetailList = candidateList.stream().map(this::mapToLoggedCandidate)
+                        .toList();
                 userDetailResponse.setCandidateList(candidateDetailList);
             }
 
@@ -85,7 +87,6 @@ public class UserService {
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
         }
-
 
         return responseDTO;
 
@@ -139,11 +140,9 @@ public class UserService {
         return candidate;
     }
 
-
     public ResponseDTO getCandidateDetails(String candidateId) {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
-
 
         Candidate res = candidateRepository.findById(candidateId).orElse(null);
         if (res != null) {
@@ -154,7 +153,6 @@ public class UserService {
             candidate.setRole("candidate");
             candidate.setIsActive(res.getUser().getIsActive());
             candidate.setCreatedAt(res.getUser().getCreatedAt().toString());
-
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
@@ -182,7 +180,6 @@ public class UserService {
             recruiter.setIsActive(res.getUser().getIsActive());
             recruiter.setCreatedAt(res.getUser().getCreatedAt().toString());
 
-
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(recruiter);
@@ -195,7 +192,6 @@ public class UserService {
         return responseDTO;
 
     }
-
 
     public ResponseDTO getModeratorDetails(String moderatorId) {
         var responseDTO = new ResponseDTO();
@@ -210,7 +206,6 @@ public class UserService {
             moderator.setRole("moderator");
             moderator.setIsActive(res.getUser().getIsActive());
             moderator.setCreatedAt(res.getUser().getCreatedAt().toString());
-
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
@@ -239,7 +234,6 @@ public class UserService {
             admin.setIsActive(res.getUser().getIsActive());
             admin.setCreatedAt(res.getUser().getCreatedAt().toString());
 
-
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
             responseDTO.setContent(admin);
@@ -260,7 +254,7 @@ public class UserService {
 
         try {
 
-            //get canidate id of logged user
+            // get canidate id of logged user
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -268,10 +262,12 @@ public class UserService {
             System.out.printf("candiateId: %s", candidateId);
 
             candidatePutReq.setCandidateId(candidateId);
-           Candidate prevData = candidateRepository.findById(candidateId).orElseThrow(AuthenticationException::new);;
+            Candidate prevData = candidateRepository.findById(candidateId).orElseThrow(AuthenticationException::new);
+            ;
             prevData.updateObject(candidatePutReq);
-            //dont have to call save method, transactional annotation update the db for us if modified
-//            Candidate updateResponse=candidateRepository.save(prevData);
+            // dont have to call save method, transactional annotation update the db for us
+            // if modified
+            // Candidate updateResponse=candidateRepository.save(prevData);
 
             return getCandidateDetails(prevData.getCandidateId());
 
@@ -283,7 +279,6 @@ public class UserService {
             responseDTO.setErrors(errors);
         }
 
-
         return responseDTO;
     }
 
@@ -294,7 +289,7 @@ public class UserService {
 
         try {
 
-            //get canidate id of logged user
+            // get canidate id of logged user
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -302,10 +297,12 @@ public class UserService {
             System.out.printf("recruiterId: %s", recruiterId);
 
             recruiterPutReq.setRecruiterId(recruiterId);
-            Recruiter prevData = recruiterRepository.findById(recruiterId).orElseThrow(AuthenticationException::new);;
+            Recruiter prevData = recruiterRepository.findById(recruiterId).orElseThrow(AuthenticationException::new);
+            ;
             prevData.updateObject(recruiterPutReq);
-            //dont have to call save method, transactional annotation update the db for us if modified
-//            Candidate updateResponse=candidateRepository.save(prevData);
+            // dont have to call save method, transactional annotation update the db for us
+            // if modified
+            // Candidate updateResponse=candidateRepository.save(prevData);
 
             return getRecruiterDetails(prevData.getRecruiterId());
 
@@ -317,7 +314,6 @@ public class UserService {
             responseDTO.setErrors(errors);
         }
 
-
         return responseDTO;
     }
 
@@ -328,7 +324,7 @@ public class UserService {
 
         try {
 
-            //get canidate id of logged user
+            // get canidate id of logged user
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -336,10 +332,12 @@ public class UserService {
             System.out.printf("moderatorId: %s", moderatorId);
 
             moderatorPutReq.setModeratorId(moderatorId);
-            Moderator prevData = moderatorRepository.findById(moderatorId).orElseThrow(AuthenticationException::new);;
+            Moderator prevData = moderatorRepository.findById(moderatorId).orElseThrow(AuthenticationException::new);
+            ;
             prevData.updateObject(moderatorPutReq);
-            //dont have to call save method, transactional annotation update the db for us if modified
-//            Candidate updateResponse=candidateRepository.save(prevData);
+            // dont have to call save method, transactional annotation update the db for us
+            // if modified
+            // Candidate updateResponse=candidateRepository.save(prevData);
 
             return getModeratorDetails(prevData.getModeratorId());
 
@@ -351,7 +349,6 @@ public class UserService {
             responseDTO.setErrors(errors);
         }
 
-
         return responseDTO;
     }
 
@@ -362,7 +359,7 @@ public class UserService {
 
         try {
 
-            //get canidate id of logged user
+            // get canidate id of logged user
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -370,10 +367,12 @@ public class UserService {
             System.out.printf("adminId: %s", adminId);
 
             adminPutReq.setAdminId(adminId);
-            Admin prevData = adminRepository.findById(adminId).orElseThrow(AuthenticationException::new);;
+            Admin prevData = adminRepository.findById(adminId).orElseThrow(AuthenticationException::new);
+            ;
             prevData.updateObject(adminPutReq);
-            //dont have to call save method, transactional annotation update the db for us if modified
-//            Candidate updateResponse=candidateRepository.save(prevData);
+            // dont have to call save method, transactional annotation update the db for us
+            // if modified
+            // Candidate updateResponse=candidateRepository.save(prevData);
 
             return getAdminDetails(prevData.getAdminId());
 
@@ -384,7 +383,6 @@ public class UserService {
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
         }
-
 
         return responseDTO;
     }
