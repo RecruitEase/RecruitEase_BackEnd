@@ -1,6 +1,5 @@
 package com.recruitease.ticket_service.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String ticketId;
     @Column(name = "type", length = 50)
     private TicketType type;
