@@ -127,6 +127,32 @@ services:
       - CONFIG_SERVER_URL=http://config-service:8888
       - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
+      -
+  ticket-service:
+    image: recruitease/new-ticket-service:latest
+    container_name: ticket-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
+
+  recommendation:
+    image: recruitease/new-recommendation:latest
+    container_name: recommendation
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
 
 
 networks:
