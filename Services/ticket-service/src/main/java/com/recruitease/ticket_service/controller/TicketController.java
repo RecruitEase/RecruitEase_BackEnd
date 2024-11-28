@@ -87,6 +87,19 @@ public class TicketController {
         }
     }
 
+    @GetMapping("/getall")
+    public ResponseEntity<ResponseDTO> getAllTicket(){
+        ResponseDTO res=ticketService.getAllTickets();
+        if(res.getCode().equals(CodeList.RSP_SUCCESS)){
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        }else{//some error
+
+            return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+        }
+    }
+
     //get all tickets recruiter
     @GetMapping("/recruiter/{recruiterId}")
     public ResponseEntity<ResponseDTO> getRecruiterTicket(@PathVariable String recruiterId){

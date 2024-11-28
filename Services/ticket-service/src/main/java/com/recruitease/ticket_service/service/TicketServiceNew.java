@@ -147,4 +147,22 @@ public class TicketServiceNew {
 
         return responseDTO;
     }
+
+    public ResponseDTO getAllTickets() {
+        var responseDTO=new ResponseDTO();
+        try {
+            var res = repository.findAll();
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(res);
+        }catch (Exception e){
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(null);
+        }
+
+
+        return responseDTO;
+    }
 }
