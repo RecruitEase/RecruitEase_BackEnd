@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -120,6 +121,20 @@ public class AuthController {
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
+    }
+
+    @PutMapping("/deactivate-moderator/{userId}")
+    public ResponseEntity<ResponseDTO> deactivateModerator(@PathVariable String userId) {
+        ResponseDTO res = authService.deactivateModerator(userId);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 //    @GetMapping("/test")

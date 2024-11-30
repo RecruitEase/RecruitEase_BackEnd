@@ -79,6 +79,60 @@ public class UserDetailsController {
 
     }
 
+    @GetMapping("/all/moderators")
+    public ResponseEntity<ResponseDTO> moderatorAll() {
+        ResponseDTO res = userService.getAllModerators();
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("/all/admin")
+    public ResponseEntity<ResponseDTO> adminAll() {
+        ResponseDTO res = userService.getAllAdmins();
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("/all/recruiter")
+    public ResponseEntity<ResponseDTO> recruiterAll() {
+        ResponseDTO res = userService.getAllRecruiters();
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("/all/candidate")
+    public ResponseEntity<ResponseDTO> candidateAll() {
+        ResponseDTO res = userService.getAllCandidates();
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
     @GetMapping("/admin/{adminId}")
     public ResponseEntity<ResponseDTO> adminDetails(@PathVariable String adminId) {
         ResponseDTO res = userService.getAdminDetails(adminId);
