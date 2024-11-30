@@ -8,10 +8,7 @@ import com.recruitease.user_detail_service.DTO.ResponseDTO;
 import com.recruitease.user_detail_service.DTO.UserDetailsRequestDTO;
 import com.recruitease.user_detail_service.DTO.UserDetailsResponseDTO;
 import com.recruitease.user_detail_service.config.CustomUserDetails;
-import com.recruitease.user_detail_service.entity.Admin;
-import com.recruitease.user_detail_service.entity.Candidate;
-import com.recruitease.user_detail_service.entity.Moderator;
-import com.recruitease.user_detail_service.entity.Recruiter;
+import com.recruitease.user_detail_service.entity.*;
 import com.recruitease.user_detail_service.repository.AdminRepository;
 import com.recruitease.user_detail_service.repository.CandidateRepository;
 import com.recruitease.user_detail_service.repository.ModeratorRepository;
@@ -386,4 +383,113 @@ public class UserService {
 
         return responseDTO;
     }
+
+    public ResponseDTO getAllModerators() {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+
+        try {
+
+                List<Moderator> moderatorList = moderatorRepository.findAll();
+                List<LoggedModerator> moderatorDetailList = moderatorList.stream().map(this::mapToLoggedModerator)
+                        .toList();
+
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(moderatorDetailList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+        return responseDTO;
+    }
+
+    public ResponseDTO getAllAdmins() {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+
+        try {
+
+            List<Admin> adminList = adminRepository.findAll();
+            List<LoggedAdmin> adminListRes = adminList.stream().map(this::mapToLoggedAdmin)
+                    .toList();
+
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(adminListRes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+        return responseDTO;
+    }
+
+    public ResponseDTO getAllRecruiters() {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+
+        try {
+
+            List<Recruiter> recruiterList = recruiterRepository.findAll();
+            List<LoggedRecruiter> recruiterListRes = recruiterList.stream().map(this::mapToLoggedRecruiter)
+                    .toList();
+
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(recruiterListRes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+        return responseDTO;
+    }
+
+    public ResponseDTO getAllCandidates() {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+
+        try {
+
+            List<Candidate> candidateList = candidateRepository.findAll();
+            List<LoggedCandidate> candidateListRes = candidateList.stream().map(this::mapToLoggedCandidate)
+                    .toList();
+
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(candidateListRes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+        return responseDTO;
+    }
+
 }
