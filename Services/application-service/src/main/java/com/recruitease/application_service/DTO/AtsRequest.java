@@ -1,4 +1,4 @@
-package com.recruitease.ats.DTO;
+package com.recruitease.application_service.DTO;
 
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class RequestDTO{
+public class AtsRequest {
     private String candidateId;
     private String recruiterId;
 }
