@@ -94,6 +94,7 @@ public class UserService {
 
         admin.setId(res.getUser().getId());
         admin.setEmail(res.getUser().getEmail());
+        admin.setMobileNumber(res.getMobileNumber());
         admin.setRole("admin");
         admin.setIsActive(res.getUser().getIsActive());
         admin.setCreatedAt(res.getUser().getCreatedAt().toString());
@@ -106,6 +107,7 @@ public class UserService {
 
         moderator.setId(res.getUser().getId());
         moderator.setEmail(res.getUser().getEmail());
+        moderator.setMobileNumber(res.getMobileNumber());
         moderator.setRole("moderator");
         moderator.setIsActive(res.getUser().getIsActive());
         moderator.setCreatedAt(res.getUser().getCreatedAt().toString());
