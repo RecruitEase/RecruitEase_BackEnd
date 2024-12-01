@@ -3,9 +3,11 @@ package com.recruitease.application_service.service;
 import com.recruitease.application_service.DTO.ApplicationRequest;
 import com.recruitease.application_service.DTO.ApplicationResponse;
 import com.recruitease.application_service.DTO.ApplicationUpdateRequestDTO;
+import com.recruitease.application_service.DTO.AtsResponse;
 import com.recruitease.application_service.DTO.ResponseDTO;
 import com.recruitease.application_service.entity.Application;
 import com.recruitease.application_service.repository.ApplicationRepository;
+import com.recruitease.application_service.repository.HistoryRepository;
 import com.recruitease.application_service.util.ApplicationStatusList;
 import com.recruitease.application_service.util.CodeList;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class ApplicationService {
     private final ModelMapper modelMapper;
     private final ApplicationRepository repository;
+    private final HistoryRepository historyRepository;
 
     public ResponseDTO createApplication(ApplicationRequest request) {
         var responseDTO = new ResponseDTO();
@@ -202,6 +205,32 @@ public class ApplicationService {
                 var res = repository.findByCandidateIdAndRecruiterId(candidateId, recruiterId)
                         .stream()
                         .map(source -> modelMapper.map(source, ApplicationResponse.class))
+                        .toList();
+
+                responseDTO.setCode(CodeList.RSP_SUCCESS);
+                responseDTO.setMessage("Success");
+                responseDTO.setContent(res);
+            } else {
+                responseDTO.setCode(CodeList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("Not found!");
+                responseDTO.setErrors(null);
+            }
+        } catch (Exception e) {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error!");
+            responseDTO.setErrors(e.getMessage());
+        }
+
+        return responseDTO;
+    }
+
+    public ResponseDTO getHistoryPerApplication(String applicationId) {
+        var responseDTO = new ResponseDTO();
+        try {
+            if (repository.existsById(applicationId)) {
+                var res = historyRepository.findByApplicationId(applicationId)
+                        .stream()
+                        .map(source -> modelMapper.map(source, AtsResponse.class))
                         .toList();
 
                 responseDTO.setCode(CodeList.RSP_SUCCESS);

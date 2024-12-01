@@ -142,8 +142,24 @@ public class ApplicationController {
 
     // track applicant history
     @PostMapping("/history")
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
     public ResponseEntity<ResponseDTO> getHistory(@RequestBody AtsRequest requestDTO) {
         ResponseDTO res = applicationService.getHistory(requestDTO.getCandidateId(), requestDTO.getRecruiterId());
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // get history of a given application
+    @GetMapping("/history/{applicationId}")
+    @PreAuthorize("hasAnyRole('ROLE_RECRUITER')")
+    public ResponseEntity<ResponseDTO> getHistoryPerApplication(@PathVariable String applicationId) {
+        ResponseDTO res = applicationService.getHistoryPerApplication(applicationId);
         if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
             return new ResponseEntity<>(res, HttpStatus.OK);
