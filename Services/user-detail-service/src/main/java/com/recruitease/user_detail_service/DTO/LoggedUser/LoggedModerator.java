@@ -18,4 +18,5 @@ public class LoggedModerator {
     private String gender;
     private String profilePic;
     private String moderatorId;
+    private String mobileNumber;
 }

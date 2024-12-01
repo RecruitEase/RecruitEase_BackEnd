@@ -21,4 +21,5 @@ public class LoggedAdmin {
     private String gender;
     private String profilePic;
     private String adminId;
+    private String mobileNumber;
 }
