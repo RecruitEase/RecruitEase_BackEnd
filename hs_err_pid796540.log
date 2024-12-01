@@ -1,0 +1,423 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Cannot create worker GC thread. Out of system resources.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   This process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (workerManager.hpp:87), pid=796540, tid=796541
+#
+# JRE version:  (17.0.13+11) (build )
+# Java VM: OpenJDK 64-Bit Server VM (17.0.13+11, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, parallel gc, linux-amd64)
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport -p%p -s%s -c%c -d%d -P%P -u%u -g%g -- %E" (or dumping to /workspaces/RecruitEase_BackEnd/core.796540)
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: --add-modules=ALL-SYSTEM --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/sun.nio.fs=ALL-UNNAMED -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -Djava.import.generatesMetadataFilesAtProjectRoot=false -DDetectVMInstallationsJob.disabled=true -Dfile.encoding=utf8 -XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -Xlog:disable -javaagent:/home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/lombok/lombok-1.18.34.jar /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/server/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar -configuration /home/vscode/.vscode-remote/data/User/globalStorage/redhat.java/1.37.0/config_ss_linux -data /home/vscode/.vscode-remote/data/User/workspaceStorage/04becffdbd9ac517d673e1e7e802fe19-1/redhat.java/ss_ws --pipe=/tmp/lsp-82788d8eb859c38eec83d62f60d1d47c.sock
+
+Host: AMD EPYC 7763 64-Core Processor, 4 cores, 15G, Debian GNU/Linux 11 (bullseye)
+Time: Sun Dec  1 12:46:01 2024 UTC elapsed time: 0.008647 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000073d66c02b960):  JavaThread "Unknown thread" [_thread_in_vm, id=796541, stack(0x000073d671237000,0x000073d671338000)]
+
+Stack: [0x000073d671237000,0x000073d671338000],  sp=0x000073d6713365f0,  free space=1021k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0xee8f21]  VMError::report_and_die(int, char const*, char const*, __va_list_tag*, Thread*, unsigned char*, void*, void*, char const*, int, unsigned long)+0x1a1
+V  [libjvm.so+0xee9b0d]  VMError::report_and_die(Thread*, char const*, int, unsigned long, VMErrorType, char const*, __va_list_tag*)+0x2d
+V  [libjvm.so+0x60911c]  report_vm_out_of_memory(char const*, int, unsigned long, VMErrorType, char const*, ...)+0xdc
+V  [libjvm.so+0xf1d354]  WorkerManager::add_workers(WorkGang*, unsigned int, unsigned int, unsigned int, os::ThreadType, bool)+0x154
+V  [libjvm.so+0xf1d53a]  WorkGang::initialize_workers()+0x4a
+V  [libjvm.so+0xc464e7]  ParallelScavengeHeap::initialize()+0x167
+V  [libjvm.so+0xe972e6]  universe_init()+0xd6
+V  [libjvm.so+0x800a77]  init_globals()+0x37
+V  [libjvm.so+0xe6d6cf]  Threads::create_vm(JavaVMInitArgs*, bool*)+0x36f
+V  [libjvm.so+0x8bfab2]  JNI_CreateJavaVM+0x52
+C  [libjli.so+0x9c6f]  JavaMain+0x8f
+C  [libjli.so+0xdf99]  ThreadJavaMain+0x9
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x000073d6727cd4e0, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x000073d66c02b960 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=796541, stack(0x000073d671237000,0x000073d671338000)]
+
+Threads with active compile tasks:
+
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap address: 0x00000000c0000000, size: 1024 MB, Compressed Oops mode: 32-bit
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+<Empty>
+
+Heap:
+
+[error occurred during error reporting (printing heap information), id 0xb, SIGSEGV (0xb) at pc=0x000073d67215552a]
+
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.006 Loaded shared library /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Memory protections (1 events):
+Event: 0.006 Protecting memory [0x000073d671237000,0x000073d67123b000] with protection modes 0
+
+Nmethod flushes (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+c0000000-100000000 ---p 00000000 00:00 0 
+59d097ce3000-59d097ce4000 r--p 00000000 07:04 1311576                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/bin/java
+59d097ce4000-59d097ce5000 r-xp 00001000 07:04 1311576                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/bin/java
+59d097ce5000-59d097ce6000 r--p 00002000 07:04 1311576                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/bin/java
+59d097ce6000-59d097ce7000 r--p 00002000 07:04 1311576                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/bin/java
+59d097ce7000-59d097ce8000 rw-p 00003000 07:04 1311576                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/bin/java
+59d098774000-59d0987bc000 rw-p 00000000 00:00 0                          [heap]
+73d65a3c8000-73d65a638000 rwxp 00000000 00:00 0 
+73d65a638000-73d6618ff000 ---p 00000000 00:00 0 
+73d6618ff000-73d661b6f000 rwxp 00000000 00:00 0 
+73d661b6f000-73d661e90000 ---p 00000000 00:00 0 
+73d661e90000-73d662100000 rwxp 00000000 00:00 0 
+73d662100000-73d6693c8000 ---p 00000000 00:00 0 
+73d6693c8000-73d66c000000 r--s 00000000 07:04 1341674                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/modules
+73d66c000000-73d66c04f000 rw-p 00000000 00:00 0 
+73d66c04f000-73d670000000 ---p 00000000 00:00 0 
+73d6708f3000-73d670cdb000 rw-p 00000000 00:00 0 
+73d670cdb000-73d670cdc000 ---p 00000000 00:00 0 
+73d670cdc000-73d670ddc000 rw-p 00000000 00:00 0 
+73d670ddc000-73d670fdc000 ---p 00000000 00:00 0 
+73d670fdc000-73d670fe2000 rw-p 00000000 00:00 0 
+73d670fe2000-73d6710c8000 ---p 00000000 00:00 0 
+73d6710c8000-73d6710cd000 rw-p 00000000 00:00 0 
+73d6710cd000-73d6711b3000 ---p 00000000 00:00 0 
+73d6711b3000-73d6711b8000 rw-p 00000000 00:00 0 
+73d6711b8000-73d6711bf000 ---p 00000000 00:00 0 
+73d6711bf000-73d6711c7000 rw-s 00000000 08:21 7077903                    /tmp/hsperfdata_vscode/796540
+73d6711c7000-73d6711ca000 r--p 00000000 07:04 1091130                    /lib/x86_64-linux-gnu/libnss_files-2.31.so
+73d6711ca000-73d6711d1000 r-xp 00003000 07:04 1091130                    /lib/x86_64-linux-gnu/libnss_files-2.31.so
+73d6711d1000-73d6711d3000 r--p 0000a000 07:04 1091130                    /lib/x86_64-linux-gnu/libnss_files-2.31.so
+73d6711d3000-73d6711d4000 r--p 0000b000 07:04 1091130                    /lib/x86_64-linux-gnu/libnss_files-2.31.so
+73d6711d4000-73d6711d5000 rw-p 0000c000 07:04 1091130                    /lib/x86_64-linux-gnu/libnss_files-2.31.so
+73d6711d5000-73d6711db000 rw-p 00000000 00:00 0 
+73d6711e0000-73d6711ee000 r--p 00000000 07:04 1341634                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+73d6711ee000-73d671200000 r-xp 0000e000 07:04 1341634                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+73d671200000-73d671206000 r--p 00020000 07:04 1341634                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+73d671206000-73d671207000 ---p 00026000 07:04 1341634                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+73d671207000-73d671208000 r--p 00026000 07:04 1341634                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+73d671208000-73d671209000 rw-p 00027000 07:04 1341634                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjava.so
+73d671209000-73d67120a000 rw-p 00000000 00:00 0 
+73d67120a000-73d67120c000 r--p 00000000 07:04 1341629                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libinstrument.so
+73d67120c000-73d671212000 r-xp 00002000 07:04 1341629                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libinstrument.so
+73d671212000-73d671215000 r--p 00008000 07:04 1341629                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libinstrument.so
+73d671215000-73d671216000 r--p 0000a000 07:04 1341629                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libinstrument.so
+73d671216000-73d671217000 rw-p 0000b000 07:04 1341629                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libinstrument.so
+73d671217000-73d67121b000 r--p 00000000 07:04 1341638                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjimage.so
+73d67121b000-73d67122e000 r-xp 00004000 07:04 1341638                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjimage.so
+73d67122e000-73d671234000 r--p 00017000 07:04 1341638                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjimage.so
+73d671234000-73d671236000 r--p 0001c000 07:04 1341638                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjimage.so
+73d671236000-73d671237000 rw-p 0001e000 07:04 1341638                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjimage.so
+73d671237000-73d67123b000 ---p 00000000 00:00 0 
+73d67123b000-73d671338000 rw-p 00000000 00:00 0 
+73d671338000-73d671345000 r--p 00000000 07:04 1091119                    /lib/x86_64-linux-gnu/libm-2.31.so
+73d671345000-73d6713df000 r-xp 0000d000 07:04 1091119                    /lib/x86_64-linux-gnu/libm-2.31.so
+73d6713df000-73d67147a000 r--p 000a7000 07:04 1091119                    /lib/x86_64-linux-gnu/libm-2.31.so
+73d67147a000-73d67147b000 r--p 00141000 07:04 1091119                    /lib/x86_64-linux-gnu/libm-2.31.so
+73d67147b000-73d67147c000 rw-p 00142000 07:04 1091119                    /lib/x86_64-linux-gnu/libm-2.31.so
+73d67147c000-73d67147e000 r--p 00000000 07:04 1091147                    /lib/x86_64-linux-gnu/librt-2.31.so
+73d67147e000-73d671482000 r-xp 00002000 07:04 1091147                    /lib/x86_64-linux-gnu/librt-2.31.so
+73d671482000-73d671484000 r--p 00006000 07:04 1091147                    /lib/x86_64-linux-gnu/librt-2.31.so
+73d671484000-73d671485000 r--p 00007000 07:04 1091147                    /lib/x86_64-linux-gnu/librt-2.31.so
+73d671485000-73d671486000 rw-p 00008000 07:04 1091147                    /lib/x86_64-linux-gnu/librt-2.31.so
+73d671486000-73d6716d9000 r--p 00000000 07:04 1341696                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/server/libjvm.so
+73d6716d9000-73d672401000 r-xp 00253000 07:04 1341696                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/server/libjvm.so
+73d672401000-73d67268e000 r--p 00f7b000 07:04 1341696                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/server/libjvm.so
+73d67268e000-73d67268f000 ---p 01208000 07:04 1341696                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/server/libjvm.so
+73d67268f000-73d672748000 r--p 01208000 07:04 1341696                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/server/libjvm.so
+73d672748000-73d67277d000 rw-p 012c1000 07:04 1341696                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/server/libjvm.so
+73d67277d000-73d6727da000 rw-p 00000000 00:00 0 
+73d6727da000-73d6727fc000 r--p 00000000 07:04 1091098                    /lib/x86_64-linux-gnu/libc-2.31.so
+73d6727fc000-73d672955000 r-xp 00022000 07:04 1091098                    /lib/x86_64-linux-gnu/libc-2.31.so
+73d672955000-73d6729a4000 r--p 0017b000 07:04 1091098                    /lib/x86_64-linux-gnu/libc-2.31.so
+73d6729a4000-73d6729a8000 r--p 001c9000 07:04 1091098                    /lib/x86_64-linux-gnu/libc-2.31.so
+73d6729a8000-73d6729aa000 rw-p 001cd000 07:04 1091098                    /lib/x86_64-linux-gnu/libc-2.31.so
+73d6729aa000-73d6729ae000 rw-p 00000000 00:00 0 
+73d6729ae000-73d6729af000 r--p 00000000 07:04 1091106                    /lib/x86_64-linux-gnu/libdl-2.31.so
+73d6729af000-73d6729b1000 r-xp 00001000 07:04 1091106                    /lib/x86_64-linux-gnu/libdl-2.31.so
+73d6729b1000-73d6729b2000 r--p 00003000 07:04 1091106                    /lib/x86_64-linux-gnu/libdl-2.31.so
+73d6729b2000-73d6729b3000 r--p 00003000 07:04 1091106                    /lib/x86_64-linux-gnu/libdl-2.31.so
+73d6729b3000-73d6729b4000 rw-p 00004000 07:04 1091106                    /lib/x86_64-linux-gnu/libdl-2.31.so
+73d6729b4000-73d6729ba000 r--p 00000000 07:04 1091143                    /lib/x86_64-linux-gnu/libpthread-2.31.so
+73d6729ba000-73d6729ca000 r-xp 00006000 07:04 1091143                    /lib/x86_64-linux-gnu/libpthread-2.31.so
+73d6729ca000-73d6729d0000 r--p 00016000 07:04 1091143                    /lib/x86_64-linux-gnu/libpthread-2.31.so
+73d6729d0000-73d6729d1000 r--p 0001b000 07:04 1091143                    /lib/x86_64-linux-gnu/libpthread-2.31.so
+73d6729d1000-73d6729d2000 rw-p 0001c000 07:04 1091143                    /lib/x86_64-linux-gnu/libpthread-2.31.so
+73d6729d2000-73d6729d6000 rw-p 00000000 00:00 0 
+73d6729d9000-73d6729da000 ---p 00000000 00:00 0 
+73d6729da000-73d6729db000 r--p 00000000 00:00 0 
+73d6729db000-73d6729de000 r--p 00000000 07:04 1341640                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjli.so
+73d6729de000-73d6729ee000 r-xp 00003000 07:04 1341640                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjli.so
+73d6729ee000-73d6729f5000 r--p 00013000 07:04 1341640                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjli.so
+73d6729f5000-73d6729f6000 r--p 00019000 07:04 1341640                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjli.so
+73d6729f6000-73d6729f7000 rw-p 0001a000 07:04 1341640                    /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/jre/17.0.13-linux-x86_64/lib/libjli.so
+73d6729f7000-73d6729f9000 rw-p 00000000 00:00 0 
+73d6729f9000-73d6729fa000 r--p 00000000 07:04 1091086                    /lib/x86_64-linux-gnu/ld-2.31.so
+73d6729fa000-73d672a1a000 r-xp 00001000 07:04 1091086                    /lib/x86_64-linux-gnu/ld-2.31.so
+73d672a1a000-73d672a22000 r--p 00021000 07:04 1091086                    /lib/x86_64-linux-gnu/ld-2.31.so
+73d672a22000-73d672a23000 ---p 00000000 00:00 0 
+73d672a23000-73d672a24000 r--p 00029000 07:04 1091086                    /lib/x86_64-linux-gnu/ld-2.31.so
+73d672a24000-73d672a25000 rw-p 0002a000 07:04 1091086                    /lib/x86_64-linux-gnu/ld-2.31.so
+73d672a25000-73d672a26000 rw-p 00000000 00:00 0 
+7ffd9c272000-7ffd9c294000 rw-p 00000000 00:00 0                          [stack]
+7ffd9c398000-7ffd9c39c000 r--p 00000000 00:00 0                          [vvar]
+7ffd9c39c000-7ffd9c39e000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+
+VM Arguments:
+jvm_args: --add-modules=ALL-SYSTEM --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/sun.nio.fs=ALL-UNNAMED -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -Djava.import.generatesMetadataFilesAtProjectRoot=false -DDetectVMInstallationsJob.disabled=true -Dfile.encoding=utf8 -XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -Xlog:disable -javaagent:/home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/lombok/lombok-1.18.34.jar 
+java_command: /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/server/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar -configuration /home/vscode/.vscode-remote/data/User/globalStorage/redhat.java/1.37.0/config_ss_linux -data /home/vscode/.vscode-remote/data/User/workspaceStorage/04becffdbd9ac517d673e1e7e802fe19-1/redhat.java/ss_ws --pipe=/tmp/lsp-82788d8eb859c38eec83d62f60d1d47c.sock
+java_class_path (initial): /home/vscode/.vscode-remote/extensions/redhat.java-1.37.0/server/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+    uintx AdaptiveSizePolicyWeight                 = 90                                        {product} {command line}
+     intx CICompilerCount                          = 3                                         {product} {ergonomic}
+    uintx GCTimeRatio                              = 4                                         {product} {command line}
+   size_t InitialHeapSize                          = 104857600                                 {product} {command line}
+   size_t MaxHeapSize                              = 1073741824                                {product} {command line}
+   size_t MaxNewSize                               = 357564416                                 {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 524288                                    {product} {ergonomic}
+   size_t MinHeapSize                              = 104857600                                 {product} {command line}
+   size_t NewSize                                  = 34603008                                  {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5832780                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122912730                              {pd product} {ergonomic}
+   size_t OldSize                                  = 70254592                                  {product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122912730                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 1073741824                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                           {product lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseParallelGC                            = true                                      {product} {command line}
+
+Logging:
+Log output configuration:
+ #0: stdout all=off uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+JAVA_HOME=/usr/lib/jvm/msopenjdk-current
+PATH=/vscode/bin/linux-x64/f1a4fb101478ce6ec82fe9627c43efbf9e98c813/bin/remote-cli:/usr/local/sdkman/bin:/usr/local/sdkman/candidates/java/current/bin:/usr/local/sdkman/candidates/gradle/current/bin:/usr/local/sdkman/candidates/maven/current/bin:/usr/local/sdkman/candidates/ant/current/bin:/usr/local/share/nvm/current/bin:/usr/local/sdkman/bin:/usr/local/sdkman/candidates/java/current/bin:/usr/local/sdkman/candidates/gradle/current/bin:/usr/local/sdkman/candidates/maven/current/bin:/usr/local/sdkman/candidates/ant/current/bin:/usr/lib/jvm/msopenjdk-current/bin:/usr/local/sdkman/bin:/usr/local/sdkman/candidates/java/current/bin:/usr/local/sdkman/candidates/gradle/current/bin:/usr/local/sdkman/candidates/maven/current/bin:/usr/local/sdkman/candidates/ant/current/bin:/usr/local/share/nvm/current/bin:/usr/local/sdkman/bin:/usr/local/sdkman/candidates/java/current/bin:/usr/local/sdkman/candidates/gradle/current/bin:/usr/local/sdkman/candidates/maven/current/bin:/usr/local/sdkman/candidates/ant/current/bin:/usr/lib/jvm/msopenjdk-current/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/vscode/.local/bin
+SHELL=/bin/bash
+LANG=en_US.UTF-8
+
+Active Locale:
+LC_ALL=C
+LC_COLLATE=C
+LC_CTYPE=C
+LC_MESSAGES=C
+LC_MONETARY=C
+LC_NUMERIC=C
+LC_TIME=C
+
+Signal Handlers:
+   SIGSEGV: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+    SIGBUS: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+    SIGFPE: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+   SIGPIPE: javaSignalHandler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, blocked
+   SIGXFSZ: javaSignalHandler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, blocked
+    SIGILL: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+   SIGUSR2: SR_handler in libjvm.so, mask=00000000000000000000000000000000, flags=SA_RESTART|SA_SIGINFO, blocked
+    SIGHUP: SIG_DFL, mask=00000000000000000000000000000000, flags=none, blocked
+    SIGINT: SIG_DFL, mask=00000000000000000000000000000000, flags=none, blocked
+   SIGTERM: SIG_DFL, mask=00000000000000000000000000000000, flags=none, blocked
+   SIGQUIT: UserHandler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, blocked
+   SIGTRAP: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+
+
+Periodic native trim disabled
+
+
+---------------  S Y S T E M  ---------------
+
+OS:
+PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+NAME="Debian GNU/Linux"
+VERSION_ID="11"
+VERSION="11 (bullseye)"
+VERSION_CODENAME=bullseye
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+uname: Linux 6.5.0-1025-azure #26~22.04.1-Ubuntu SMP Thu Jul 11 22:33:04 UTC 2024 x86_64
+OS uptime: 0 days 7:19 hours
+libc: glibc 2.31 NPTL 2.31 
+rlimit (soft/hard): STACK 8192k/infinity , CORE infinity/infinity , NPROC infinity/infinity , NOFILE 1048576/1048576 , AS infinity/infinity , CPU infinity/infinity , DATA infinity/infinity , FSIZE infinity/infinity , MEMLOCK 8192k/8192k
+load average: 0.10 0.15 0.11
+
+/proc/meminfo:
+MemTotal:       16364592 kB
+MemFree:          171864 kB
+MemAvailable:    3489336 kB
+Buffers:          194624 kB
+Cached:          3244568 kB
+SwapCached:            0 kB
+Active:          8499616 kB
+Inactive:        6545452 kB
+Active(anon):    8091416 kB
+Inactive(anon):  3590276 kB
+Active(file):     408200 kB
+Inactive(file):  2955176 kB
+Unevictable:       31060 kB
+Mlocked:           27988 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Zswap:                 0 kB
+Zswapped:              0 kB
+Dirty:              3512 kB
+Writeback:             0 kB
+AnonPages:      11580776 kB
+Mapped:           633564 kB
+Shmem:             66716 kB
+KReclaimable:     299716 kB
+Slab:             604472 kB
+SReclaimable:     299716 kB
+SUnreclaim:       304756 kB
+KernelStack:      312576 kB
+PageTables:       103800 kB
+SecPageTables:         0 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     8182296 kB
+Committed_AS:   31763336 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      346068 kB
+VmallocChunk:          0 kB
+Percpu:             2224 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:   3860480 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+FileHugePages:         0 kB
+FilePmdMapped:         0 kB
+Unaccepted:            0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+DirectMap4k:      133056 kB
+DirectMap2M:     6158336 kB
+DirectMap1G:    12582912 kB
+
+/sys/kernel/mm/transparent_hugepage/enabled: [always] madvise never
+/sys/kernel/mm/transparent_hugepage/hpage_pmd_size: 2097152
+/sys/kernel/mm/transparent_hugepage/defrag (defrag/compaction efforts parameter): always defer defer+madvise [madvise] never
+
+Process Memory:
+Virtual Size: 1439584K (peak: 1439584K)
+Resident Set Size: 18048K (peak: 18048K) (anon: 5760K, file: 12288K, shmem: 0K)
+Swapped out: 0K
+C-Heap outstanding allocations: 4464K, retained: 159K
+glibc malloc tunables: (default)
+
+/proc/sys/kernel/threads-max (system-wide limit on the number of threads): 127799
+/proc/sys/vm/max_map_count (maximum number of memory map areas a process may have): 65530
+/proc/sys/vm/swappiness (control to define how aggressively the kernel swaps out anonymous memory): 60
+/proc/sys/kernel/pid_max (system-wide limit on number of process identifiers): 4194304
+
+container (cgroup) information:
+container_type: cgroupv2
+cpu_cpuset_cpus: not supported
+cpu_memory_nodes: not supported
+active_processor_count: 4
+cpu_quota: no quota
+cpu_period: 100000
+cpu_shares: no shares
+memory_limit_in_bytes: unlimited
+memory_and_swap_limit_in_bytes: unlimited
+memory_soft_limit_in_bytes: unlimited
+memory_usage_in_bytes: 11818568 k
+memory_max_usage_in_bytes: not supported
+memory_swap_current_in_bytes: unlimited
+memory_swap_max_limit_in_bytes: unlimited
+maximum number of tasks: unlimited
+current number of tasks: 19159
+
+Hyper-V virtualization detected
+Steal ticks since vm start: 0
+Steal ticks percentage since vm start:  0.000
+
+CPU: total 4 (initial active 4) (16 cores per cpu, 2 threads per core) family 25 model 1 stepping 1 microcode 0xffffffff, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4a, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, sha, fma, vzeroupper, clflush, clflushopt, hv
+CPU Model and flags from /proc/cpuinfo:
+model name	: AMD EPYC 7763 64-Core Processor
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext invpcid_single vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm
+
+Online cpus: 0-3
+Offline cpus: 
+BIOS frequency limitation: <Not Available>
+Frequency switch latency (ns): <Not Available>
+Available cpu frequencies: <Not Available>
+Current governor: <Not Available>
+Core performance/turbo boost: <Not Available>
+
+Memory: 4k page, physical 16364592k(171864k free), swap 0k(0k free)
+Page Sizes: 4k
+
+vm_info: OpenJDK 64-Bit Server VM (17.0.13+11) for linux-amd64 JRE (17.0.13+11), built on Oct 15 2024 00:00:00 by "admin" with gcc 10.3.0
+
+END.
