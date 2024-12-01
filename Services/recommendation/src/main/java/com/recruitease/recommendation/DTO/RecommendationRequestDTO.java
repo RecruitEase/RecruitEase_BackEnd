@@ -15,6 +15,7 @@ public class RecommendationRequestDTO {
     private String city;
     private String gender;
     private String candidateId;
+    private String applicationId;
     private String skills;
     private String aboutMe;
     private String experience;
