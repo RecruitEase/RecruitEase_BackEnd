@@ -137,6 +137,20 @@ public class AuthController {
 
     }
 
+    @PutMapping("/activate-moderator/{userId}")
+    public ResponseEntity<ResponseDTO> activateModerator(@PathVariable String userId) {
+        ResponseDTO res = authService.activateModerator(userId);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 //    @GetMapping("/test")
 //    public ResponseEntity<String> test(@RequestHeader("loggedInUser") String loggedInUser) throws JsonProcessingException {
 //
