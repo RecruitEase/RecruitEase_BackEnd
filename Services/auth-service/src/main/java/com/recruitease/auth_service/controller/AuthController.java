@@ -123,7 +123,7 @@ public class AuthController {
         }
     }
 
-    @PutMapping("/deactivate-moderator/{userId}")
+    @PostMapping("/deactivate-moderator/{userId}")
     public ResponseEntity<ResponseDTO> deactivateModerator(@PathVariable String userId) {
         ResponseDTO res = authService.deactivateModerator(userId);
         if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
@@ -137,7 +137,7 @@ public class AuthController {
 
     }
 
-    @PutMapping("/activate-moderator/{userId}")
+    @PostMapping("/activate-moderator/{userId}")
     public ResponseEntity<ResponseDTO> activateModerator(@PathVariable String userId) {
         ResponseDTO res = authService.activateModerator(userId);
         if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
