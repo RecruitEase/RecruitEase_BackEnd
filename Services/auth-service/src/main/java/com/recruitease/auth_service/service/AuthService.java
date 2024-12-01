@@ -366,4 +366,31 @@ public class AuthService {
 
         return responseDTO;
     }
+
+    public ResponseDTO activateModerator(String userId) {
+        var responseDTO=new ResponseDTO();
+
+        var errors=new HashMap<String,String >();
+
+        Optional<UserCredential> prevData = repository.findById(userId);
+
+
+        if(prevData.isPresent()){
+            UserCredential data=prevData.get();
+            data.setIsActive(true);
+            repository.save(data);
+
+            responseDTO.setCode(CodeList.RSP_SUCCESS);
+            responseDTO.setMessage("Moderator Activated successfully");
+            responseDTO.setContent(userId);
+
+        }else {
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+
+        }
+
+        return responseDTO;
+    }
 }
