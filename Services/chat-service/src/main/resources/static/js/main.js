@@ -1,190 +1,144 @@
-'use strict';
+"use strict";
 
-const usernamePage = document.querySelector('#username-page');
-const chatPage = document.querySelector('#chat-page');
-const usernameForm = document.querySelector('#usernameForm');
-const messageForm = document.querySelector('#messageForm');
-const messageInput = document.querySelector('#message');
-const connectingElement = document.querySelector('.connecting');
-const chatArea = document.querySelector('#chat-messages');
-const logout = document.querySelector('#logout');
+// DOM Elements
+const connectBtn = document.querySelector("#connectBtn");
+const messageForm = document.querySelector("#messageForm");
+const messageInput = document.querySelector("#message");
+const chatArea = document.querySelector("#chat-messages");
+const senderInput = document.querySelector("#senderId");
+const recipientInput = document.querySelector("#recipientId");
 
 let stompClient = null;
-let nickname = null;
-let fullname = null;
-let selectedUserId = null;
+let senderId = null;
+let recipientId = null;
 
-function connect(event) {
-    nickname = document.querySelector('#nickname').value.trim();
-    fullname = document.querySelector('#fullname').value.trim();
+// Add event listener to the Connect button
+connectBtn.addEventListener("click", connect);
 
-    if (nickname && fullname) {
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
+// Function to connect to WebSocket
+function connect() {
+  senderId = senderInput.value.trim();
+  recipientId = recipientInput.value.trim();
 
-        const socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
+  if (senderId && recipientId) {
+    console.log("Connecting to WebSocket server...");
+    const socket = new SockJS("/ws");
+    stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, onConnected, onError);
-    }
-    event.preventDefault();
+    stompClient.connect({}, onConnected, onError);
+  } else {
+    alert("Please enter both Sender ID and Recipient ID.");
+    console.log("Sender ID or Recipient ID missing.");
+  }
 }
 
-
+// Called when WebSocket is connected
 function onConnected() {
-    stompClient.subscribe(`/user/${nickname}/queue/messages`, onMessageReceived);
-    stompClient.subscribe(`/user/public`, onMessageReceived);
+  console.log("WebSocket connection established.");
 
-    // register the connected user
-    stompClient.send("/app/user.addUser",
-        {},
-        JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
-    );
-    document.querySelector('#connected-user-fullname').textContent = fullname;
-    findAndDisplayConnectedUsers().then();
+  // Unhide the message form
+  if (messageForm) {
+    messageForm.classList.remove("hidden");
+  }
+
+  // Subscribe to user's message queue
+  stompClient.subscribe(`/user/${senderId}/queue/messages`, onMessageReceived);
+  console.log(`Subscribed to /user/${senderId}/queue/messages.`);
+
+  // Fetch and display chat history
+  fetchChatHistory();
 }
 
-async function findAndDisplayConnectedUsers()  {
-    const connectedUsersResponse = await fetch('/users');
-    let connectedUsers = await connectedUsersResponse.json();
-    connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
-    const connectedUsersList = document.getElementById('connectedUsers');
-    connectedUsersList.innerHTML = '';
+// Called when WebSocket encounters an error
+function onError(error) {
+  console.error("WebSocket connection failed:", error);
+  alert("Could not connect to WebSocket server. Please try again.");
+}
 
-    connectedUsers.forEach(user => {
-        appendUserElement(user, connectedUsersList);
-        if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
-            const separator = document.createElement('li');
-            separator.classList.add('separator');
-            connectedUsersList.appendChild(separator);
-        }
+// Fetch chat history
+function fetchChatHistory() {
+  console.log("Fetching chat history...");
+  fetch(`/messages/${senderId}/${recipientId}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((messages) => {
+      console.log("Chat history retrieved:", messages);
+      messages.forEach((msg) =>
+        displayMessage(msg.senderId, msg.content, msg.timestamp)
+      );
+    })
+    .catch((error) => {
+      console.error("Error fetching chat history:", error);
     });
 }
 
-function appendUserElement(user, connectedUsersList) {
-    const listItem = document.createElement('li');
-    listItem.classList.add('user-item');
-    listItem.id = user.nickName;
-
-    const userImage = document.createElement('img');
-    userImage.src = '../img/user_icon.png';
-    userImage.alt = user.fullName;
-
-    const usernameSpan = document.createElement('span');
-    usernameSpan.textContent = user.fullName;
-
-    const receivedMsgs = document.createElement('span');
-    receivedMsgs.textContent = '0';
-    receivedMsgs.classList.add('nbr-msg', 'hidden');
-
-    listItem.appendChild(userImage);
-    listItem.appendChild(usernameSpan);
-    listItem.appendChild(receivedMsgs);
-
-    listItem.addEventListener('click', userItemClick);
-
-    connectedUsersList.appendChild(listItem);
-}
-
-function userItemClick(event) {
-    document.querySelectorAll('.user-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    messageForm.classList.remove('hidden');
-
-    const clickedUser = event.currentTarget;
-    clickedUser.classList.add('active');
-
-    selectedUserId = clickedUser.getAttribute('id');
-    fetchAndDisplayUserChat().then();
-
-    const nbrMsg = clickedUser.querySelector('.nbr-msg');
-    nbrMsg.classList.add('hidden');
-    nbrMsg.textContent = '0';
-
-}
-
-function displayMessage(senderId, content) {
-    const messageContainer = document.createElement('div');
-    messageContainer.classList.add('message');
-    if (senderId === nickname) {
-        messageContainer.classList.add('sender');
-    } else {
-        messageContainer.classList.add('receiver');
-    }
-    const message = document.createElement('p');
-    message.textContent = content;
-    messageContainer.appendChild(message);
-    chatArea.appendChild(messageContainer);
-}
-
-async function fetchAndDisplayUserChat() {
-    const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
-    const userChat = await userChatResponse.json();
-    chatArea.innerHTML = '';
-    userChat.forEach(chat => {
-        displayMessage(chat.senderId, chat.content);
-    });
-    chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-
-function onError() {
-    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-    connectingElement.style.color = 'red';
-}
-
-
+// Function to send a chat message
 function sendMessage(event) {
-    const messageContent = messageInput.value.trim();
-    if (messageContent && stompClient) {
-        const chatMessage = {
-            senderId: nickname,
-            recipientId: selectedUserId,
-            content: messageInput.value.trim(),
-            timestamp: new Date()
-        };
-        stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
-        displayMessage(nickname, messageInput.value.trim());
-        messageInput.value = '';
-    }
-    chatArea.scrollTop = chatArea.scrollHeight;
-    event.preventDefault();
+  event.preventDefault();
+
+  const messageContent = messageInput.value.trim();
+  if (messageContent && stompClient && stompClient.connected) {
+    const chatMessage = {
+      senderId: senderId,
+      recipientId: recipientId,
+      content: messageContent,
+      timestamp: new Date(),
+    };
+
+    console.log("Sending message:", chatMessage);
+    stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+    displayMessage(senderId, messageContent);
+    messageInput.value = "";
+  } else {
+    console.warn("Message content is empty or WebSocket is not connected.");
+  }
 }
 
-
-async function onMessageReceived(payload) {
-    await findAndDisplayConnectedUsers();
-    console.log('Message received', payload);
+// Function to handle received messages
+function onMessageReceived(payload) {
+  try {
     const message = JSON.parse(payload.body);
-    if (selectedUserId && selectedUserId === message.senderId) {
-        displayMessage(message.senderId, message.content);
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    if (selectedUserId) {
-        document.querySelector(`#${selectedUserId}`).classList.add('active');
-    } else {
-        messageForm.classList.add('hidden');
-    }
-
-    const notifiedUser = document.querySelector(`#${message.senderId}`);
-    if (notifiedUser && !notifiedUser.classList.contains('active')) {
-        const nbrMsg = notifiedUser.querySelector('.nbr-msg');
-        nbrMsg.classList.remove('hidden');
-        nbrMsg.textContent = '';
-    }
+    console.log("Message received:", message);
+    displayMessage(message.senderId, message.content, message.timestamp);
+  } catch (error) {
+    console.error("Error processing received message:", error);
+  }
 }
 
-function onLogout() {
-    stompClient.send("/app/user.disconnectUser",
-        {},
-        JSON.stringify({nickName: nickname, fullName: fullname, status: 'OFFLINE'})
-    );
-    window.location.reload();
+// Function to display messages in the chat area
+function displayMessage(sender, content, timestamp = null) {
+  const messageContainer = document.createElement("div");
+  messageContainer.classList.add("message");
+
+  // Determine if the message is sent or received
+  if (sender === senderId) {
+    messageContainer.classList.add("sender");
+  } else {
+    messageContainer.classList.add("receiver");
+  }
+
+  const messageContent = document.createElement("p");
+  messageContent.textContent = content;
+
+  const messageTimestamp = document.createElement("span");
+  messageTimestamp.classList.add("timestamp");
+  messageTimestamp.textContent = timestamp
+    ? new Date(timestamp).toLocaleTimeString()
+    : new Date().toLocaleTimeString();
+
+  messageContainer.appendChild(messageContent);
+  messageContainer.appendChild(messageTimestamp);
+  chatArea.appendChild(messageContainer);
+
+  // Scroll to the latest message
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  console.log("Displayed message:", { sender, content, timestamp });
 }
 
-usernameForm.addEventListener('submit', connect, true); // step 1
-messageForm.addEventListener('submit', sendMessage, true);
-logout.addEventListener('click', onLogout, true);
-window.onbeforeunload = () => onLogout();
+// Add event listener for sending messages
+messageForm.addEventListener("submit", sendMessage);
