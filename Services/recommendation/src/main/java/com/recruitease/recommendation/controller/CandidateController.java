@@ -110,10 +110,13 @@ public class CandidateController {
                     .map(candidate -> {
                         String cvId = findCvId(cvDetails, candidate.getCandidateId());
                         String file = findFile(cvDetails, candidate.getCandidateId());
+                        String applicationId = findApplicationId(applications, candidate.getCandidateId());
+                        
 
                         return RecommendationRequestDTO.builder()
                                 .id(candidate.getId())
                                 .firstName(candidate.getFirstName())
+                                .applicationId(applicationId)
                                 .lastName(candidate.getLastName())
                                 .city(candidate.getCity())
                                 .gender(candidate.getGender())
@@ -156,4 +159,12 @@ public class CandidateController {
                 .findFirst()
                 .orElse(null);
     }
+
+    private String findApplicationId(List<ApplicationResponseContent> applications, String candidateId) {
+        return applications.stream()
+                .filter(application -> application.getCandidateId().equals(candidateId))
+                .map(ApplicationResponseContent::getApplicationId)
+                .findFirst()
+                .orElse(null);
+    }   
 }

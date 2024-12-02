@@ -11,7 +11,8 @@ import lombok.*;
 public class RecommendationResponseDTO {
 
     private double matchPercentage;
-    private String id;
+    private String candidateId;
+    private String applicationId;
     private String firstName;
     private String lastName;
     private String cvId;

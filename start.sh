@@ -21,7 +21,7 @@ trap "echo 'Stopping all services...'; kill 0" SIGINT SIGTERM EXIT
 start_service "config-server"
 start_service "discovery"
 start_service "api-gateway"
-start_service "application-service"
+#start_service "application-service"
 start_service "auth-service"
 #start_service "chat-service"
 start_service "cv-service"

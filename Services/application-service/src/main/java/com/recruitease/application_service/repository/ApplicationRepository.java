@@ -10,22 +10,21 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 
-
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, String> {
-    //to find whether theres a entry with given candidate id and job id
-    boolean existsByCandidateIdAndJobIdAndStatusNot(String candidateId, String jobId,String status);
+    // to find whether theres a entry with given candidate id and job id
+    boolean existsByCandidateIdAndJobIdAndStatusNot(String candidateId, String jobId, String status);
 
-    //to find whether theres a entry with given candidateId and applicatioonId
+    // to find whether theres a entry with given candidateId and applicatioonId
     boolean existsByCandidateIdAndApplicationId(String candidateId, String applicationId);
 
-
     List<Application> findByCandidateId(String candidateId);
+
     List<Application> findByJobId(String jobId);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE application SET status = :status WHERE application_id = :applicationId",nativeQuery = true)
+    @Query(value = "UPDATE application SET status = :status WHERE application_id = :applicationId", nativeQuery = true)
     int updateStatusByApplicationId(String status, String applicationId);
 
     @Modifying
@@ -33,4 +32,9 @@ public interface ApplicationRepository extends JpaRepository<Application, String
     @Query(value = "UPDATE application SET status = :status WHERE application_id IN :applicationIds", nativeQuery = true)
     int updateStatusByApplicationIds(String status, List<String> applicationIds);
 
+    // to find whether theres a entry with given candidateId and recruiterId
+    boolean existsByCandidateIdAndRecruiterId(String candidateId, String recruiterId);
+
+    // get all applications for a given candidate id and recruiter id
+    List<Application> findByCandidateIdAndRecruiterId(String candidateId, String recruiterId);
 }
