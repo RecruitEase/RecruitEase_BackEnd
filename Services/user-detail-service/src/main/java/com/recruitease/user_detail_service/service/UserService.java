@@ -505,7 +505,7 @@ public class UserService {
 
                     switch (user.getRole()) {
                         case "ROLE_CANDIDATE":
-                            var candidate = candidateRepository.findById(userId);
+                            var candidate = candidateRepository.findByUserId(userId);
                             if (candidate.isPresent()) {
                                 userDetails = GenericUserDetailsResponse.builder()
                                         .role("candidate")
@@ -520,7 +520,7 @@ public class UserService {
                             break;
 
                         case "ROLE_RECRUITER":
-                            var recruiter = recruiterRepository.findById(userId);
+                            var recruiter = recruiterRepository.findByUserId(userId);
                             if (recruiter.isPresent()) {
                                 userDetails = GenericUserDetailsResponse.builder()
                                         .role("recruiter")
@@ -535,7 +535,7 @@ public class UserService {
                             break;
 
                         case "ROLE_MODERATOR":
-                            var moderator = moderatorRepository.findById(userId);
+                            var moderator = moderatorRepository.findByUserId(userId);
                             if (moderator.isPresent()) {
                                 userDetails = GenericUserDetailsResponse.builder()
                                         .role("moderator")
