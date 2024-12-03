@@ -28,7 +28,7 @@ start_service "cv-service"
 start_service "file-service"
 start_service "interview-service"
 start_service "job-service"
-#start_service "user-detail-service"
+start_service "user-detail-service"
 start_service "recommendation"
 
 
