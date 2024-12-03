@@ -49,4 +49,14 @@ public class ChatMessageService {
        
         return repository.findBySenderIdAndRecipientId(senderId, recipientId);
     }
+
+    /**
+     * Retrieve all chat messages for a user.
+     *
+     * @param userId The ID of the user.
+     * @return A list of chat messages involving the user.
+     */
+    public List<String> findChats(String userId) {
+        return repository.findChatsByRecipientId(userId);   
+    }
 }
