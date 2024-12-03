@@ -1,5 +1,19 @@
 package com.recruitease.user_detail_service.controller;
 
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.recruitease.user_detail_service.DTO.ResponseDTO;
 import com.recruitease.user_detail_service.DTO.UserDetailsRequestDTO;
 import com.recruitease.user_detail_service.entity.Admin;
@@ -8,12 +22,8 @@ import com.recruitease.user_detail_service.entity.Moderator;
 import com.recruitease.user_detail_service.entity.Recruiter;
 import com.recruitease.user_detail_service.service.UserService;
 import com.recruitease.user_detail_service.util.CodeList;
+
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -92,6 +102,7 @@ public class UserDetailsController {
         }
 
     }
+
     @GetMapping("/all/admin")
     public ResponseEntity<ResponseDTO> adminAll() {
         ResponseDTO res = userService.getAllAdmins();
@@ -105,6 +116,7 @@ public class UserDetailsController {
         }
 
     }
+
     @GetMapping("/all/recruiter")
     public ResponseEntity<ResponseDTO> recruiterAll() {
         ResponseDTO res = userService.getAllRecruiters();
@@ -118,6 +130,7 @@ public class UserDetailsController {
         }
 
     }
+
     @GetMapping("/all/candidate")
     public ResponseEntity<ResponseDTO> candidateAll() {
         ResponseDTO res = userService.getAllCandidates();
@@ -131,7 +144,6 @@ public class UserDetailsController {
         }
 
     }
-
 
     @GetMapping("/admin/{adminId}")
     public ResponseEntity<ResponseDTO> adminDetails(@PathVariable String adminId) {
@@ -196,6 +208,20 @@ public class UserDetailsController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseDTO> updateProfile(@RequestBody Admin adminPutReq) {
         ResponseDTO res = userService.updateAdmin(adminPutReq);
+        if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } else {// some error
+
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PostMapping("/generic/user-details")
+    public ResponseEntity<ResponseDTO> genericUserDetails(@RequestBody List<String> userIds) {
+        ResponseDTO res = userService.getGenericUserDetails(userIds);
         if (res.getCode().equals(CodeList.RSP_SUCCESS)) {
 
             return new ResponseEntity<>(res, HttpStatus.OK);

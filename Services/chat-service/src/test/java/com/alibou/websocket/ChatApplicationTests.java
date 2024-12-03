@@ -1,10 +1,10 @@
-package com.recruitease.chat_service;
+package com.alibou.websocket;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ChatServiceApplicationTests {
+class ChatApplicationTests {
 
 	@Test
 	void contextLoads() {

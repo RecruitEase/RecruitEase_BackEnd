@@ -1,13 +1,13 @@
-package com.recruitease.chat_service;
+package com.recruitease.websocket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChatServiceApplication {
+public class ChatApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChatServiceApplication.class, args);
+		SpringApplication.run(ChatApplication.class, args);
 	}
 
 }

@@ -7,7 +7,9 @@ import com.recruitease.user_detail_service.DTO.LoggedUser.LoggedRecruiter;
 import com.recruitease.user_detail_service.DTO.ResponseDTO;
 import com.recruitease.user_detail_service.DTO.UserDetailsRequestDTO;
 import com.recruitease.user_detail_service.DTO.UserDetailsResponseDTO;
+import com.recruitease.user_detail_service.DTO.GenericUserDetailsResponse;
 import com.recruitease.user_detail_service.config.CustomUserDetails;
+import com.recruitease.user_detail_service.repository.UserRepository;
 import com.recruitease.user_detail_service.entity.*;
 import com.recruitease.user_detail_service.repository.AdminRepository;
 import com.recruitease.user_detail_service.repository.CandidateRepository;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.sasl.AuthenticationException;
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +40,7 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final AdminRepository adminRepository;
     private final ModeratorRepository moderatorRepository;
+    private final UserRepository userRepository;
 
     public ResponseDTO getUserDetailsLists(UserDetailsRequestDTO request) {
         var responseDTO = new ResponseDTO();
@@ -390,13 +394,11 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-
         try {
 
-                List<Moderator> moderatorList = moderatorRepository.findAll();
-                List<LoggedModerator> moderatorDetailList = moderatorList.stream().map(this::mapToLoggedModerator)
-                        .toList();
-
+            List<Moderator> moderatorList = moderatorRepository.findAll();
+            List<LoggedModerator> moderatorDetailList = moderatorList.stream().map(this::mapToLoggedModerator)
+                    .toList();
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
@@ -417,13 +419,11 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-
         try {
 
             List<Admin> adminList = adminRepository.findAll();
             List<LoggedAdmin> adminListRes = adminList.stream().map(this::mapToLoggedAdmin)
                     .toList();
-
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
@@ -444,13 +444,11 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-
         try {
 
             List<Recruiter> recruiterList = recruiterRepository.findAll();
             List<LoggedRecruiter> recruiterListRes = recruiterList.stream().map(this::mapToLoggedRecruiter)
                     .toList();
-
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
@@ -471,13 +469,11 @@ public class UserService {
         var responseDTO = new ResponseDTO();
         var errors = new HashMap<String, String>();
 
-
         try {
 
             List<Candidate> candidateList = candidateRepository.findAll();
             List<LoggedCandidate> candidateListRes = candidateList.stream().map(this::mapToLoggedCandidate)
                     .toList();
-
 
             responseDTO.setCode(CodeList.RSP_SUCCESS);
             responseDTO.setMessage("Success");
@@ -486,6 +482,99 @@ public class UserService {
         } catch (Exception e) {
             e.printStackTrace();
             errors.put("error", "Error Occurred!");
+            responseDTO.setCode(CodeList.RSP_ERROR);
+            responseDTO.setMessage("Error Occurred!");
+            responseDTO.setErrors(errors);
+        }
+
+        return responseDTO;
+    }
+
+    public ResponseDTO getGenericUserDetails(List<String> userIdList) {
+        var responseDTO = new ResponseDTO();
+        var errors = new HashMap<String, String>();
+
+        try {
+            List<GenericUserDetailsResponse> userDetailsList = new ArrayList<>();
+
+            for (String userId : userIdList) {
+                var userOptional = userRepository.findById(userId);
+                if (userOptional.isPresent()) {
+                    var user = userOptional.get();
+                    GenericUserDetailsResponse userDetails = null;
+
+                    switch (user.getRole()) {
+                        case "ROLE_CANDIDATE":
+                            var candidate = candidateRepository.findByUserId(userId);
+                            if (candidate.isPresent()) {
+                                userDetails = GenericUserDetailsResponse.builder()
+                                        .role("candidate")
+                                        .userId(candidate.get().getUser().getId())
+                                        .email(candidate.get().getUser().getEmail())
+                                        .name(candidate.get().getFirstName() + " " + candidate.get().getLastName())
+                                        .roleId(candidate.get().getCandidateId())
+                                        .build();
+                            } else {
+                                errors.put(userId, "Candidate details not found!");
+                            }
+                            break;
+
+                        case "ROLE_RECRUITER":
+                            var recruiter = recruiterRepository.findByUserId(userId);
+                            if (recruiter.isPresent()) {
+                                userDetails = GenericUserDetailsResponse.builder()
+                                        .role("recruiter")
+                                        .userId(recruiter.get().getUser().getId())
+                                        .email(recruiter.get().getUser().getEmail())
+                                        .name(recruiter.get().getCompanyName())
+                                        .roleId(recruiter.get().getRecruiterId())
+                                        .build();
+                            } else {
+                                errors.put(userId, "Recruiter details not found!");
+                            }
+                            break;
+
+                        case "ROLE_MODERATOR":
+                            var moderator = moderatorRepository.findByUserId(userId);
+                            if (moderator.isPresent()) {
+                                userDetails = GenericUserDetailsResponse.builder()
+                                        .role("moderator")
+                                        .userId(moderator.get().getUser().getId())
+                                        .email(moderator.get().getUser().getEmail())
+                                        .name(moderator.get().getFirstName() + " " + moderator.get().getLastName())
+                                        .roleId(moderator.get().getModeratorId())
+                                        .build();
+                            } else {
+                                errors.put(userId, "Moderator details not found!");
+                            }
+                            break;
+
+                        default:
+                            errors.put(userId, "Unknown role!");
+                            break;
+                    }
+
+                    if (userDetails != null) {
+                        userDetailsList.add(userDetails);
+                    }
+                } else {
+                    errors.put(userId, "User not found!");
+                }
+            }
+
+            if (!userDetailsList.isEmpty()) {
+                responseDTO.setCode(CodeList.RSP_SUCCESS);
+                responseDTO.setMessage("Success");
+                responseDTO.setContent(userDetailsList);
+            } else {
+                responseDTO.setCode(CodeList.RSP_ERROR);
+                responseDTO.setMessage("No user details found!");
+                responseDTO.setErrors(errors);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errors.put("error", "Internal server error occurred!");
             responseDTO.setCode(CodeList.RSP_ERROR);
             responseDTO.setMessage("Error Occurred!");
             responseDTO.setErrors(errors);
