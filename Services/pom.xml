@@ -29,7 +29,7 @@
         <module>ticket-service</module>
         <module>recommendation</module>
         <module>payment-service</module>
-<!--        <module>chat-service</module>-->
+        <module>chat-service</module>
     </modules>
 
     <properties>

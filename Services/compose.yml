@@ -167,7 +167,20 @@ services:
       - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
       - EUREKA_HOST_NAME=discovery-service
 
-
+  chat-service:
+    image: recruitease/new-chat-service:latest
+    container_name: chat-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - my-network
+    ports:
+      - "9899:9899"
+    environment:
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka/
+      - EUREKA_HOST_NAME=discovery-service
 
 
 networks:
