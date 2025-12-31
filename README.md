@@ -1,5 +1,15 @@
 # RecruitEase_BackEnd
 
+**Job Recruitment & Applicant Tracking System**
+
+- **Technologies:** Microservices Architecture, Spring Boot, Next.js, PostgreSQL, Tailwind CSS  
+- Comprehensive recruitment platform designed to streamline the hiring process for employers and enhance the job search experience for candidates.
+- Features include **CV management and CV creation**, **application management**, and **vacancy recommendations**.
+- Full **Applicant Tracking System (ATS)** with application recommendations, vacancy management, shortlisting, interview scheduling, and interview streaming.
+- **Real-time chat functionality** and **secure payment handling**.
+- Fully distributed **microservices-based system** including API Gateway, Service Discovery, and supporting backend services.
+
+
 group-id: com.recruitease
 description: Authentication Service for RecruitEase
 Application-service:
